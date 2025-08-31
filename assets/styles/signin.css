@@ -1,0 +1,197 @@
+@import url('./variables.css');
+
+body {
+    background-color: var(--dark-primary);
+    color: #f0f6fc;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+}
+
+.motocare-container {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.motocare-logo {
+    color: var(--text-light);
+    padding: 0.5rem;
+    border-radius: 50%;
+    font-size: 2rem;
+}
+
+.signin-card {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 1rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.signin-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 0.4rem;
+    color: #f0f6fc;
+}
+
+.signin-subtitle {
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #f0f6fc;
+    letter-spacing: 2px;
+}
+
+.signin-title span {
+    color: var(--primary-red);
+}
+
+.form-label {
+    color: #f0f6fc;
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 0.375rem;
+}
+
+.form-control {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #21262d;
+    border-radius: 0 !important;
+    color: #f0f6fc;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    background-color: #0d1117;
+    color: #f0f6fc;
+    box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.3);
+}
+
+.form-control::placeholder {
+    color: #7d8590;
+}
+
+.forgot-password {
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 0.75rem;
+    float: right;
+    margin-top: 0.25rem;
+}
+
+.forgot-password:hover {
+    color: #79c0ff;
+    text-decoration: underline;
+}
+
+.btn-signin {
+    background: var(--red-primary);
+    border: 1px solid var(--dark-primary);
+    color: #ffffff;
+    font-weight: 500;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    margin-top: 0.75rem;
+    transition: background-color 0.2s;
+}
+
+.btn-signin:hover {
+    background: var(--red-secondary);
+    border-color: var(--red-secondary);
+    color: #ffffff;
+}
+
+.btn-signin:focus {
+    background-color: var(--red-secondary);
+    border-color: var(--red-secondary);
+    color: #ffffff;
+}
+
+.divider {
+    text-align: center;
+    margin: 1rem 0;
+    position: relative;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 55%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #21262d;
+    z-index: -1;
+}
+
+.divider span {
+    background: var(--dark-primary);
+    padding: 0 1rem;
+    color: #7d8590;
+    font-size: 0.875rem;
+}
+
+.btn-google {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    color: #f0f6fc;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.btn-google:hover {
+    background-color: #30363d;
+    border-color: #424a53;
+    color: #f0f6fc;
+    text-decoration: none;
+}
+
+.google-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.bottom-links a {
+    text-decoration: none !important;
+}
+
+
+@media (max-width: 576px) {
+    .signin-card {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+    
+    .footer-links {
+        position: relative;
+        margin-top: 2rem;
+        transform: none;
+        left: auto;
+        bottom: auto;
+    }
+    
+    .motocare-container {
+        min-height: auto;
+    }
+}

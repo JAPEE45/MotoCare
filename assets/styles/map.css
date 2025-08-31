@@ -1,0 +1,177 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--dark-primary);
+  min-height: 100vh;
+  padding-top: 5rem;
+  overflow: hidden;
+}
+
+.hero-section {
+  background: var(--dark-secondary);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  color: var(--text-light);
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dark-tertiary);
+}
+
+.map-container {
+  position: relative;
+  height: 90vh;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  border: none;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+/* Custom Leaflet popup styles */
+.leaflet-popup-content-wrapper {
+  background: var(--dark-secondary);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--dark-tertiary);
+}
+
+.leaflet-popup-content {
+  margin: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.popup-content h5 {
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.popup-content p {
+  color: var(--text-gray);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.services-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.service-tag {
+  background: var(--sky-blue);
+  color: var(--text-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.btn-book {
+  background: var(--red-primary);
+  border: none;
+  color: var(--text-light);
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-book:hover {
+  background: var(--red-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  color: var(--text-light);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: var(--red-primary);
+}
+
+.legend {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  background: var(--dark-tertiary);
+  border: 1px solid var(--dark-tertiary);
+  color: var(--text-light);
+}
+
+.form-control:focus {
+  background: var(--dark-tertiary);
+  color: var(--text-light);
+}
+
+select,
+select option,
+.form-control {
+  color: var(--text-light);
+}
+
+.form-label {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.legend-pin {
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  border: 2px solid white;
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    height: 100vh;
+  }
+
+  .shop-info {
+    min-width: 250px;
+    max-width: 280px;
+    padding: 1rem;
+  }
+
+  .legend {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 1rem 0;
+  }
+}
