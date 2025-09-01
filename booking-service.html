@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auto Repair Hub - Booking Requests</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./assets/styles/booking-service.css" />
+    <link rel="stylesheet" href="./assets/styles/navbar.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="booking-service.html">
+            <i class="fa-solid fa-motorcycle"></i
+            ><span style="color: var(--primary-red)"> Moto</span>Care
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#partnership">Partnership</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#aboutus">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./signin.html">Sign In</a>
+              </li>
+              <!-- <li class="nav-item ">
+                <a class="nav-link logged-out" href="./signin.html">Sign In</a>
+              </li> -->
+              <li class="nav-item">
+                <a class="nav-link signup" href="./signup.html">Sign Up</a>
+              </li>
+              <!-- <li class="nav-item ">
+                <a class="nav-link signup logged-out" href="./signup.html">Sign Up</a>
+              </li> -->
+            </ul>
+            <div class="profile-dropdown">
+              <button class="btn-user" id="profileBtn">
+                <div class="d-flex flex-column gap-0">
+                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="mb-0 text-muted">Customer</p>
+                </div>
+                <i
+                  class="fa-solid fa-angle-down"
+                  style="font-size: 0.8rem; color: var(--text-gray)"
+                ></i>
+              </button>
+              <div class="dropdown-menu-custom" id="profileDropdown">
+                <a href="./account.html" class="dropdown-item-custom">
+                  <i class="fas fa-user-circle me-2"></i>Account
+                </a>
+                <a href="./booking-status.html" class="dropdown-item-custom">
+                  <i class="fa-solid fa-calendar-check me-2"></i>Booking
+                </a>
+                <a href="./index.html" class="dropdown-item-custom">
+                  <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <!-- Stats Cards -->
+      <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-3">
+          <div class="stats-card">
+            <div class="stats-number" id="totalBookings">12</div>
+            <div class="stats-label">Total Requests</div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-3">
+          <div class="stats-card">
+            <div class="stats-number" id="pendingBookings">5</div>
+            <div class="stats-label">Pending</div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-3">
+          <div class="stats-card">
+            <div class="stats-number" id="inProgressBookings">4</div>
+            <div class="stats-label">In Progress</div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-3">
+          <div class="stats-card">
+            <div class="stats-number" id="completedBookings">3</div>
+            <div class="stats-label">Completed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Section -->
+      
+
+      <!-- Bookings Table -->
+      <div class="table-container">
+        <div class="filter-section">
+        <h5 class="filter-title">
+          <i class="fas fa-filter me-2"></i>
+          Filter & Search
+        </h5>
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by customer name..."
+              id="searchInput"
+            />
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <select class="form-select" id="statusFilter">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <select class="form-select" id="serviceFilter">
+              <option value="">All Services</option>
+              <option value="oil-change">Oil Change</option>
+              <option value="brake-repair">Brake Repair</option>
+              <option value="engine-diagnostic">Engine Diagnostic</option>
+              <option value="tire-service">Tire Service</option>
+              <option value="transmission">Transmission Service</option>
+            </select>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <input type="date" class="form-control" id="dateFilter" />
+          </div>
+        </div>
+      </div>
+        <div class="table-responsive" id="tableContainer">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Service</th>
+                <th>Vehicle</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+              <!-- Table rows will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="empty-state" style="display: none">
+        <i class="fas fa-inbox"></i>
+        <h4>No bookings found</h4>
+        <p>No booking requests match your current filters.</p>
+      </div>
+    </div>
+
+    <!-- Booking Details Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">
+              <i class="fas fa-info-circle me-2"></i>
+              Booking Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body" id="modalBody">
+            <!-- Modal content will be populated here -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-custom"
+              data-bs-dismiss="modal"
+            >
+              <i class="fas fa-times"></i>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script src="./assets/scripts/booking-service.js"></script>
+    <script src="./assets/scripts/navbar.js"></script>
+  </body>
+</html>

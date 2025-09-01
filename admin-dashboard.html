@@ -1,476 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Auto Repair Hub - Admin Dashboard</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="./assets/styles/admin-dashboard.css">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <div class="navbar-brand d-flex align-items-center">
-                <i class="fas fa-wrench me-2" style="color: var(--red-primary); font-size: 1.5rem;"></i>
-                <span class="brand-text">Auto Repair Hub</span>
-                <span class="text-muted ms-2">- Admin Dashboard</span>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./assets/styles/admin-dashboard.css" />
+    <link rel="stylesheet" href="./assets/styles/navbar.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="admin-dashboard.html">
+            <i class="fa-solid fa-motorcycle"></i
+            ><span style="color: var(--primary-red)"> Moto</span>Care
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#partnership">Partnership</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#aboutus">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#aboutus">Users</a>
+              </li>
+            </ul>
+            <div class="profile-dropdown">
+              <button class="btn-user" id="profileBtn">
+                <div class="d-flex flex-column gap-0">
+                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="mb-0 text-muted">Customer</p>
+                </div>
+                <i
+                  class="fa-solid fa-angle-down"
+                  style="font-size: 0.8rem; color: var(--text-gray)"
+                ></i>
+              </button>
+              <div class="dropdown-menu-custom" id="profileDropdown">
+                <a href="./account.html" class="dropdown-item-custom">
+                  <i class="fas fa-user-circle me-2"></i>Account
+                </a>
+                <a href="./index.html" class="dropdown-item-custom">
+                  <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+                </a>
+              </div>
             </div>
-            <div class="d-flex align-items-center">
-                <span class="time-display me-3" id="currentTime"></span>
-                <button class="btn btn-outline-secondary me-2">
-                    <i class="fas fa-bell"></i>
-                </button>
-                <button class="btn btn-outline-secondary">
-                    <i class="fas fa-cog"></i>
-                </button>
-            </div>
+          </div>
         </div>
-    </nav>
+      </nav>
+    </header>
+
 
     <div class="container-fluid px-4 py-4">
-        <!-- Welcome Section -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="mb-1">Welcome back!</h2>
-                <p class="text-muted" id="currentDate"></p>
+      <!-- Welcome Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h2 class="mb-1">Welcome back!</h2>
+          <p class="text-muted" id="currentDate"></p>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card h-100">
+            <div class="card-body d-flex align-items-center">
+              <div class="me-3">
+                <i
+                  class="fas fa-calendar-day fa-2x"
+                  style="color: var(--red-primary)"
+                ></i>
+              </div>
+              <div>
+                <h3 class="mb-0" id="todayCount">0</h3>
+                <p class="text-muted mb-0">Today's Appointments</p>
+              </div>
             </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card h-100">
+            <div class="card-body d-flex align-items-center">
+              <div class="me-3">
+                <i class="fas fa-tools fa-2x text-warning"></i>
+              </div>
+              <div>
+                <h3 class="mb-0" id="ongoingCount">0</h3>
+                <p class="text-muted mb-0">Ongoing Repairs</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card h-100">
+            <div class="card-body d-flex align-items-center">
+              <div class="me-3">
+                <i class="fas fa-check-circle fa-2x text-success"></i>
+              </div>
+              <div>
+                <h3 class="mb-0" id="confirmedCount">0</h3>
+                <p class="text-muted mb-0">Confirmed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+          <div class="card stat-card h-100">
+            <div class="card-body d-flex align-items-center">
+              <div class="me-3">
+                <i
+                  class="fas fa-chart-line fa-2x"
+                  style="color: var(--sky-blue)"
+                ></i>
+              </div>
+              <div>
+                <h3 class="mb-0" id="totalCount">0</h3>
+                <p class="text-muted mb-0">Total Bookings</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="row">
+        <!-- Calendar Section -->
+        <div class="col-lg-8 mb-4">
+          <div class="card">
+            <div
+              class="card-header calendar-header d-flex justify-content-between align-items-center"
+            >
+              <h5 class="mb-0">Appointment Calendar</h5>
+              <div class="d-flex align-items-center">
+                <button
+                  class="calendar-nav-btn me-2"
+                  onclick="navigateMonth(-1)"
+                >
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <span id="currentMonth" class="mx-3 fw-bold"></span>
+                <button
+                  class="calendar-nav-btn ms-2"
+                  onclick="navigateMonth(1)"
+                >
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <!-- Calendar Header Days -->
+              <div
+                class="row g-0 border-bottom"
+                style="border-color: var(--gray-card)"
+              >
+                <div class="col text-center py-2 text-muted fw-bold">Sun</div>
+                <div class="col text-center py-2 text-muted fw-bold">Mon</div>
+                <div class="col text-center py-2 text-muted fw-bold">Tue</div>
+                <div class="col text-center py-2 text-muted fw-bold">Wed</div>
+                <div class="col text-center py-2 text-muted fw-bold">Thu</div>
+                <div class="col text-center py-2 text-muted fw-bold">Fri</div>
+                <div class="col text-center py-2 text-muted fw-bold">Sat</div>
+              </div>
+              <!-- Calendar Grid -->
+              <div id="calendarGrid"></div>
+            </div>
+          </div>
         </div>
 
-        <!-- Statistics Cards -->
-        <div class="row mb-4">
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-calendar-day fa-2x" style="color: var(--red-primary);"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0" id="todayCount">0</h3>
-                            <p class="text-muted mb-0">Today's Appointments</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Appointments Section -->
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0" id="appointmentsTitle">Today's Appointments</h5>
+              <small class="text-muted" id="selectedDateText"></small>
             </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-tools fa-2x text-warning"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0" id="ongoingCount">0</h3>
-                            <p class="text-muted mb-0">Ongoing Repairs</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="card-body appointment-card" id="appointmentsList">
+              <!-- Appointments will be populated by JavaScript -->
             </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-check-circle fa-2x text-success"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0" id="confirmedCount">0</h3>
-                            <p class="text-muted mb-0">Confirmed</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-chart-line fa-2x" style="color: var(--sky-blue);"></i>
-                        </div>
-                        <div>
-                            <h3 class="mb-0" id="totalCount">0</h3>
-                            <p class="text-muted mb-0">Total Bookings</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-
-        <!-- Main Content -->
-        <div class="row">
-            <!-- Calendar Section -->
-            <div class="col-lg-8 mb-4">
-                <div class="card">
-                    <div class="card-header calendar-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Appointment Calendar</h5>
-                        <div class="d-flex align-items-center">
-                            <button class="calendar-nav-btn me-2" onclick="navigateMonth(-1)">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <span id="currentMonth" class="mx-3 fw-bold"></span>
-                            <button class="calendar-nav-btn ms-2" onclick="navigateMonth(1)">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <!-- Calendar Header Days -->
-                        <div class="row g-0 border-bottom" style="border-color: var(--gray-card);">
-                            <div class="col text-center py-2 text-muted fw-bold">Sun</div>
-                            <div class="col text-center py-2 text-muted fw-bold">Mon</div>
-                            <div class="col text-center py-2 text-muted fw-bold">Tue</div>
-                            <div class="col text-center py-2 text-muted fw-bold">Wed</div>
-                            <div class="col text-center py-2 text-muted fw-bold">Thu</div>
-                            <div class="col text-center py-2 text-muted fw-bold">Fri</div>
-                            <div class="col text-center py-2 text-muted fw-bold">Sat</div>
-                        </div>
-                        <!-- Calendar Grid -->
-                        <div id="calendarGrid"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Appointments Section -->
-            <div class="col-lg-4 ">
-                <div class="card ">
-                    <div class="card-header">
-                        <h5 class="mb-0" id="appointmentsTitle">Today's Appointments</h5>
-                        <small class="text-muted" id="selectedDateText"></small>
-                    </div>
-                    <div class="card-body appointment-card" id="appointmentsList">
-                        <!-- Appointments will be populated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Mock data for appointments
-        const appointments = [
-            {
-                id: 1,
-                date: '2025-08-27',
-                time: '09:00',
-                customer: 'John Smith',
-                vehicle: '2020 Honda Civic',
-                service: 'Oil Change & Filter',
-                status: 'confirmed',
-                phone: '+63 912 345 6789',
-                duration: '1 hour',
-                price: '₱1,500'
-            },
-            {
-                id: 2,
-                date: '2025-08-27',
-                time: '10:30',
-                customer: 'Maria Garcia',
-                vehicle: '2019 Toyota Vios',
-                service: 'Brake Inspection',
-                status: 'ongoing',
-                phone: '+63 923 456 7890',
-                duration: '2 hours',
-                price: '₱2,800'
-            },
-            {
-                id: 3,
-                date: '2025-08-27',
-                time: '14:00',
-                customer: 'Pedro Santos',
-                vehicle: '2021 Mitsubishi Mirage',
-                service: 'Engine Repair',
-                status: 'confirmed',
-                phone: '+63 934 567 8901',
-                duration: '3 hours',
-                price: '₱4,500'
-            },
-            {
-                id: 4,
-                date: '2025-08-27',
-                time: '15:30',
-                customer: 'Ana Reyes',
-                vehicle: '2018 Hyundai Accent',
-                service: 'Tire Replacement',
-                status: 'canceled',
-                phone: '+63 945 678 9012',
-                duration: '1.5 hours',
-                price: '₱3,200'
-            },
-            {
-                id: 5,
-                date: '2025-08-28',
-                time: '09:00',
-                customer: 'Carlos Lopez',
-                vehicle: '2020 Nissan Navara',
-                service: 'Transmission Check',
-                status: 'confirmed',
-                phone: '+63 956 789 0123',
-                duration: '2.5 hours',
-                price: '₱3,800'
-            },
-            {
-                id: 6,
-                date: '2025-08-28',
-                time: '11:00',
-                customer: 'Rosa Dela Cruz',
-                vehicle: '2019 Suzuki Swift',
-                service: 'AC Repair',
-                status: 'ongoing',
-                phone: '+63 967 890 1234',
-                duration: '2 hours',
-                price: '₱2,500'
-            },
-            {
-                id: 7,
-                date: '2025-08-29',
-                time: '08:30',
-                customer: 'Miguel Torres',
-                vehicle: '2022 Ford Ranger',
-                service: 'Battery Replacement',
-                status: 'confirmed',
-                phone: '+63 978 901 2345',
-                duration: '1 hour',
-                price: '₱4,000'
-            }
-        ];
-
-        let currentDate = new Date();
-        let selectedDate = new Date();
-
-        // Initialize the dashboard
-        function init() {
-            updateClock();
-            updateCurrentDate();
-            updateStatistics();
-            generateCalendar();
-            showAppointments();
-            
-            // Update clock every second
-            setInterval(updateClock, 1000);
-        }
-
-        // Update current time
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-PH', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            });
-            document.getElementById('currentTime').textContent = timeString;
-        }
-
-        // Update current date
-        function updateCurrentDate() {
-            const today = new Date();
-            const dateString = today.toLocaleDateString('en-PH', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            document.getElementById('currentDate').textContent = `Today is ${dateString}`;
-        }
-
-        // Update statistics
-        function updateStatistics() {
-            const today = formatDate(new Date());
-            const todayAppointments = appointments.filter(apt => apt.date === today);
-            
-            const stats = {
-                today: todayAppointments.length,
-                ongoing: appointments.filter(apt => apt.status === 'ongoing').length,
-                confirmed: appointments.filter(apt => apt.status === 'confirmed').length,
-                total: appointments.length
-            };
-
-            document.getElementById('todayCount').textContent = stats.today;
-            document.getElementById('ongoingCount').textContent = stats.ongoing;
-            document.getElementById('confirmedCount').textContent = stats.confirmed;
-            document.getElementById('totalCount').textContent = stats.total;
-        }
-
-        // Format date to YYYY-MM-DD (avoid timezone issues)
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        // Navigate month
-        function navigateMonth(direction) {
-            currentDate.setMonth(currentDate.getMonth() + direction);
-            generateCalendar();
-        }
-
-        // Generate calendar
-        function generateCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            
-            // Update month display
-            document.getElementById('currentMonth').textContent = 
-                currentDate.toLocaleDateString('en-PH', { month: 'long', year: 'numeric' });
-
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            const daysInMonth = lastDay.getDate();
-            const startingDayOfWeek = firstDay.getDay();
-
-            let calendarHTML = '';
-            let dayCount = 1;
-            const today = formatDate(new Date());
-            const selectedDateStr = formatDate(selectedDate);
-
-            // Calculate total weeks needed
-            const totalCells = Math.ceil((daysInMonth + startingDayOfWeek) / 7) * 7;
-
-            for (let i = 0; i < totalCells; i++) {
-                if (i % 7 === 0) {
-                    calendarHTML += '<div class="row g-0">';
-                }
-
-                if (i < startingDayOfWeek || dayCount > daysInMonth) {
-                    calendarHTML += '<div class="col"><div class="calendar-day"></div></div>';
-                } else {
-                    const currentDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayCount).padStart(2, '0')}`;
-                    const dayAppointments = appointments.filter(apt => apt.date === currentDateStr);
-                    
-                    let dayClasses = 'calendar-day';
-                    if (currentDateStr === today) dayClasses += ' today';
-                    if (currentDateStr === selectedDateStr) dayClasses += ' selected';
-
-                    // Create appointment badges HTML
-                    let appointmentBadgesHTML = '';
-                    dayAppointments.forEach((apt, index) => {
-                        if (index < 3) {
-                            appointmentBadgesHTML += `<span class="appointment-badge ${apt.status}">${apt.time}</span>`;
-                        }
-                    });
-                    
-                    if (dayAppointments.length > 3) {
-                        appointmentBadgesHTML += `<small class="text-muted d-block">+${dayAppointments.length - 3} more</small>`;
-                    }
-
-                    calendarHTML += `
-                        <div class="col">
-                            <div class="${dayClasses}" onclick="selectDate('${currentDateStr}')">
-                                <div class="p-2 h-100 d-flex flex-column">
-                                    <div class="fw-bold mb-1">${dayCount}</div>
-                                    <div class="appointment-container flex-grow-1">
-                                        ${appointmentBadgesHTML}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    dayCount++;
-                }
-
-                if (i % 7 === 6) {
-                    calendarHTML += '</div>';
-                }
-            }
-
-            document.getElementById('calendarGrid').innerHTML = calendarHTML;
-        }
-
-        // Select date
-        function selectDate(dateString) {
-            // Parse the date string correctly to avoid timezone issues
-            const parts = dateString.split('-');
-            selectedDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-            generateCalendar();
-            showAppointments();
-        }
-
-        // Show appointments for selected date
-        function showAppointments() {
-            const dateString = formatDate(selectedDate);
-            const today = formatDate(new Date());
-            const selectedAppointments = appointments.filter(apt => apt.date === dateString);
-
-            // Update title
-            const isToday = dateString === today;
-            document.getElementById('appointmentsTitle').textContent = 
-                isToday ? 'Today\'s Appointments' : 'Selected Date Appointments';
-            
-            document.getElementById('selectedDateText').textContent = 
-                selectedDate.toLocaleDateString('en-PH', { 
-                    weekday: 'long', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-
-            // Generate appointments HTML
-            let appointmentsHTML = '';
-
-            if (selectedAppointments.length === 0) {
-                appointmentsHTML = `
-                    <div class="no-appointments">
-                        <i class="fas fa-calendar-times fa-3x mb-3" style="color: var(--text-gray);"></i>
-                        <p>No appointments for this date</p>
-                    </div>
-                `;
-            } else {
-                selectedAppointments.forEach(appointment => {
-                    const statusIcon = {
-                        'confirmed': 'fa-check-circle text-success',
-                        'ongoing': 'fa-clock text-warning',
-                        'canceled': 'fa-times-circle text-danger'
-                    };
-
-                    appointmentsHTML += `
-                        <div class="appointment-card rounded p-3 mb-3 border-start">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-clock me-2 text-muted"></i>
-                                    <span class="fw-bold">${appointment.time}</span>
-                                </div>
-                                <span class="badge ${appointment.status === 'confirmed' ? 'bg-success' : appointment.status === 'ongoing' ? 'bg-warning' : 'bg-danger'}">
-                                    <i class="fas ${statusIcon[appointment.status].split(' ')[0].replace('fa-', '')} me-1"></i>
-                                    ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-                                </span>
-                            </div>
-                            
-                            <div class="mb-2">
-                                <div class="d-flex align-items-center mb-1">
-                                    <i class="fas fa-user me-2 text-muted"></i>
-                                    <strong>${appointment.customer}</strong>
-                                </div>
-                                <div class="d-flex align-items-center mb-1">
-                                    <i class="fas fa-car me-2 text-muted"></i>
-                                    <span>${appointment.vehicle}</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-1">
-                                    <i class="fas fa-wrench me-2 text-muted"></i>
-                                    <span class="brand-text">${appointment.service}</span>
-                                </div>
-                                <div class="d-flex align-items-center mb-1">
-                                    <i class="fas fa-phone me-2 text-muted"></i>
-                                    <span class="text-muted">${appointment.phone}</span>
-                                </div>
-                                <div class="d-flex justify-content-between mt-2">
-                                    <small class="text-muted">
-                                        <i class="fas fa-clock me-1"></i>
-                                        Duration: ${appointment.duration}
-                                    </small>
-                                    <small class="brand-text fw-bold">
-                                        ${appointment.price}
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-
-            document.getElementById('appointmentsList').innerHTML = appointmentsHTML;
-        }
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
+    <script src="./assets/scripts/admin-dashboard.js"></script>
+    <script src="./assets/scripts/navbar.js"></script>
+  </body>
 </html>

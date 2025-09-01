@@ -4,11 +4,7 @@ body {
   background-color: var(--darker-bg);
   color: var(--text-light);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.navbar {
-  background-color: var(--dark-bg);
-  border-bottom: 1px solid var(--gray-card);
+  padding-top: 5rem;
 }
 
 .card {
