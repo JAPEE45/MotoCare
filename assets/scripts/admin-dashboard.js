@@ -1,4 +1,3 @@
-// Mock data for appointments
 const appointments = [
   {
     id: 1,
@@ -119,13 +118,12 @@ const appointments = [
     phone: "+63 978 901 2345",
     duration: "1 hour",
     price: "₱4,000",
-  }
+  },
 ];
 
 let currentDate = new Date();
 let selectedDate = new Date();
 
-// Initialize the dashboard
 function init() {
   updateCurrentDate();
   updateStatistics();
@@ -133,9 +131,6 @@ function init() {
   showAppointments();
 }
 
-// Update current time
-
-// Update current date
 function updateCurrentDate() {
   const today = new Date();
   const dateString = today.toLocaleDateString("en-PH", {
@@ -147,7 +142,6 @@ function updateCurrentDate() {
   document.getElementById("currentDate").textContent = `Today is ${dateString}`;
 }
 
-// Update statistics
 function updateStatistics() {
   const today = formatDate(new Date());
   const todayAppointments = appointments.filter((apt) => apt.date === today);
@@ -165,7 +159,6 @@ function updateStatistics() {
   document.getElementById("totalCount").textContent = stats.total;
 }
 
-// Format date to YYYY-MM-DD (avoid timezone issues)
 function formatDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -173,18 +166,15 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-// Navigate month
 function navigateMonth(direction) {
   currentDate.setMonth(currentDate.getMonth() + direction);
   generateCalendar();
 }
 
-// Generate calendar
 function generateCalendar() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  // Update month display
   document.getElementById("currentMonth").textContent =
     currentDate.toLocaleDateString("en-PH", {
       month: "long",
@@ -201,7 +191,6 @@ function generateCalendar() {
   const today = formatDate(new Date());
   const selectedDateStr = formatDate(selectedDate);
 
-  // Calculate total weeks needed
   const totalCells = Math.ceil((daysInMonth + startingDayOfWeek) / 7) * 7;
 
   for (let i = 0; i < totalCells; i++) {
@@ -224,7 +213,6 @@ function generateCalendar() {
       if (currentDateStr === today) dayClasses += " today";
       if (currentDateStr === selectedDateStr) dayClasses += " selected";
 
-      // Create appointment badges HTML
       let appointmentBadgesHTML = "";
       dayAppointments.forEach((apt, index) => {
         if (index < 3) {
@@ -261,9 +249,7 @@ function generateCalendar() {
   document.getElementById("calendarGrid").innerHTML = calendarHTML;
 }
 
-// Select date
 function selectDate(dateString) {
-  // Parse the date string correctly to avoid timezone issues
   const parts = dateString.split("-");
   selectedDate = new Date(
     parseInt(parts[0]),
@@ -274,7 +260,6 @@ function selectDate(dateString) {
   showAppointments();
 }
 
-// Show appointments for selected date
 function showAppointments() {
   const dateString = formatDate(selectedDate);
   const today = formatDate(new Date());
@@ -282,7 +267,6 @@ function showAppointments() {
     (apt) => apt.date === dateString
   );
 
-  // Update title
   const isToday = dateString === today;
   document.getElementById("appointmentsTitle").textContent = isToday
     ? "Today's Appointments"
@@ -295,7 +279,6 @@ function showAppointments() {
       day: "numeric",
     });
 
-  // Generate appointments HTML
   let appointmentsHTML = "";
 
   if (selectedAppointments.length === 0) {
@@ -382,5 +365,4 @@ function showAppointments() {
   document.getElementById("appointmentsList").innerHTML = appointmentsHTML;
 }
 
-// Initialize when page loads
 document.addEventListener("DOMContentLoaded", init);

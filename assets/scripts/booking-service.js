@@ -1,4 +1,4 @@
-// Sample booking data
+// Sample booking
 const bookings = [
   {
     id: "BK001",
@@ -119,14 +119,12 @@ const bookings = [
   },
 ];
 
-// Initialize the page
 document.addEventListener("DOMContentLoaded", function () {
   renderTable(bookings);
   updateStats();
   setupEventListeners();
 });
 
-// Event listeners
 function setupEventListeners() {
   document
     .getElementById("searchInput")
@@ -142,7 +140,6 @@ function setupEventListeners() {
     .addEventListener("change", filterBookings);
 }
 
-// Render table
 function renderTable(bookingData) {
   const tbody = document.getElementById("bookingsTableBody");
   const emptyState = document.getElementById("emptyState");
@@ -210,7 +207,6 @@ function renderTable(bookingData) {
     .join("");
 }
 
-// Update statistics
 function updateStats() {
   const total = bookings.length;
   const pending = bookings.filter((b) => b.status === "pending").length;
@@ -223,7 +219,6 @@ function updateStats() {
   document.getElementById("completedBookings").textContent = completed;
 }
 
-// Filter bookings
 function filterBookings() {
   const search = document.getElementById("searchInput").value.toLowerCase();
   const statusFilter = document.getElementById("statusFilter").value;
@@ -244,7 +239,6 @@ function filterBookings() {
   renderTable(filtered);
 }
 
-// View booking details in modal
 function viewBookingDetails(bookingId) {
   const booking = bookings.find((b) => b.id === bookingId);
   if (!booking) return;
@@ -431,7 +425,6 @@ function viewBookingDetails(bookingId) {
   modalInstance.show();
 }
 
-// Action functions
 function updateStatus(bookingId, newStatus) {
   if (!newStatus) return;
 
@@ -450,7 +443,6 @@ function updateStatus(bookingId, newStatus) {
         "success"
       );
 
-      // Close modal if it's open
       const modal = bootstrap.Modal.getInstance(
         document.getElementById("bookingModal")
       );
@@ -491,7 +483,6 @@ function rescheduleBooking(bookingId) {
       renderTable(getFilteredBookings());
       showNotification(`Booking ${bookingId} rescheduled successfully`, "info");
 
-      // Close modal if it's open
       const modal = bootstrap.Modal.getInstance(
         document.getElementById("bookingModal")
       );
@@ -626,7 +617,6 @@ function exportBookings() {
   showNotification("Bookings exported successfully", "success");
 }
 
-// Keyboard shortcuts
 document.addEventListener("keydown", function (e) {
   if (e.ctrlKey && e.key === "r") {
     e.preventDefault();
@@ -642,7 +632,6 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-// Auto-refresh every 30 seconds
 setInterval(() => {
   console.log("Auto-refreshing bookings...");
 }, 30000);
