@@ -1,164 +1,232 @@
-let currentStep = 2;
-let timeRemaining = 45;
-let bookingStatus = "progress";
+// Sample booking data - Set to null to show default state
+let bookingData = {
+  id: "AH-2024-12345",
+  serviceType: "Oil Change & Brake Inspection",
+  vehicle: "2020 Honda Civic",
+  appointmentDate: "March 15, 2024",
+  timeSlot: "10:00 AM - 12:00 PM",
+  status: "pending", // pending, progress, completed
+  estimatedCompletion: "2 hours remaining",
+};
 
-function simulateProgress() {
-  const interval = setInterval(() => {
-    timeRemaining -= 1;
+// Set to null to test default state
+// bookingData = null;
 
-    if (timeRemaining <= 0) {
-      if (currentStep < 4) {
-        currentStep++;
-        updateProgress();
-
-        if (currentStep === 3) {
-          timeRemaining = 15;
-        } else if (currentStep === 4) {
-          timeRemaining = 0;
-          bookingStatus = "completed";
-          clearInterval(interval);
-        }
-      }
-    } else {
-      updateTimeDisplay();
-    }
-  }, 60000);
-
-  const demoInterval = setInterval(() => {
-    timeRemaining -= 1;
-    updateTimeDisplay();
-
-    if (timeRemaining <= 0) {
-      if (currentStep < 4) {
-        currentStep++;
-        updateProgress();
-
-        if (currentStep === 3) {
-          timeRemaining = 15;
-        } else if (currentStep === 4) {
-          timeRemaining = 0;
-          bookingStatus = "completed";
-          clearInterval(demoInterval);
-          showCompletionMessage();
-        }
-      }
-    }
-  }, 3000);
+function initializePage() {
+  if (bookingData) {
+    showBookingContent();
+    updateBookingDisplay();
+    startStatusSimulation();
+  } else {
+    showNoBookingContent();
+  }
 }
 
-function updateProgress() {
-  for (let i = 1; i <= 4; i++) {
-    const step = document.getElementById(`step${i}`);
+function showBookingContent() {
+  document.getElementById("noBookingContent").style.display = "none";
+  document.getElementById("bookingContent").style.display = "flex";
+}
+
+function showNoBookingContent() {
+  document.getElementById("bookingContent").style.display = "none";
+  document.getElementById("noBookingContent").style.display = "flex";
+}
+
+function updateBookingDisplay() {
+  if (!bookingData) return;
+
+  // Update booking details
+  document.getElementById(
+    "bookingId"
+  ).innerHTML = `<i class="fas fa-ticket-alt me-2"></i>${bookingData.id}`;
+  document.getElementById("serviceType").textContent = bookingData.serviceType;
+  document.getElementById("vehicle").textContent = bookingData.vehicle;
+  document.getElementById("appointmentDate").textContent =
+    bookingData.appointmentDate;
+  document.getElementById("timeSlot").textContent = bookingData.timeSlot;
+  document.getElementById("estimatedTimeText").textContent =
+    bookingData.estimatedCompletion;
+
+  // Update progress based on status
+  updateProgressSteps(bookingData.status);
+}
+
+function updateProgressSteps(status) {
+  // Reset all steps
+  const steps = ["step1", "step2", "step3"];
+  const labels = ["label1", "label2", "label3"];
+
+  steps.forEach((stepId) => {
+    const step = document.getElementById(stepId);
     step.classList.remove("active", "completed");
+  });
 
-    if (i < currentStep) {
-      step.classList.add("completed");
-      step.querySelector(".timeline-icon i").className = "fas fa-check";
-    } else if (i === currentStep) {
-      step.classList.add("active");
-    }
+  labels.forEach((labelId) => {
+    const label = document.getElementById(labelId);
+    label.classList.remove("active", "completed");
+  });
+
+  let progressWidth = 0;
+  let statusText = "";
+  let statusClass = "";
+
+  switch (status) {
+    case "pending":
+      document.getElementById("step1").classList.add("active");
+      document.getElementById("label1").classList.add("active");
+      progressWidth = 0;
+      statusText = "Pending";
+      statusClass = "status-pending";
+      break;
+
+    case "progress":
+      document.getElementById("step1").classList.add("completed");
+      document.getElementById("label1").classList.add("completed");
+      document.getElementById("step2").classList.add("active");
+      document.getElementById("label2").classList.add("active");
+      progressWidth = 50;
+      statusText = "In Progress";
+      statusClass = "status-progress";
+      break;
+
+    case "completed":
+      document.getElementById("step1").classList.add("completed");
+      document.getElementById("label1").classList.add("completed");
+      document.getElementById("step2").classList.add("completed");
+      document.getElementById("label2").classList.add("completed");
+      document.getElementById("step3").classList.add("completed");
+      document.getElementById("label3").classList.add("completed");
+      progressWidth = 100;
+      statusText = "Completed";
+      statusClass = "status-completed";
+      document.getElementById("estimatedTimeText").textContent =
+        "Service completed!";
+      break;
   }
 
+  // Update progress bar
+  document.getElementById("progressFill").style.width = progressWidth + "%";
+
+  // Update status badge
   const statusBadge = document.getElementById("currentStatus");
-  if (currentStep === 4) {
-    statusBadge.textContent = "Completed";
-    statusBadge.className = "status-badge status-completed";
-
-    document.getElementById("cancelBtn").style.display = "none";
-    document.getElementById("rescheduleBtn").style.display = "none";
-  } else if (currentStep === 3) {
-    statusBadge.textContent = "Quality Check";
-    statusBadge.className = "status-badge status-progress";
-  }
+  statusBadge.textContent = statusText;
+  statusBadge.className = `status-badge ${statusClass}`;
 }
 
-function updateTimeDisplay() {
-  const timeDisplay = document.getElementById("timeRemaining");
-  if (timeRemaining > 0) {
-    timeDisplay.textContent = `${timeRemaining} minutes`;
-  } else if (bookingStatus === "completed") {
-    timeDisplay.textContent = "Completed!";
-    timeDisplay.style.color = "#22c55e";
-  }
-}
+function startStatusSimulation() {
+  // Simulate real-time status updates
+  let currentStep = 0;
+  const statuses = ["pending", "progress", "completed"];
 
-function showCompletionMessage() {
-  const notification = document.createElement("div");
-  notification.className = "alert alert-success";
-  notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 9999;
-                background: rgba(34, 197, 94, 0.2);
-                border: 1px solid #22c55e;
-                color: #22c55e;
-                padding: 1rem;
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            `;
-  notification.innerHTML = `
-                <strong><i class="fas fa-check-circle me-2"></i>Service Completed!</strong><br>
-                Your motorcycle is ready for pickup.
-            `;
-  document.body.appendChild(notification);
+  // Uncomment to enable automatic status progression
 
-  setTimeout(() => {
-    notification.remove();
-  }, 5000);
-}
+  setInterval(() => {
+    if (currentStep < statuses.length - 1) {
+      currentStep++;
+      bookingData.status = statuses[currentStep];
+      updateProgressSteps(bookingData.status);
 
-function contactShop() {
-  alert("Calling Precision Tech Moto at (052) 811-4321...");
+      if (statuses[currentStep] === "progress") {
+        bookingData.estimatedCompletion = "1 hour remaining";
+      } else if (statuses[currentStep] === "completed") {
+        bookingData.estimatedCompletion = "Service completed!";
+      }
+
+      document.getElementById("estimatedTimeText").textContent =
+        bookingData.estimatedCompletion;
+    }
+  }, 5000); // Change status every 5 seconds
 }
 
 function cancelBooking() {
-  if (currentStep >= 4) {
-    alert("Cannot cancel a completed booking.");
-    return;
+  if (confirm("Are you sure you want to cancel this booking?")) {
+    // Simulate booking cancellation
+    bookingData = null;
+    showNoBookingContent();
+
+    // Show success message
+    setTimeout(() => {
+      alert(
+        "Booking cancelled successfully. You will receive a confirmation email shortly."
+      );
+    }, 500);
   }
-  const modal = new bootstrap.Modal(document.getElementById("cancelModal"));
-  modal.show();
-}
-
-function confirmCancel() {
-  alert("Booking cancelled successfully. A confirmation email has been sent.");
-  const modal = bootstrap.Modal.getInstance(
-    document.getElementById("cancelModal")
-  );
-  modal.hide();
-
-  document.getElementById("currentStatus").textContent = "Cancelled";
-  document.getElementById("currentStatus").className =
-    "status-badge status-pending";
-  document.getElementById("cancelBtn").style.display = "none";
-  document.getElementById("rescheduleBtn").style.display = "none";
 }
 
 function rescheduleBooking() {
-  if (currentStep >= 3) {
-    alert("Cannot reschedule - service is in final stages.");
-    return;
-  }
   const modal = new bootstrap.Modal(document.getElementById("rescheduleModal"));
+
+  // Show the modal
   modal.show();
 }
 
-function confirmReschedule() {
-  alert(
-    "Booking rescheduled successfully. A confirmation email has been sent."
-  );
-  const modal = bootstrap.Modal.getInstance(
-    document.getElementById("rescheduleModal")
-  );
-  modal.hide();
+// Manual status change functions for testing
+function changeStatus(newStatus) {
+  if (bookingData) {
+    bookingData.status = newStatus;
+    updateProgressSteps(newStatus);
+
+    // Update estimated time based on status
+    switch (newStatus) {
+      case "pending":
+        bookingData.estimatedCompletion = "2 hours remaining";
+        break;
+      case "progress":
+        bookingData.estimatedCompletion = "1 hour remaining";
+        break;
+      case "completed":
+        bookingData.estimatedCompletion = "Service completed!";
+        break;
+    }
+
+    document.getElementById("estimatedTimeText").textContent =
+      bookingData.estimatedCompletion;
+  }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  updateProgress();
-  updateTimeDisplay();
+// Initialize page on load
+document.addEventListener("DOMContentLoaded", initializePage);
 
-  setTimeout(() => {
-    simulateProgress();
-  }, 2000);
+// Add some interactivity - click on steps to change status (for demo purposes)
+document.addEventListener("DOMContentLoaded", () => {
+  // Only add event listeners if booking data exists and elements are present
+  if (bookingData && document.getElementById("step1")) {
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const step3 = document.getElementById("step3");
+    const paymentStatus = document.getElementById("paymentStatus");
+
+    // Add event listeners with null checks
+    if (step1) {
+      step1.addEventListener("click", () => changeStatus("pending"));
+      step1.style.cursor = "pointer";
+    }
+
+    if (step2) {
+      step2.addEventListener("click", () => changeStatus("progress"));
+      step2.style.cursor = "pointer";
+    }
+
+    if (step3) {
+      step3.addEventListener("click", () => changeStatus("completed"));
+      step3.style.cursor = "pointer";
+    }
+
+    // Click on payment status to cycle through payment states (for demo)
+    if (paymentStatus) {
+      paymentStatus.addEventListener("click", () => {
+        const currentPayment = bookingData.paymentStatus;
+        let nextPayment = "pending";
+
+        if (currentPayment === "pending") nextPayment = "paid";
+        else if (currentPayment === "paid") nextPayment = "failed";
+        else nextPayment = "pending";
+
+        changePaymentStatus(nextPayment);
+      });
+
+      paymentStatus.style.cursor = "pointer";
+      paymentStatus.title = "Click to change payment status (Demo)";
+    }
+  }
 });
