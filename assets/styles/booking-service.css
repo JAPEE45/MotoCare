@@ -495,3 +495,103 @@ body {
   opacity: 1;
   transform: translateX(0);
 }
+
+
+.modal-footer {
+  background-color: var(--dark-tertiary);
+  border-top: 1px solid var(--gray-card);
+  border-radius: 0 0 12px 12px;
+}
+
+/* Button Styling */
+.btn-primary-custom {
+  background-color: var(--sky-blue);
+  border-color: var(--sky-blue);
+  color: var(--text-light);
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  background-color: rgba(0, 100, 224, 0.9);
+  border-color: rgba(0, 100, 224, 0.9);
+  color: var(--text-light);
+  transform: translateY(-1px);
+}
+
+.btn-secondary-custom {
+  background-color: var(--gray-card);
+  border-color: var(--gray-card);
+  color: var(--text-light);
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary-custom:hover {
+  background-color: rgba(55, 65, 81, 0.9);
+  border-color: rgba(55, 65, 81, 0.9);
+  color: var(--text-light);
+}
+
+/* Alert Styling */
+.alert {
+  border-radius: 8px;
+  border: none;
+}
+
+.alert-info {
+  background-color: rgba(0, 100, 224, 0.1);
+  color: var(--sky-blue);
+  border-left: 4px solid var(--sky-blue);
+}
+
+.alert-success {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border-left: 4px solid #22c55e;
+}
+
+.alert-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--red-primary);
+  border-left: 4px solid var(--red-primary);
+}
+
+/* Current Booking Info */
+.current-booking-info {
+  background-color: var(--dark-tertiary);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--sky-blue);
+}
+
+.current-booking-info .info-label {
+  color: var(--text-gray);
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.current-booking-info .info-value {
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .btn-primary-custom,
+  .btn-secondary-custom {
+    padding: 10px 16px;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}

@@ -6,7 +6,8 @@ document.getElementById("signinButton").addEventListener("click", function (e) {
     window.location.href = "../../html/customer/homepage.html";
   } else if (login === "staff" && password === "staff") {
     window.location.href = "../../html/staff/dashboard.html";
-    console.log(login, password);
+  } else if (login === "owner" && password === "owner") {
+    window.location.href = "../../html/owner/dashboard.html";
   } else {
     alert("invalid");
   }

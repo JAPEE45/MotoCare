@@ -1,4 +1,4 @@
-// Sample booking
+
 const bookings = [
   {
     id: "BK001",
@@ -505,7 +505,6 @@ function refreshBookings() {
   }, 800);
 }
 
-// Helper functions
 function getFilteredBookings() {
   const search = document.getElementById("searchInput").value.toLowerCase();
   const statusFilter = document.getElementById("statusFilter").value;
@@ -635,3 +634,182 @@ document.addEventListener("keydown", function (e) {
 setInterval(() => {
   console.log("Auto-refreshing bookings...");
 }, 30000);
+
+let currentBookingId = null;
+let currentBookingData = null;
+
+function rescheduleBooking(bookingId) {
+  currentBookingId = bookingId;
+
+  currentBookingData = bookings
+    ? bookings.find((b) => b.id === bookingId)
+    : null;
+
+  if (currentBookingData) {
+    document.getElementById("currentCustomer").textContent =
+      currentBookingData.customerName;
+    document.getElementById("currentService").textContent =
+      currentBookingData.serviceType;
+    document.getElementById("currentDate").textContent = formatDate(
+      currentBookingData.scheduledDate
+    );
+    document.getElementById("currentTime").textContent =
+      currentBookingData.scheduledTime;
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("newDate").min = today;
+
+  document.getElementById("rescheduleForm").reset();
+  hideAlert();
+
+  const modal = new bootstrap.Modal(document.getElementById("rescheduleModal"));
+  modal.show();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const rescheduleBtn = document.getElementById("rescheduleBtn");
+  if (rescheduleBtn) {
+    rescheduleBtn.addEventListener("click", function () {
+      rescheduleBooking("BOOK001");
+    });
+  }
+
+  document
+    .getElementById("confirmReschedule")
+    .addEventListener("click", function () {
+      handleReschedule();
+    });
+
+  document.getElementById("newDate").addEventListener("change", validateForm);
+  document.getElementById("newTime").addEventListener("change", validateForm);
+});
+
+
+function handleReschedule() {
+  const form = document.getElementById("rescheduleForm");
+  const newDate = document.getElementById("newDate").value;
+  const newTime = document.getElementById("newTime").value;
+  const reason = document.getElementById("rescheduleReason").value;
+
+  if (!validateForm()) {
+    return;
+  }
+
+  const confirmBtn = document.getElementById("confirmReschedule");
+  const originalText = confirmBtn.innerHTML;
+  confirmBtn.innerHTML =
+    '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+  confirmBtn.disabled = true;
+
+  setTimeout(() => {
+    try {
+      performReschedule(currentBookingId, newDate, newTime, reason);
+
+      showAlert("success", "Booking has been successfully rescheduled!");
+
+      setTimeout(() => {
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("rescheduleModal")
+        );
+        modal.hide();
+
+        if (typeof refreshBookings === "function") {
+          refreshBookings();
+        }
+      }, 2000);
+    } catch (error) {
+      showAlert("danger", "Failed to reschedule booking. Please try again.");
+      console.error("Reschedule error:", error);
+    } finally {
+      confirmBtn.innerHTML = originalText;
+      confirmBtn.disabled = false;
+    }
+  }, 1500);
+}
+
+function performReschedule(bookingId, newDate, newTime, reason) {
+  console.log("Rescheduling booking:", {
+    bookingId,
+    newDate,
+    newTime,
+    reason,
+  });
+
+  if (currentBookingData) {
+    currentBookingData.scheduledDate = newDate;
+    currentBookingData.scheduledTime = convertTo12Hour(newTime);
+    if (reason) {
+      currentBookingData.notes += `\nRescheduled: ${reason}`;
+    }
+  }
+
+  // You might also want to send this data to your server
+  // fetch('/api/reschedule-booking', { ... })
+}
+
+
+function validateForm() {
+  const newDate = document.getElementById("newDate");
+  const newTime = document.getElementById("newTime");
+  let isValid = true;
+
+  if (!newDate.value) {
+    newDate.classList.add("is-invalid");
+    isValid = false;
+  } else {
+    const selectedDate = new Date(newDate.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      newDate.classList.add("is-invalid");
+      showAlert(
+        "danger",
+        "Please select a date that is today or in the future."
+      );
+      isValid = false;
+    } else {
+      newDate.classList.remove("is-invalid");
+    }
+  }
+
+  if (!newTime.value) {
+    newTime.classList.add("is-invalid");
+    isValid = false;
+  } else {
+    newTime.classList.remove("is-invalid");
+  }
+
+  return isValid;
+}
+
+function showAlert(type, message) {
+  const alert = document.getElementById("rescheduleAlert");
+  const alertMessage = document.getElementById("rescheduleAlertMessage");
+
+  alert.className = `alert alert-${type}`;
+  alertMessage.textContent = message;
+  alert.classList.remove("d-none");
+}
+
+function hideAlert() {
+  document.getElementById("rescheduleAlert").classList.add("d-none");
+}
+
+function convertTo12Hour(time24) {
+  const [hours, minutes] = time24.split(":");
+  const hour = parseInt(hours);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const displayHour = hour % 12 || 12;
+  return `${displayHour}:${minutes} ${ampm}`;
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
