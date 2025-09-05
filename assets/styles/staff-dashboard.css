@@ -1,0 +1,234 @@
+@import url("./variables.css");
+
+body {
+  background-color: var(--darker-bg);
+  color: var(--text-light);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 5rem;
+}
+
+.card {
+  background-color: var(--dark-bg);
+  border: 1px solid var(--gray-card);
+  color: var(--text-light);
+}
+
+.appointment-card {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.appointment-card::-webkit-scrollbar {
+  width: 4px;
+}
+
+.appointment-card::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+.appointment-card::-webkit-scrollbar-thumb {
+  background: var(--red-primary);
+  border-radius: 4px;
+}
+
+.card-header {
+  background-color: var(--dark-tertiary);
+  border-bottom: 1px solid var(--gray-card);
+}
+
+.btn-primary {
+  background-color: var(--red-primary);
+  border-color: var(--red-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--red-secondary);
+  border-color: var(--red-secondary);
+}
+
+.btn-outline-secondary {
+  border-color: var(--gray-card);
+  color: var(--text-gray);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--gray-card);
+  border-color: var(--gray-card);
+  color: var(--text-light);
+}
+
+.stat-card {
+  background: linear-gradient(
+    135deg,
+    var(--dark-bg) 0%,
+    var(--dark-tertiary) 100%
+  );
+  border: 1px solid var(--gray-card);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.15);
+  border-color: var(--red-primary);
+}
+
+.calendar-day {
+  height: 120px;
+  border: 1px solid var(--gray-card);
+  background-color: var(--dark-tertiary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.calendar-day:hover {
+  background-color: var(--gray-card);
+  border-color: var(--red-primary);
+}
+
+.calendar-day.today {
+  background-color: var(--dark-bg);
+  border: 2px solid var(--red-primary);
+}
+
+.calendar-day.selected {
+  background-color: var(--red-primary);
+  color: var(--text-light);
+}
+
+.appointment-badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-bottom: 2px;
+  display: block;
+  text-align: center;
+}
+
+.appointment-badge.confirmed {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid #22c55e;
+}
+
+.appointment-badge.ongoing {
+  background-color: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid #f59e0b;
+}
+
+.appointment-badge.canceled {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid #ef4444;
+}
+
+.appointment-card {
+  background-color: var(--dark-tertiary);
+  border: 1px solid var(--gray-card);
+  transition: all 0.3s ease;
+}
+
+.appointment-card:hover {
+  border-color: var(--red-primary);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1);
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-confirmed {
+  background-color: #22c55e;
+}
+.status-ongoing {
+  background-color: #f59e0b;
+}
+.status-canceled {
+  background-color: #ef4444;
+}
+
+.time-display {
+  font-family: "Courier New", monospace;
+  font-size: 1.5rem;
+  color: var(--red-primary);
+}
+
+.brand-text {
+  color: var(--red-primary);
+  font-weight: bold;
+}
+
+.calendar-header {
+  background-color: var(--dark-bg);
+  padding: 10px;
+  border-bottom: 1px solid var(--gray-card);
+}
+
+.calendar-nav-btn {
+  background-color: var(--gray-card);
+  border: none;
+  color: var(--text-light);
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calendar-nav-btn:hover {
+  background-color: var(--red-primary);
+}
+
+.text-muted {
+  color: var(--text-gray) !important;
+}
+
+.border-start {
+  border-left: 3px solid var(--red-primary) !important;
+}
+
+.no-appointments {
+  text-align: center;
+  color: var(--text-gray);
+  padding: 40px 20px;
+}
+
+.loading-spinner {
+  color: var(--red-primary);
+}
+
+.appointment-container {
+  max-height: 80px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--red-primary) var(--dark-tertiary);
+}
+
+.appointment-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.appointment-container::-webkit-scrollbar-track {
+  background: var(--dark-tertiary);
+}
+
+.appointment-container::-webkit-scrollbar-thumb {
+  background: var(--red-primary);
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .calendar-day {
+    height: 100px;
+  }
+
+  .stat-card {
+    margin-bottom: 15px;
+  }
+}

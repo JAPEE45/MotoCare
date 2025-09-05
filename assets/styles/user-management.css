@@ -13,11 +13,12 @@ body {
 }
 
 .main-header {
-  background: var(--dark-secondary);
-  border: 1px solid var(--dark-tertiary);
+  background: transparent;
+  /* border: 1px solid var(--dark-tertiary); */
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  margin: 30px 0;
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
+  margin: 30px 0 50px;
+
   padding: 30px;
 }
 
@@ -221,7 +222,6 @@ body {
   color: white;
 }
 
-/* Modal Styles */
 .modal-content {
   background-color: var(--dark-secondary);
   border: 1px solid var(--dark-tertiary);
@@ -282,7 +282,6 @@ body {
   color: var(--text-light);
 }
 
-/* User Avatar */
 .user-avatar {
   width: 40px;
   height: 40px;
@@ -296,7 +295,6 @@ body {
   font-size: 1.2rem;
 }
 
-/* Booking History Styles */
 .booking-item {
   background: var(--dark-tertiary);
   border: 1px solid var(--gray-card);
@@ -365,7 +363,6 @@ body {
   border-bottom-color: var(--red-primary);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .action-buttons {
     flex-direction: column;
@@ -396,7 +393,6 @@ body {
   }
 }
 
-/* Loading Animation */
 .loading {
   display: none;
   text-align: center;
@@ -408,7 +404,6 @@ body {
   color: var(--red-primary);
 }
 
-/* Search Highlight */
 .highlight {
   background-color: rgba(239, 68, 68, 0.3);
   color: var(--text-light);

@@ -49,7 +49,7 @@
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
                   <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
-                  <p class="mb-0 text-muted">Staff</p>
+                  <p class="mb-0 text-muted">Shop Owner</p>
                 </div>
                 <i
                   class="fa-solid fa-angle-down"
@@ -71,7 +71,6 @@
     </header>
 
     <div class="container-fluid py-4 mt-5">
-      <!-- Header -->
       <div class="main-header">
         <div class="row align-items-center">
           <div class="col-md-8">
@@ -86,7 +85,6 @@
         </div>
       </div>
 
-      <!-- Statistics Cards -->
       <div class="row mb-4">
         <div class="col-md mb-3">
           <div class="stats-card">
@@ -121,7 +119,6 @@
         </div>
       </div>
 
-      <!-- Filters -->
       <div class="filter-section">
         <h5><i class="fas fa-filter"></i>Filter Users</h5>
         <div class="row">
@@ -161,7 +158,6 @@
         </div>
       </div>
 
-      <!-- Users Table -->
       <div class="user-table">
         <div class="loading">
           <div class="spinner-border" role="status">
@@ -183,14 +179,12 @@
               </tr>
             </thead>
             <tbody id="usersTableBody">
-              <!-- Users will be populated here -->
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- View Profile Modal -->
     <div class="modal fade" id="viewProfileModal" tabindex="-1">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -220,7 +214,6 @@
                 >
               </div>
               <div class="col-md-8">
-                <!-- Nav tabs -->
                 <ul class="nav nav-tabs" id="profileTabs" role="tablist">
                   <li class="nav-item" role="presentation">
                     <button
@@ -253,7 +246,6 @@
                   </li>
                 </ul>
 
-                <!-- Tab panes -->
                 <div class="tab-content" id="profileTabContent">
                   <div
                     class="tab-pane fade show active"
@@ -314,7 +306,6 @@
                       id="bookingHistoryContainer"
                       class="booking-history-cont"
                     >
-                      <!-- Booking history will be populated here -->
                     </div>
                   </div>
                 </div>
@@ -325,7 +316,6 @@
       </div>
     </div>
 
-    <!-- Edit User Modal -->
     <div class="modal fade" id="editUserModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -418,14 +408,13 @@
               class="btn btn-primary"
               onclick="saveUserChanges()"
             >
-              <i class="fas fa-save me-2"></i>Save Changes
+              </i>Save Changes
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Reset Password Modal -->
     <div class="modal fade" id="resetPasswordModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -470,7 +459,6 @@
       </div>
     </div>
 
-    <!-- Add New User Modal -->
     <div class="modal fade" id="addUserModal" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -556,7 +544,7 @@
               class="btn btn-primary"
               onclick="createNewUser()"
             >
-              <i class="fas fa-user-plus me-2"></i>Create User
+              Add Staff
             </button>
           </div>
         </div>

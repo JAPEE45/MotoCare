@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Repair Hub - Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --red-primary: #ef4444;
+            --red-secondary: #dc2626;
+            --dark-primary: #0f0f0f;
+            --dark-secondary: #1a1a1a;
+            --dark-tertiary: #2a2a2a;
+            --primary-red: #e74c3c;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #0d1117;
+            --text-light: #ffffff;
+            --text-gray: #9ca3af;
+            --text-lightgray: #f6f8fa;
+            --sky-blue: rgb(0, 100, 224);
+            --text-lightgray2: #f9fafb;
+            --text-lightgray3: #f3f4f6;
+            --text-lightgray4: #d1d5db;
+            --gray-card: #374151;
+        }
+
+        body {
+            background-color: var(--darker-bg);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .sidebar {
+            background: linear-gradient(135deg, var(--dark-secondary), var(--dark-tertiary));
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid var(--dark-tertiary);
+            text-align: center;
+        }
+
+        .sidebar-header h4 {
+            color: var(--red-primary);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .nav-link {
+            color: var(--text-gray) !important;
+            padding: 12px 20px;
+            margin: 4px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--red-primary), var(--red-secondary));
+            color: var(--text-light) !important;
+            transform: translateX(5px);
+        }
+
+        .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: all 0.3s ease;
+            padding: 2rem;
+        }
+
+        .main-content.expanded {
+            margin-left: 70px;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, var(--dark-secondary), var(--dark-tertiary));
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, var(--gray-card), var(--dark-tertiary));
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--red-primary), var(--sky-blue));
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(135deg, var(--red-primary), var(--sky-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stats-label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        .stats-icon {
+            font-size: 2.5rem;
+            opacity: 0.7;
+            color: var(--red-primary);
+        }
+
+        .chart-container {
+            background: linear-gradient(135deg, var(--gray-card), var(--dark-tertiary));
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-title {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .status-confirmed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .status-completed {
+            background: rgba(0, 123, 255, 0.2);
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+
+        .status-cancelled {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .recent-activities {
+            background: linear-gradient(135deg, var(--gray-card), var(--dark-tertiary));
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--dark-tertiary);
+            display: flex;
+            align-items: center;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--red-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .toggle-btn {
+            background: var(--red-primary);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: var(--red-secondary);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .stats-card {
+                text-align: center;
+            }
+        }
+
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--red-primary), var(--sky-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4><i class="fas fa-tools me-2"></i>Auto Repair Hub</h4>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-users"></i>Customers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-user-tie"></i>Staff</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-calendar-alt"></i>Appointments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-wrench"></i>Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-chart-bar"></i>Reports</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-cog"></i>Settings</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Bar -->
+        <div class="top-bar d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button class="toggle-btn me-3" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2 class="gradient-text mb-0">Admin Dashboard</h2>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="me-3 text-muted">Welcome, Admin</span>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="stats-card">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="stats-number" id="totalCustomers">0</h3>
+                            <p class="stats-label">Total Customers</p>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-users stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="stats-card">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="stats-number" id="totalStaff">0</h3>
+                            <p class="stats-label">Staff Members</p>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-user-tie stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="stats-card">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="stats-number" id="totalAppointments">0</h3>
+                            <p class="stats-label">Appointments</p>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-calendar-alt stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-6 col-md-6">
+                <div class="stats-card">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="stats-number" id="totalRevenue">$0</h3>
+                            <p class="stats-label">Monthly Revenue</p>
+                        </div>
+                        <div class="col-4 text-end">
+                            <i class="fas fa-dollar-sign stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="chart-container">
+                    <h5 class="chart-title">Monthly Performance Overview</h5>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="chart-container">
+                    <h5 class="chart-title">Appointment Status Distribution</h5>
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Status & Recent Activities -->
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="chart-container">
+                    <h5 class="chart-title">Service Categories Performance</h5>
+                    <canvas id="servicesChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="col-lg-5">
+                <div class="recent-activities">
+                    <h5 class="chart-title">Recent Activities</h5>
+                    <div id="activitiesList">
+                        <!-- Activities will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Status Summary -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h5 class="chart-title">Booking Status Summary</h5>
+                    <div class="row" id="bookingStatus">
+                        <!-- Status cards will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample data - replace with actual API calls
+        const dashboardData = {
+            customers: 1248,
+            staff: 24,
+            appointments: 342,
+            revenue: 45600,
+            monthlyData: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                customers: [820, 932, 1015, 1127, 1190, 1248],
+                appointments: [245, 298, 315, 328, 335, 342],
+                revenue: [28500, 32100, 38900, 41200, 43800, 45600]
+            },
+            appointmentStatus: {
+                pending: 45,
+                confirmed: 89,
+                completed: 178,
+                cancelled: 30
+            },
+            services: {
+                labels: ['Oil Change', 'Brake Service', 'Tire Service', 'Engine Repair', 'AC Service'],
+                data: [85, 72, 68, 45, 38]
+            }
+        };
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            animateCounters();
+            initializeCharts();
+            populateActivities();
+            populateBookingStatus();
+        });
+
+        // Animate counter numbers
+        function animateCounters() {
+            animateCounter('totalCustomers', dashboardData.customers, 2000);
+            animateCounter('totalStaff', dashboardData.staff, 1500);
+            animateCounter('totalAppointments', dashboardData.appointments, 2500);
+            animateRevenue('totalRevenue', dashboardData.revenue, 2000);
+        }
+
+        function animateCounter(elementId, targetValue, duration) {
+            const element = document.getElementById(elementId);
+            const startValue = 0;
+            const startTime = performance.now();
+            
+            function updateCounter(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * easeOutQuart(progress));
+                
+                element.textContent = currentValue.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+            
+            requestAnimationFrame(updateCounter);
+        }
+
+        function animateRevenue(elementId, targetValue, duration) {
+            const element = document.getElementById(elementId);
+            const startValue = 0;
+            const startTime = performance.now();
+            
+            function updateRevenue(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * easeOutQuart(progress));
+                
+                element.textContent = '$' + currentValue.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateRevenue);
+                }
+            }
+            
+            requestAnimationFrame(updateRevenue);
+        }
+
+        function easeOutQuart(t) {
+            return 1 - (--t) * t * t * t;
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            initPerformanceChart();
+            initStatusChart();
+            initServicesChart();
+        }
+
+        function initPerformanceChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dashboardData.monthlyData.labels,
+                    datasets: [
+                        {
+                            label: 'Customers',
+                            data: dashboardData.monthlyData.customers,
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Appointments',
+                            data: dashboardData.monthlyData.appointments,
+                            borderColor: '#0064e0',
+                            backgroundColor: 'rgba(0, 100, 224, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initStatusChart() {
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pending', 'Confirmed', 'Completed', 'Cancelled'],
+                    datasets: [{
+                        data: [
+                            dashboardData.appointmentStatus.pending,
+                            dashboardData.appointmentStatus.confirmed,
+                            dashboardData.appointmentStatus.completed,
+                            dashboardData.appointmentStatus.cancelled
+                        ],
+                        backgroundColor: ['#ffc107', '#28a745', '#007bff', '#dc3545'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initServicesChart() {
+            const ctx = document.getElementById('servicesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dashboardData.services.labels,
+                    datasets: [{
+                        label: 'Service Requests',
+                        data: dashboardData.services.data,
+                        backgroundColor: [
+                            '#ef4444',
+                            '#0064e0',
+                            '#28a745',
+                            '#ffc107',
+                            '#6f42c1'
+                        ],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { display: false }
+                        },
+                        y: {
+                            ticks: { color: '#9ca3af' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Populate recent activities
+        function populateActivities() {
+            const activities = [
+                { icon: 'fa-user-plus', text: 'New customer John Doe registered', time: '2 minutes ago' },
+                { icon: 'fa-calendar-check', text: 'Appointment confirmed for Sarah Wilson', time: '15 minutes ago' },
+                { icon: 'fa-wrench', text: 'Oil change service completed', time: '32 minutes ago' },
+                { icon: 'fa-user-tie', text: 'Staff member Mike added to system', time: '1 hour ago' },
+                { icon: 'fa-star', text: 'New 5-star review received', time: '2 hours ago' },
+                { icon: 'fa-calendar-times', text: 'Appointment cancelled by customer', time: '3 hours ago' }
+            ];
+
+            const activitiesList = document.getElementById('activitiesList');
+            activitiesList.innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas ${activity.icon}"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <p class="mb-1 text-light">${activity.text}</p>
+                        <small class="text-muted">${activity.time}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Populate booking status
+        function populateBookingStatus() {
+            const statuses = [
+                { name: 'Pending', count: dashboardData.appointmentStatus.pending, class: 'status-pending', icon: 'fa-clock' },
+                { name: 'Confirmed', count: dashboardData.appointmentStatus.confirmed, class: 'status-confirmed', icon: 'fa-check' },
+                { name: 'Completed', count: dashboardData.appointmentStatus.completed, class: 'status-completed', icon: 'fa-check-double' },
+                { name: 'Cancelled', count: dashboardData.appointmentStatus.cancelled, class: 'status-cancelled', icon: 'fa-times' }
+            ];
+
+            const bookingStatus = document.getElementById('bookingStatus');
+            bookingStatus.innerHTML = statuses.map(status => `
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="d-flex align-items-center justify-content-between p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
+                        <div>
+                            <h4 class="mb-0 text-light">${status.count}</h4>
+                            <span class="status-badge ${status.class}">${status.name}</span>
+                        </div>
+                        <i class="fas ${status.icon} fa-2x opacity-50" style="color: var(--red-primary);"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('show');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('show');
+            }
+        });
+
+        // Refresh data (simulate real-time updates)
+        setInterval(function() {
+            // Simulate small changes in data
+            dashboardData.customers += Math.floor(Math.random() * 3);
+            dashboardData.appointments += Math.floor(Math.random() * 2);
+            
+            // Update counters without animation for real-time feel
+            document.getElementById('totalCustomers').textContent = dashboardData.customers.toLocaleString();
+            document.getElementById('totalAppointments').textContent = dashboardData.appointments.toLocaleString();
+        }, 30000); // Update every 30 seconds
+    </script>
+</body>
+</html>
