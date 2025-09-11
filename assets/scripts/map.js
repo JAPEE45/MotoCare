@@ -117,8 +117,27 @@ function bookService(shopName) {
   modal.show();
 }
 
+
+async function addBooking(){
+    const res = await fetch("../../helper/addBooking.php",{
+      method:"POST",
+      headers:{
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({
+        user_id: document.getElementById("id").value,
+        shop: document.getElementById("selectedShop").textContent,
+        preferred_date: document.getElementById("preferred_date").value,
+        time: document.getElementById("time").value,
+      })
+    })
+    const d = await res.text()
+    console.log(d)
+      window.location.href = "./booking-status.php";
+}
 function submitBooking() {
-  window.location.href = "./booking-status.html";
+  addBooking()
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -167,7 +186,6 @@ document.addEventListener("DOMContentLoaded", function () {
       showLocationError(errorMessage);
     },
     {
-      enableHighAccuracy: true,
       timeout: 15000,
       maximumAge: 300000,
     }

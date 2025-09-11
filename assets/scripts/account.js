@@ -3,7 +3,7 @@ function goBack() {
     "translateX(-20px)";
   document.querySelector(".main-container").style.opacity = "0.8";
 
-  window.location.href = "./homepage.html";
+  window.location.href = "./customer/homepage.php";
 }
 
 function changeEmail() {
@@ -93,7 +93,7 @@ function confirmDeleteAccount() {
     bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
 
     setTimeout(() => {
-      window.location.href = "./index.html";
+      window.location.href = "./index.php";
     }, 300);
 
     deleteBtn.innerHTML = originalText;

@@ -1,8 +1,13 @@
+<?php
+  require('../../helper/checkingUser.php');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <title>Auto Repair Hub - Find Quality Repair Shops</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
@@ -41,15 +46,18 @@
               <li class="nav-item">
                 <a class="nav-link" href="../index.html">About Us</a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="../signin.html">Sign In</a>
-              </li>
+                 <?php
+                  if(empty($row)){
+                    echo '  <li class="nav-item ">
+                <a class="nav-link " href="../signin.php">Sign In</a>
+              </li>';
+                  }
+               ?>
+            
               <!-- <li class="nav-item ">
                 <a class="nav-link logged-out" href="./signin.html">Sign In</a>
               </li> -->
-              <li class="nav-item ">
-                <a class="nav-link signup" href="../signup.html">Sign Up</a>
-              </li>
+            
               <!-- <li class="nav-item ">
                 <a class="nav-link signup logged-out" href="./signup.html">Sign Up</a>
               </li> -->
@@ -57,7 +65,7 @@
             <div class="profile-dropdown">
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
                   <p class="mb-0 text-muted">Customer</p>
                 </div>
                 <i
@@ -66,15 +74,16 @@
                 ></i>
               </button>
               <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.html" class="dropdown-item-custom">
+                <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
                 <a href="./booking-status.html" class="dropdown-item-custom">
                   <i class="fa-solid fa-calendar-check me-2"></i>Booking
                 </a>
-                <a href="../index.html" class="dropdown-item-custom">
+                 <a href="../index.html" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
+            
               </div>
             </div>
           </div>
@@ -154,6 +163,8 @@
     </div>
 
     <!-- Bootstrap JS -->
+   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../assets/scripts/homepage.js"></script>

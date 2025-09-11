@@ -49,7 +49,7 @@
                             
                             <div class="col-md-6 mb-3">
                                 <label for="contactNo" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contactNo" placeholder="Enter your phone number" value="0912-345-6789">
+                                <input type="tel" class="form-control" id="contact" placeholder="Enter your phone number" value="0912-345-6789">
                             </div>
                             
                             <div class="col-md-6 mb-3">
@@ -59,11 +59,11 @@
                             
                             <div class="col-12 mb-4">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" rows="3" placeholder="Enter your full address"></textarea>
+                                <textarea class="form-control" id="address" rows="3" id = 'address' placeholder="Enter your full address"></textarea>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-custom-primary w-100">
+                        <button onclick="addUser()" class="btn btn-custom-primary w-100">
                             <i class="fas fa-save me-2"></i>Save Personal Info
                         </button>
                     </form>
@@ -239,7 +239,63 @@
             </div>
         </div>
     </div>
+    <script>
+     const email = document.getElementById("email");
+const data = JSON.parse(localStorage.getItem("email")); // stored Google data
 
+console.log(data);
+
+email.value = data.email;
+document.getElementById("fullName").value = data.name;
+// para sa automated password
+function generateUniquePassword(seedNumber) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
+  let seed = seedNumber.toString() + Date.now().toString();
+  for (let i = 0; i < 12; i++) {
+    const index = (seed.charCodeAt(i % seed.length) + Math.floor(Math.random() * chars.length)) % chars.length;
+    password += chars.charAt(index);
+  }
+
+  return password;
+}
+async function addUser() {
+  try {
+    const datas = {
+      email: data.email,
+      password: generateUniquePassword(data.sub), 
+      picture: data.picture,
+      fullname: data.name,   
+      email_id: data.sub,    
+      address: document.getElementById("address").value, // fixed
+      contact: document.getElementById("contact").value, // fixed
+    };
+
+    const a = await fetch("../helper/addUser.php", {
+      method: "POST",
+      headers: {   // fixed "headers"
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datas),
+    });
+
+    const c = await a.json();
+    console.log(c);
+    if(c.status == "success"){
+        window.location.href = "customer/homepage.php"
+    }
+    if(c.status == "error"){
+        alert(c.message)
+    }
+  } catch (error) {
+    console.log("Fetch error:", error);
+  }
+}
+
+        // document.getELementById("dataInfo").addEventListener("click",()=>{
+        //     addUser()
+        // })
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
     <script src="../assets/scripts/account.js"></script>

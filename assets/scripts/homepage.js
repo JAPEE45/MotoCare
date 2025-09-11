@@ -34,7 +34,7 @@ document
         button.classList.remove("btn-loading");
         button.innerHTML = '<i class="fas fa-map-marker-alt"></i>Find Location';
 
-        window.location.href = "./map.html";
+        window.location.href = "./map.php";
       },
       function (error) {
         loadingOverlay.style.display = "none";

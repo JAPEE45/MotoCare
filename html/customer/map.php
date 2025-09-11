@@ -1,3 +1,8 @@
+<?php
+
+include '../../helper/checkingUser.php'
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,7 +26,7 @@
     <link rel="stylesheet" href="../../assets/styles/map.css">
   </head>
   <body>
-    <header
+       <header
     >
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
@@ -40,20 +45,23 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="./homepage.html">Home</a>
+                <a class="nav-link" href="#">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="../index.html">About Us</a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link " href="../signin.html">Sign In</a>
-              </li>
+                 <?php
+                  if(empty($row)){
+                    echo '  <li class="nav-item ">
+                <a class="nav-link " href="../signin.php">Sign In</a>
+              </li>';
+                  }
+               ?>
+            
               <!-- <li class="nav-item ">
                 <a class="nav-link logged-out" href="./signin.html">Sign In</a>
               </li> -->
-              <li class="nav-item ">
-                <a class="nav-link signup" href="../signup.html">Sign Up</a>
-              </li>
+            
               <!-- <li class="nav-item ">
                 <a class="nav-link signup logged-out" href="./signup.html">Sign Up</a>
               </li> -->
@@ -61,7 +69,7 @@
             <div class="profile-dropdown">
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
                   <p class="mb-0 text-muted">Customer</p>
                 </div>
                 <i
@@ -70,21 +78,23 @@
                 ></i>
               </button>
               <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.html" class="dropdown-item-custom">
+                <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
                 <a href="./booking-status.html" class="dropdown-item-custom">
                   <i class="fa-solid fa-calendar-check me-2"></i>Booking
                 </a>
-                <a href="../index.html" class="dropdown-item-custom">
+                 <a href="../index.html" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
+            
               </div>
             </div>
           </div>
         </div>
       </nav>
     </header>
+
     <div class="container-fluid">
       <!-- Navigation -->
     
@@ -142,6 +152,7 @@
                   id="selectedShop"
                   class="fw-bold"
                   style="color: var(--red-primary)"
+                  
                 ></p>
               </div>
               <div class="row">
@@ -153,6 +164,17 @@
                     type="text"
                     class="form-control"
                     required
+                 
+                    value = <?php echo $row["fullname"] ?>
+                  />
+                    
+                  <input
+                    type="text"
+                    class="form-control"
+                    required
+                    style = "display:none;"
+                    id="id"
+                    value = <?php echo $row["ID"] ?>
                   />
                 </div>
                 <div class="col-md-6 mb-3">
@@ -163,6 +185,7 @@
                     type="tel"
                     class="form-control"
                     required
+                    value=<?php echo $row['contact'] ?>
                   />
                 </div>
               </div>
@@ -174,6 +197,7 @@
                   type="email"
                   class="form-control"
                   required
+                  value = <?php echo $row['email'] ?>
                 />
               </div>
               <div class="row">
@@ -185,6 +209,7 @@
                     type="date"
                     class="form-control"
                     required
+                    id = "preferred_date"
                   />
                 </div>
                 <div class="col-md-6 mb-3">
@@ -194,6 +219,7 @@
                   <select
                     class="form-control"
                     required
+                    id="time"
                   >
                     <option value="" disabled selected>Select Time</option>
                     <option value="09:00">9:00 AM</option>
