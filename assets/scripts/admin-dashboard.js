@@ -3,7 +3,7 @@ const dashboardData = {
   customers: 1248,
   staff: 24,
   appointments: 342,
-  revenue: 45600,
+  servicesNum: 9,
   monthlyData: {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     customers: [820, 932, 1015, 1127, 1190, 1248],
@@ -39,8 +39,9 @@ function animateCounters() {
   animateCounter("totalCustomers", dashboardData.customers, 2000);
   animateCounter("totalStaff", dashboardData.staff, 1500);
   animateCounter("totalAppointments", dashboardData.appointments, 2500);
-  animateRevenue("totalRevenue", dashboardData.revenue, 2000);
+  animateRevenue("totalRevenue", dashboardData.servicesNum, 2000);
 }
+console.log(dashboardData.services);
 
 function animateCounter(elementId, targetValue, duration) {
   const element = document.getElementById(elementId);
@@ -76,7 +77,7 @@ function animateRevenue(elementId, targetValue, duration) {
       startValue + (targetValue - startValue) * easeOutQuart(progress)
     );
 
-    element.textContent = "$" + currentValue.toLocaleString();
+    element.textContent = currentValue.toLocaleString();
 
     if (progress < 1) {
       requestAnimationFrame(updateRevenue);
