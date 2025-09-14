@@ -39,7 +39,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="./customer/homepage.html">Home</a>
+                <a class="nav-link" href="./customer/homepage.php">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#partnership">Partnership</a>
@@ -48,10 +48,10 @@
                 <a class="nav-link" href="#aboutus">About Us</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./signin.html">Sign In</a>
+                <a class="nav-link" href="./signin.php">Sign In</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link signup" href="./signup.html">Sign Up</a>
+                <a class="nav-link signup" href="./signup.php">Sign Up</a>
               </li>
             </ul>
           </div>

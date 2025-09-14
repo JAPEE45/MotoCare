@@ -11,7 +11,7 @@ if ($data) {
     $email_id = $data['email_id'];
     $picture = $data['picture'];
     $address = $data['address'];
-
+    
     $check = $conn->prepare("SELECT id FROM user WHERE email = ?");
     $check->bind_param("s", $email);
     $check->execute();

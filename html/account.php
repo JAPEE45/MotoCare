@@ -1,3 +1,7 @@
+<?php
+    include '../helper/autoLogin.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
