@@ -205,7 +205,6 @@ let currentEditingUser = null;
 
 // Initialize page
 document.addEventListener("DOMContentLoaded", function () {
-  updateStatistics();
   renderUsers();
   setupEventListeners();
 });
@@ -249,18 +248,6 @@ function getTotalBookings() {
   return bookings.length;
 }
 
-// Update statistics
-function updateStatistics() {
-  const totalUsers = users.length;
-  const staffCount = users.filter((u) => u.role === "staff").length;
-  const customerCount = users.filter((u) => u.role === "customer").length;
-  const totalBookings = getTotalBookings();
-
-  document.getElementById("totalUsers").textContent = totalUsers;
-  document.getElementById("staffCount").textContent = staffCount;
-  document.getElementById("customerCount").textContent = customerCount;
-  document.getElementById("totalBookings").textContent = totalBookings;
-}
 
 // Render users table
 function renderUsers() {
@@ -550,7 +537,6 @@ function saveUserChanges() {
   };
 
   // Update displays
-  updateStatistics();
   applyFilters();
 
   // Close modal
@@ -627,7 +613,6 @@ function createNewUser() {
   users.push(formData);
 
   // Update displays
-  updateStatistics();
   applyFilters();
 
   // Close modal
