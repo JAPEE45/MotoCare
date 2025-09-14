@@ -132,7 +132,6 @@ function handleSaveService() {
     name: document.getElementById("serviceName").value,
     description: document.getElementById("serviceDescription").value,
     price: parseFloat(document.getElementById("serviceMinPrice").value),
-    duration: parseFloat(document.getElementById("serviceDuration").value) || 0,
     icon: document.getElementById("serviceIcon").value,
   };
 
