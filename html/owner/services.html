@@ -155,7 +155,7 @@
                       <option value="fas fa-car">Car</option>
                       <option value="fas fa-cogs">Gears</option>
                       <option value="fas fa-tools">Tools</option>
-                      <option value="fas fa-tire">Tire</option>
+                      <option value="fas fa-dharmachakra">Tire</option>
                       <option value="fas fa-battery-full">Battery</option>
                       <option value="fas fa-spray-can">Paint</option>
                     </select>
@@ -175,13 +175,28 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label for="servicePrice" class="form-label"
-                      >Price (₱) *</label
+                    <label for="serviceMinPrice" class="form-label"
+                      >Minimum Price (₱) *</label
                     >
                     <input
                       type="number"
                       class="form-control"
-                      id="servicePrice"
+                      id="serviceMinPrice"
+                      step="0.01"
+                      min="0"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="serviceMaxPrice" class="form-label"
+                      >Maximum Price (₱) *</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="serviceMaxPrice"
                       step="0.01"
                       min="0"
                       required

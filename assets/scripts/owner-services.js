@@ -5,8 +5,8 @@ let services = [
     name: "Oil Change",
     description:
       "Complete engine oil change with premium oil and filter replacement",
-    price: 1200,
-    duration: 1,
+    minPrice: 1200,
+    maxPrice: 2000,
     icon: "fas fa-oil-can",
   },
   {
@@ -14,8 +14,8 @@ let services = [
     name: "Brake Service",
     description:
       "Comprehensive brake inspection, pad replacement, and brake fluid service",
-    price: 2500,
-    duration: 2,
+    minPrice: 2500,
+    maxPrice: 5000,
     icon: "fas fa-wrench",
   },
   {
@@ -23,9 +23,9 @@ let services = [
     name: "Tire Rotation",
     description:
       "Professional tire rotation and pressure check for optimal performance",
-    price: 800,
-    duration: 0.5,
-    icon: "fas fa-tire",
+    minPrice: 800,
+    maxPrice: 2000,
+    icon: "fas fa-dharmachakra",
   },
 ];
 
@@ -72,14 +72,7 @@ function renderServices() {
                         <p class="service-description">${
                           service.description
                         }</p>
-                        <div class="service-price">₱${service.price.toLocaleString()}</div>
-                        ${
-                          service.duration
-                            ? `<div class="service-duration"><i class="fas fa-clock me-1"></i>${
-                                service.duration
-                              } hour${service.duration !== 1 ? "s" : ""}</div>`
-                            : ""
-                        }
+                        <div class="service-price">₱${service.minPrice.toLocaleString()} - ₱${service.maxPrice.toLocaleString()}</div>
                         <div class="action-buttons">
                             <button class="btn btn-outline-light btn-sm" onclick="editService(${
                               service.id
@@ -138,7 +131,7 @@ function handleSaveService() {
   const serviceData = {
     name: document.getElementById("serviceName").value,
     description: document.getElementById("serviceDescription").value,
-    price: parseFloat(document.getElementById("servicePrice").value),
+    price: parseFloat(document.getElementById("serviceMinPrice").value),
     duration: parseFloat(document.getElementById("serviceDuration").value) || 0,
     icon: document.getElementById("serviceIcon").value,
   };
@@ -197,8 +190,8 @@ function editService(id) {
   // Populate form
   document.getElementById("serviceName").value = service.name;
   document.getElementById("serviceDescription").value = service.description;
-  document.getElementById("servicePrice").value = service.price;
-  document.getElementById("serviceDuration").value = service.duration;
+  document.getElementById("serviceMinPrice").value = service.minPrice;
+  document.getElementById("serviceMaxPrice").value = service.maxPrice;
   document.getElementById("serviceIcon").value = service.icon;
 
   // Show modal
