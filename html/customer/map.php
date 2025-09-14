@@ -200,6 +200,17 @@ include '../../helper/checkingUser.php'
                   value = <?php echo $row['email'] ?>
                 />
               </div>
+              <div class="mb-3">
+                <label class="form-label" style="color: var(--text-light)"
+                  >Vehicle name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  required
+                  name="vehicle_name"
+                />
+              </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label" style="color: var(--text-light)"
@@ -228,6 +239,19 @@ include '../../helper/checkingUser.php'
                     <option value="14:00">2:00 PM</option>
                     <option value="15:00">3:00 PM</option>
                     <option value="16:00">4:00 PM</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" style="color: var(--text-light)"
+                    >Services</label
+                  >
+                  <select
+                    class="form-control"
+                    required
+                    id="services"
+                  >
+                    <option value="" disabled selected>Select Time</option>
+                  
                   </select>
                 </div>
               </div>

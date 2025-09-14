@@ -1,5 +1,6 @@
 let map;
-
+let shp = []
+let current_services = []
 function initMap() {
   map = L.map("map").setView([13.586, 124.2374], 14);
 
@@ -50,7 +51,12 @@ function initMap() {
     },
   ];
 
-  shops.forEach((shop) => {
+  async function getShopAndService(){
+    const res = await fetch("../../helper/getShopAndServices.php")
+    const json = await res.json()
+    console.log(json)
+    shp = json;
+    json.forEach((shop) => {
     const customIcon = L.divIcon({
       html: `<div style="
                         width: 40px; 
@@ -93,7 +99,7 @@ function initMap() {
                         </div>
                         <p><small><i class="fas fa-star text-warning"></i> ${
                           shop.rating
-                        } • ${shop.hours}</small></p>
+                        }/10 rating • ${shop.hours} hours</small></p>
                         <button class="btn btn-book w-100" onclick="bookService('${
                           shop.name
                         }')">
@@ -109,11 +115,27 @@ function initMap() {
         className: "custom-popup",
       });
   });
+  }
+  getShopAndService()
+  
+  
 }
 
 function bookService(shopName) {
   document.getElementById("selectedShop").textContent = shopName;
   const modal = new bootstrap.Modal(document.getElementById("bookingModal"));
+  const serv = shp.filter(e=>e.name == shopName)
+  
+  const sel = document.getElementById("services")
+  sel.innerHTML = "<option value='' disabled selected>Select Time</option>";
+  console.log(typeof serv)
+  
+  serv[0].services.forEach(e=>{
+    const node = document.createElement("option")
+    node.value = e
+    node.textContent = e
+    sel.appendChild(node)
+  })
   modal.show();
 }
 
