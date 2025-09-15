@@ -1,3 +1,9 @@
+
+
+<?php
+  require('../../helper/checkingUser.php');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,7 +23,8 @@
     <link rel="stylesheet" href="../../assets/styles/navbar.css" />
   </head>
   <body>
-    <header>
+     <header
+    >
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
           <a class="navbar-brand" href="homepage.html">
@@ -35,20 +42,23 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="./homepage.html">Home</a>
+                <a class="nav-link" href="./homepage.php">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../index.html">About Us</a>
+                <a class="nav-link" href="../index.php">About Us</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="../signin.html">Sign In</a>
-              </li>
+                 <?php
+                  if(empty($row)){
+                    echo '  <li class="nav-item ">
+                <a class="nav-link " href="../signin.php">Sign In</a>
+              </li>';
+                  }
+               ?>
+            
               <!-- <li class="nav-item ">
                 <a class="nav-link logged-out" href="./signin.html">Sign In</a>
               </li> -->
-              <li class="nav-item">
-                <a class="nav-link signup" href="../signup.html">Sign Up</a>
-              </li>
+            
               <!-- <li class="nav-item ">
                 <a class="nav-link signup logged-out" href="./signup.html">Sign Up</a>
               </li> -->
@@ -56,7 +66,7 @@
             <div class="profile-dropdown">
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
                   <p class="mb-0 text-muted">Customer</p>
                 </div>
                 <i
@@ -65,15 +75,16 @@
                 ></i>
               </button>
               <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.html" class="dropdown-item-custom">
+                <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="./booking-status.html" class="dropdown-item-custom">
+                <a href="./booking-status.php" class="dropdown-item-custom">
                   <i class="fa-solid fa-calendar-check me-2"></i>Booking
                 </a>
-                <a href="../index.html" class="dropdown-item-custom">
+                 <a href="../../helper/logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
+            
               </div>
             </div>
           </div>
@@ -126,12 +137,12 @@
               <div class="detail-row">
                 <span class="detail-label">Service Type:</span>
                 <span class="detail-value" id="serviceType"
-                  >Oil Change & Inspection</span
+                  ><?php echo $row['service_name'] ?></span
                 >
               </div>
               <div class="detail-row">
                 <span class="detail-label">Vehicle:</span>
-                <span class="detail-value" id="vehicle">2020 Honda Civic</span>
+                <span class="detail-value" id="vehicle"><?php echo $row['vehicle_name']  ?></span>
               </div>
               <div class="detail-row">
                 <span class="detail-label">Appointment Date:</span>

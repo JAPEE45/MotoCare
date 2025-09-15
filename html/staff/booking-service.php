@@ -1,3 +1,6 @@
+<?php
+  include '../../helper/checkStaff.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -20,7 +23,7 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="booking-service.html">
+          <a class="navbar-brand" href="booking-service.php">
             <i class="fa-solid fa-motorcycle"></i
             ><span style="color: var(--primary-red)"> Moto</span>Care
           </a>
@@ -35,16 +38,16 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="./dashboard.html">Dashboard</a>
+                <a class="nav-link" href="./dashboard.php">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link " href="./booking-service.html">Bookings</a>
+                <a class="nav-link " href="./booking-service.php">Bookings</a>
               </li>
             </ul>
             <div class="profile-dropdown">
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
                   <p class="mb-0 text-muted">Staff</p>
                 </div>
                 <i
@@ -53,10 +56,10 @@
                 ></i>
               </button>
               <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.html" class="dropdown-item-custom">
+                <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="../index.html" class="dropdown-item-custom">
+                <a href="../index.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
               </div>

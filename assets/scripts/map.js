@@ -93,7 +93,7 @@ function initMap() {
                             ${shop.services
                               .map(
                                 (service) =>
-                                  `<span class="service-tag">${service}</span>`
+                                  `<span class="service-tag">${service.service_name}</span>`
                               )
                               .join("")}
                         </div>
@@ -129,11 +129,11 @@ function bookService(shopName) {
   const sel = document.getElementById("services")
   sel.innerHTML = "<option value='' disabled selected>Select Time</option>";
   console.log(typeof serv)
-  
+  document.getElementById("shop_id").value = serv[0].shop_id
   serv[0].services.forEach(e=>{
     const node = document.createElement("option")
-    node.value = e
-    node.textContent = e
+    node.value = e.id
+    node.textContent = e.service_name.toUpperCase()
     sel.appendChild(node)
   })
   modal.show();
@@ -151,10 +151,17 @@ async function addBooking(){
         shop: document.getElementById("selectedShop").textContent,
         preferred_date: document.getElementById("preferred_date").value,
         time: document.getElementById("time").value,
+        shop_id : document.getElementById("shop_id").value,
+        service_id : document.getElementById("services").value,
+        vehicle_name : document.getElementById("vehicle_name").value,
       })
     })
-    const d = await res.text()
-    console.log(d)
+    const d = await res.json()
+  
+    if(d.error){
+      console.log(d.message)
+      return
+    }
       window.location.href = "./booking-status.php";
 }
 function submitBooking() {

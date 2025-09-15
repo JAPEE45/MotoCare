@@ -26,11 +26,11 @@ include '../../helper/checkingUser.php'
     <link rel="stylesheet" href="../../assets/styles/map.css">
   </head>
   <body>
-       <header
+      <header
     >
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="homepage.html">
+          <a class="navbar-brand" href="homepage.php">
             <i class="fa-solid fa-motorcycle"></i
             ><span style="color: var(--primary-red)"> Moto</span>Care
           </a>
@@ -45,10 +45,10 @@ include '../../helper/checkingUser.php'
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="./homepage.php  ">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../index.html">About Us</a>
+                <a class="nav-link" href="../index.php">About Us</a>
               </li>
                  <?php
                   if(empty($row)){
@@ -81,10 +81,10 @@ include '../../helper/checkingUser.php'
                 <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="./booking-status.html" class="dropdown-item-custom">
+                <a href="./booking-status.php" class="dropdown-item-custom">
                   <i class="fa-solid fa-calendar-check me-2"></i>Booking
                 </a>
-                 <a href="../index.html" class="dropdown-item-custom">
+                 <a href="../../helper/logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
             
@@ -172,6 +172,15 @@ include '../../helper/checkingUser.php'
                     type="text"
                     class="form-control"
                     required
+                  style="display: none;"
+                    id="shop_id"
+                    name="shop_id"
+                  />
+                    
+                  <input
+                    type="text"
+                    class="form-control"
+                    required
                     style = "display:none;"
                     id="id"
                     value = <?php echo $row["ID"] ?>
@@ -208,6 +217,7 @@ include '../../helper/checkingUser.php'
                   type="text"
                   class="form-control"
                   required
+                  id="vehicle_name"
                   name="vehicle_name"
                 />
               </div>
@@ -249,20 +259,22 @@ include '../../helper/checkingUser.php'
                     class="form-control"
                     required
                     id="services"
+                    name="service_id"
                   >
-                    <option value="" disabled selected>Select Time</option>
+                   
                   
                   </select>
                 </div>
               </div>
               <div class="mb-3">
                 <label class="form-label" style="color: var(--text-light)"
-                  >Service Needed</label
+                  >Notes</label
                 >
                 <textarea
                   class="form-control"
                   rows="3"
                   placeholder="Describe the service you need..."
+                  name="notes"
                 ></textarea>
               </div>
             </form>

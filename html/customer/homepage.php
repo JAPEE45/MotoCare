@@ -41,10 +41,10 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="./homepage.php">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="../index.html">About Us</a>
+                <a class="nav-link" href="../index.php">About Us</a>
               </li>
                  <?php
                   if(empty($row)){
@@ -77,10 +77,10 @@
                 <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="./booking-status.html" class="dropdown-item-custom">
+                <a href="./booking-status.php" class="dropdown-item-custom">
                   <i class="fa-solid fa-calendar-check me-2"></i>Booking
                 </a>
-                 <a href="../index.html" class="dropdown-item-custom">
+                 <a href="../../helper/logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
             

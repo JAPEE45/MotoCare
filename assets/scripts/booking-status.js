@@ -1,13 +1,27 @@
 // Sample booking data - Set to null to show default state
-let bookingData = {
+let bookingData;
+async function getBookingUpdate(){
+  const res = await fetch("../../helper/bookingStatus.php")
+  const json = await res.json()
+  console.log(json)
+  if(json.error){
+  console.log("EWror")
+    return
+  }
+ bookingData = {
   id: "AH-2024-12345",
-  serviceType: "Oil Change & Brake Inspection",
-  vehicle: "2020 Honda Civic",
-  appointmentDate: "March 15, 2024",
+  serviceType: json.service_name,
+  vehicle: json.vehicle_name || 'N/A',
+  appointmentDate: json.preferred_time || 'N/A',
   timeSlot: "10:00 AM - 12:00 PM",
-  status: "pending", // pending, progress, completed
+  status: json.status, // pending, progress, completed
   estimatedCompletion: "2 hours remaining",
 };
+document.getElementById("payment").textContent = bookingData.total_cost || 'N/A'
+initializePage()
+}
+
+
 
 // Set to null to test default state
 // bookingData = null;
@@ -123,11 +137,12 @@ function startStatusSimulation() {
   setInterval(() => {
     if (currentStep < statuses.length - 1) {
       currentStep++;
-      bookingData.status = statuses[currentStep];
+    
       updateProgressSteps(bookingData.status);
 
       if (statuses[currentStep] === "progress") {
         bookingData.estimatedCompletion = "1 hour remaining";
+        
       } else if (statuses[currentStep] === "completed") {
         bookingData.estimatedCompletion = "Service completed!";
       }
@@ -185,7 +200,8 @@ function changeStatus(newStatus) {
 }
 
 // Initialize page on load
-document.addEventListener("DOMContentLoaded", initializePage);
+document.addEventListener("DOMContentLoaded", 
+getBookingUpdate);
 
 // Add some interactivity - click on steps to change status (for demo purposes)
 document.addEventListener("DOMContentLoaded", () => {
@@ -194,7 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const step1 = document.getElementById("step1");
     const step2 = document.getElementById("step2");
     const step3 = document.getElementById("step3");
-    const paymentStatus = document.getElementById("paymentStatus");
 
     // Add event listeners with null checks
     if (step1) {
@@ -210,23 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (step3) {
       step3.addEventListener("click", () => changeStatus("completed"));
       step3.style.cursor = "pointer";
-    }
-
-    // Click on payment status to cycle through payment states (for demo)
-    if (paymentStatus) {
-      paymentStatus.addEventListener("click", () => {
-        const currentPayment = bookingData.paymentStatus;
-        let nextPayment = "pending";
-
-        if (currentPayment === "pending") nextPayment = "paid";
-        else if (currentPayment === "paid") nextPayment = "failed";
-        else nextPayment = "pending";
-
-        changePaymentStatus(nextPayment);
-      });
-
-      paymentStatus.style.cursor = "pointer";
-      paymentStatus.title = "Click to change payment status (Demo)";
     }
   }
 });

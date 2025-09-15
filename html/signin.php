@@ -1,7 +1,56 @@
 <?php
-include_once '../helper/db.php'
+session_start();
+include_once '../helper/db.php';
 
+function login($username, $password, $conn) {
+    // Prepare query
+    $stmt = $conn->prepare("SELECT role, id, username, password FROM user WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
+        // ✅ Check password (use password_verify if passwords are hashed)
+        if ($password === $user['password']) {
+            // Save user data in session
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+
+            return true;
+        } else {
+            return false; // wrong password
+        }
+    } else {
+        return false; // user not found
+    }
+}
+$error = "";
+// ✅ Handle login request
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    if (login($username, $password, $conn)) {
+        // Redirect based on role
+        if ($_SESSION['role'] === "staff") {
+            header("Location: ./staff/dashboard.php");
+            exit();
+        } elseif ($_SESSION['role'] === "admin") {
+            header("Location: ./MotoCare/html/admin/dashboard.php");
+            exit();
+        } else {
+            header("Location: ./MotoCare/html/user/dashboard.php");
+            exit();
+        }
+    } else {
+        $error =  " Invalid username or password.";
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,9 +77,9 @@ include_once '../helper/db.php'
       <p class="signin-subtitle">Let's get started!</p>
 
       <!-- Regular login form -->
-      <form>
+      <form method ="post" action="signin.php">
         <div class="mb-3">
-          <input type="text" class="form-control" id="login" name="login" placeholder="Username or email address">
+          <input type="text" class="form-control" id="login" name="username" placeholder="Username or email address">
         </div>
         <div class="mb-3">
           <input type="password" class="form-control" id="password" name="password" placeholder="Password">

@@ -1,129 +1,33 @@
+// Global variable to hold all booking data once fetched
+let bookings = [];
 
-const bookings = [
-  {
-    id: "BK001",
-    customerName: "John Smith",
-    phone: "+1 (555) 123-4567",
-    email: "john.smith@email.com",
-    serviceType: "Oil Change",
-    vehicleInfo: "2020 Honda Civic",
-    licensePlate: "ABC-123",
-    scheduledDate: "2025-09-05",
-    scheduledTime: "10:00 AM",
-    status: "pending",
-    notes:
-      "Regular maintenance checkup needed. Customer mentioned unusual engine noise.",
-    createdAt: "2025-09-01T08:30:00Z",
-    estimatedDuration: "45 minutes",
-    totalCost: "$75.00",
-  },
-  {
-    id: "BK002",
-    customerName: "Sarah Johnson",
-    phone: "+1 (555) 987-6543",
-    email: "sarah.j@email.com",
-    serviceType: "Brake Repair",
-    vehicleInfo: "2018 Toyota Camry",
-    licensePlate: "XYZ-789",
-    scheduledDate: "2025-09-03",
-    scheduledTime: "2:30 PM",
-    status: "in-progress",
-    notes:
-      "Squeaking brakes, urgent repair needed. Customer reports grinding noise when braking.",
-    createdAt: "2025-08-30T14:15:00Z",
-    estimatedDuration: "2 hours",
-    totalCost: "$350.00",
-  },
-  {
-    id: "BK003",
-    customerName: "Mike Davis",
-    phone: "+1 (555) 456-7890",
-    email: "mike.davis@email.com",
-    serviceType: "Engine Diagnostic",
-    vehicleInfo: "2019 Ford F-150",
-    licensePlate: "DEF-456",
-    scheduledDate: "2025-09-02",
-    scheduledTime: "9:00 AM",
-    status: "completed",
-    notes:
-      "Check engine light diagnosis completed. Issue resolved - faulty O2 sensor replaced.",
-    createdAt: "2025-08-29T11:20:00Z",
-    estimatedDuration: "1 hour",
-    totalCost: "$120.00",
-  },
-  {
-    id: "BK004",
-    customerName: "Emily Wilson",
-    phone: "+1 (555) 321-9876",
-    email: "emily.w@email.com",
-    serviceType: "Tire Service",
-    vehicleInfo: "2021 Nissan Altima",
-    licensePlate: "GHI-012",
-    scheduledDate: "2025-09-04",
-    scheduledTime: "11:30 AM",
-    status: "pending",
-    notes:
-      "Tire rotation and alignment check. Customer mentioned car pulling to the right.",
-    createdAt: "2025-08-31T16:45:00Z",
-    estimatedDuration: "1.5 hours",
-    totalCost: "$150.00",
-  },
-  {
-    id: "BK005",
-    customerName: "David Brown",
-    phone: "+1 (555) 654-3210",
-    email: "david.brown@email.com",
-    serviceType: "Transmission Service",
-    vehicleInfo: "2017 Chevrolet Malibu",
-    licensePlate: "JKL-345",
-    scheduledDate: "2025-09-06",
-    scheduledTime: "1:00 PM",
-    status: "in-progress",
-    notes:
-      "Transmission fluid change and inspection. Customer reports slipping gears.",
-    createdAt: "2025-09-01T09:10:00Z",
-    estimatedDuration: "2.5 hours",
-    totalCost: "$280.00",
-  },
-  {
-    id: "BK006",
-    customerName: "Lisa Anderson",
-    phone: "+1 (555) 789-0123",
-    email: "lisa.anderson@email.com",
-    serviceType: "Oil Change",
-    vehicleInfo: "2022 BMW 3 Series",
-    licensePlate: "MNO-678",
-    scheduledDate: "2025-09-07",
-    scheduledTime: "3:00 PM",
-    status: "pending",
-    notes: "Synthetic oil change, first service for new vehicle.",
-    createdAt: "2025-09-01T10:20:00Z",
-    estimatedDuration: "30 minutes",
-    totalCost: "$95.00",
-  },
-  {
-    id: "BK007",
-    customerName: "Robert Taylor",
-    phone: "+1 (555) 234-5678",
-    email: "robert.taylor@email.com",
-    serviceType: "Brake Repair",
-    vehicleInfo: "2016 Mercedes-Benz C-Class",
-    licensePlate: "PQR-901",
-    scheduledDate: "2025-09-08",
-    scheduledTime: "8:00 AM",
-    status: "cancelled",
-    notes: "Customer cancelled - found alternative service provider.",
-    createdAt: "2025-08-28T13:30:00Z",
-    estimatedDuration: "1.5 hours",
-    totalCost: "$420.00",
-  },
-];
+// Main async function to fetch data and initialize the application
+const initializeApp = async () => {
+  try {
+    const response = await fetch("../../helper/staffGetAllBooking.php");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    bookings = data; // Assign fetched data to the global variable
 
-document.addEventListener("DOMContentLoaded", function () {
-  renderTable(bookings);
-  updateStats();
-  setupEventListeners();
-});
+    // --- KEY FIX: Initialize everything AFTER data is loaded ---
+    renderTable(bookings);
+    updateStats();
+    setupEventListeners();
+    // -----------------------------------------------------------
+
+  } catch (error) {
+    console.error("Failed to fetch bookings:", error);
+    // Show an error to the user on the page
+    document.getElementById("bookingsTableBody").innerHTML = 
+      `<tr><td colspan="7" class="text-center text-danger">Error loading bookings. Please try refreshing.</td></tr>`;
+  }
+};
+
+// --- CLEANUP: Call the main initialization function when the page is ready ---
+document.addEventListener("DOMContentLoaded", initializeApp);
+
 
 function setupEventListeners() {
   document
@@ -138,12 +42,22 @@ function setupEventListeners() {
   document
     .getElementById("dateFilter")
     .addEventListener("change", filterBookings);
+  
+  // Setup for reschedule modal form
+  const confirmButton = document.getElementById("confirmReschedule");
+  if (confirmButton) {
+     confirmButton.addEventListener("click", handleReschedule);
+  }
+  document.getElementById("newDate").addEventListener("change", validateForm);
+  document.getElementById("newTime").addEventListener("change", validateForm);
 }
 
 function renderTable(bookingData) {
   const tbody = document.getElementById("bookingsTableBody");
   const emptyState = document.getElementById("emptyState");
   const tableContainer = document.querySelector(".table-container");
+
+  tbody.innerHTML = ""; // Clear existing table data
 
   if (bookingData.length === 0) {
     tableContainer.style.display = "none";
@@ -157,52 +71,44 @@ function renderTable(bookingData) {
   tbody.innerHTML = bookingData
     .map(
       (booking) => `
-                <tr class="">
-                    <td>
-                        <strong>${booking.id}</strong>
-                    </td>
-                    <td>
-                        <div class="fw-bold">${booking.customerName}</div>
-                        <small class="sub-text">${booking.phone}</small>
-                    </td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <span class="service-icon">
-                                <i class="fas fa-${getServiceIcon(
-                                  booking.serviceType
-                                )}"></i>
-                            </span>
-                            ${booking.serviceType}
-                        </div>
-                    </td>
-                    <td>
-                        <div class="fw-bold">${booking.vehicleInfo}</div>
-                        <small class="sub-text">${booking.licensePlate}</small>
-                    </td>
-                    <td>
-                        <div class="fw-bold">${formatDate(
-                          booking.scheduledDate
-                        )}</div>
-                        <small class="sub-text">${booking.scheduledTime}</small>
-                    </td>
-                    <td>
-                        <span class="status-badge status-${booking.status}">
-                            <i class="fas fa-${getStatusIcon(
-                              booking.status
-                            )}"></i>
-                            ${booking.status.replace("-", " ")}
-                        </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-view" onclick="viewBookingDetails('${
-                          booking.id
-                        }')">
-                            <i class="fas fa-eye"></i>
-                            View Details
-                        </button>
-                    </td>
-                </tr>
-            `
+        <tr class="">
+            <td>
+                <strong>${booking.id}</strong>
+            </td>
+            <td>
+                <div class="fw-bold">${booking.customerName}</div>
+                <small class="sub-text">${booking.phone}</small>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <span class="service-icon">
+                        <i class="fas fa-${getServiceIcon(booking.serviceType)}"></i>
+                    </span>
+                    ${booking.serviceType}
+                </div>
+            </td>
+            <td>
+                <div class="fw-bold">${booking.vehicleInfo}</div>
+                <small class="sub-text">${booking.licensePlate}</small>
+            </td>
+            <td>
+                <div class="fw-bold">${booking.scheduledDate}</div>
+                <small class="sub-text">${booking.scheduledTime}</small>
+            </td>
+            <td>
+                <span class="status-badge status-${booking.status}">
+                    <i class="fas fa-${getStatusIcon(booking.status)}"></i>
+                    ${booking.status.replace("-", " ")}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-view" onclick="viewBookingDetails('${booking.id}')">
+                    <i class="fas fa-eye"></i>
+                    View Details
+                </button>
+            </td>
+        </tr>
+      `
     )
     .join("");
 }
@@ -226,209 +132,141 @@ function filterBookings() {
   const dateFilter = document.getElementById("dateFilter").value;
 
   let filtered = bookings.filter((booking) => {
-    const matchesSearch = booking.customerName.toLowerCase().includes(search);
+    // Check if properties exist before calling methods on them
+    const customerName = booking.customerName || '';
+    const serviceType = booking.serviceType || '';
+    const scheduledDate = booking.scheduledDate || '';
+    
+    const matchesSearch = customerName.toLowerCase().includes(search);
     const matchesStatus = !statusFilter || booking.status === statusFilter;
-    const matchesService =
-      !serviceFilter ||
-      booking.serviceType.toLowerCase().replace(" ", "-") === serviceFilter;
-    const matchesDate = !dateFilter || booking.scheduledDate === dateFilter;
+    const matchesService = !serviceFilter || serviceType.toLowerCase().replace(" ", "-") === serviceFilter;
+    const matchesDate = !dateFilter || scheduledDate === dateFilter;
 
     return matchesSearch && matchesStatus && matchesService && matchesDate;
   });
 
   renderTable(filtered);
 }
-
+let selectedBooking = 0
 function viewBookingDetails(bookingId) {
-  const booking = bookings.find((b) => b.id === bookingId);
-  if (!booking) return;
+  // Now `bookings` will always be populated when this is called
+  const booking = bookings.find((b) => b.id == bookingId);
+  selectedBooking = booking.id
+ 
+  if (!booking) {
+      console.error("Booking not found:", bookingId);
+      return;
+  }
 
   const modal = document.getElementById("bookingModal");
   const modalTitle = document.getElementById("modalTitle");
   const modalBody = document.getElementById("modalBody");
 
   modalTitle.innerHTML = `
-                <i class="fas fa-info-circle me-2"></i>
-                Booking Details - ${booking.id}
-            `;
+    <i class="fas fa-info-circle me-2"></i>
+    Booking Details - ${booking.id}
+  `;
 
   modalBody.innerHTML = `
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="detail-group">
-                            <div class="detail-label">
-                                <i class="fas fa-user me-2"></i>Customer Information
-                            </div>
-                            <div class="detail-value mb-2"><strong>${
-                              booking.customerName
-                            }</strong></div>
-                            <div class="detail-value mb-1">📧 ${
-                              booking.email
-                            }</div>
-                            <div class="detail-value">📱 ${booking.phone}</div>
-                        </div>
-
-                        <div class="detail-group">
-                            <div class="detail-label">
-                                <i class="fas fa-car me-2"></i>Vehicle Information
-                            </div>
-                            <div class="detail-value mb-1"><strong>${
-                              booking.vehicleInfo
-                            }</strong></div>
-                            <div class="detail-value">License: ${
-                              booking.licensePlate
-                            }</div>
-                        </div>
-
-                        <div class="detail-group">
-                            <div class="detail-label">
-                                <i class="fas fa-calendar me-2"></i>Service Details
-                            </div>
-                            <div class="detail-value mb-1"><strong>${
-                              booking.serviceType
-                            }</strong></div>
-                            <div class="detail-value mb-1">📅 ${formatDate(
-                              booking.scheduledDate
-                            )}</div>
-                            <div class="detail-value mb-1">🕐 ${
-                              booking.scheduledTime
-                            }</div>
-                            <div class="detail-value">⏱️ Duration: ${
-                              booking.estimatedDuration
-                            }</div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="detail-group">
-                            <div class="detail-label">
-                                <i class="fas fa-info-circle me-2"></i>Status
-                            </div>
-                            <div class="detail-value mb-2">
-                                <span class="status-badge status-${
-                                  booking.status
-                                }">
-                                    <i class="fas fa-${getStatusIcon(
-                                      booking.status
-                                    )}"></i>
-                                    ${booking.status.replace("-", " ")}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="detail-group">
-                            <div class="detail-label">
-                                <i class="fas fa-dollar-sign me-2"></i>Cost Information
-                            </div>
-                            <div class="detail-value"><strong>${
-                              booking.totalCost
-                            }</strong></div>
-                        </div>
-
-                        <div class="detail-group">
-                            <div class="detail-label">
-                                <i class="fas fa-clock me-2"></i>Booking Created
-                            </div>
-                            <div class="detail-value">${new Date(
-                              booking.createdAt
-                            ).toLocaleString()}</div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-user me-2"></i>Customer Information</div>
+                <div class="detail-value mb-2"><strong>${booking.customerName}</strong></div>
+                <div class="detail-value mb-1">📧 ${booking.email}</div>
+                <div class="detail-value">📱 ${booking.phone}</div>
+            </div>
+            <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-car me-2"></i>Vehicle Information</div>
+                <div class="detail-value mb-1"><strong>${booking.vehicleInfo}</strong></div>
+                <div class="detail-value">License: ${booking.licensePlate}</div>
+            </div>
+            <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-calendar me-2"></i>Service Details</div>
+                <div class="detail-value mb-1"><strong>${booking.serviceType}</strong></div>
+                <div class="detail-value mb-1">📅 ${formatDate(booking.scheduledDate)}</div>
+                <div class="detail-value mb-1">🕐 ${booking.scheduledTime}</div>
+                <div class="detail-value">⏱️ Duration: ${booking.estimatedDuration}</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-info-circle me-2"></i>Status</div>
+                <div class="detail-value mb-2">
+                    <span class="status-badge status-${booking.status}">
+                        <i class="fas fa-${getStatusIcon(booking.status)}"></i>
+                        ${booking.status.replace("-", " ")}
+                    </span>
                 </div>
-
-                <div class="detail-group">
-                    <div class="detail-label">
-                        <i class="fas fa-sticky-note me-2"></i>Service Notes
-                    </div>
-                    <div class="detail-value">${booking.notes}</div>
-                </div>
-
-                <div class="status-update-section">
-                    <div class="status-update-title">
-                        <i class="fas fa-edit me-2"></i>Update Status
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <select class="form-select" id="modalStatusSelect">
-                                <option value="pending" ${
-                                  booking.status === "pending" ? "selected" : ""
-                                }>Pending</option>
-                                <option value="in-progress" ${
-                                  booking.status === "in-progress"
-                                    ? "selected"
-                                    : ""
-                                }>In Progress</option>
-                                <option value="completed" ${
-                                  booking.status === "completed"
-                                    ? "selected"
-                                    : ""
-                                }>Completed</option>
-                                <option value="cancelled" ${
-                                  booking.status === "cancelled"
-                                    ? "selected"
-                                    : ""
-                                }>Cancelled</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <button class="btn btn-success-custom w-100" onclick="updateStatus('${
-                              booking.id
-                            }', document.getElementById('modalStatusSelect').value)">
-                                <i class="fas fa-save"></i>
-                                Update Status
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-4 mb-2">
-                        <button class="btn btn-success-custom w-100" onclick="confirmBooking('${
-                          booking.id
-                        }')" ${
-    booking.status === "completed" || booking.status === "cancelled"
-      ? "disabled"
-      : ""
-  }>
-                            <i class="fas fa-check"></i>
-                            Confirm Booking
-                        </button>
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <button class="btn btn-warning-custom w-100" onclick="rescheduleBooking('${
-                          booking.id
-                        }')" ${
-    booking.status === "completed" || booking.status === "cancelled"
-      ? "disabled"
-      : ""
-  }>
-                            <i class="fas fa-calendar-alt"></i>
-                            Reschedule
-                        </button>
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${
-                          booking.id
-                        }')" ${
-    booking.status === "completed" || booking.status === "cancelled"
-      ? "disabled"
-      : ""
-  }>
-                            <i class="fas fa-times"></i>
-                            Cancel Booking
-                        </button>
-                    </div>
-                </div>
-            `;
+            </div>
+            <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-dollar-sign me-2"></i>Cost Information</div>
+                <div class="detail-value"><strong>${booking.totalCost}</strong></div>
+            </div>
+            <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-clock me-2"></i>Booking Created</div>
+                <div class="detail-value">${new Date(booking.createdAt).toLocaleString()}</div>
+            </div>
+        </div>
+    </div>
+    <div class="detail-group">
+        <div class="detail-label"><i class="fas fa-sticky-note me-2"></i>Service Notes</div>
+        <div class="detail-value">${booking.notes}</div>
+    </div>
+    <div class="status-update-section">
+        <div class="status-update-title"><i class="fas fa-edit me-2"></i>Update Status</div>
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <select class="form-select" id="modalStatusSelect">
+                    <option value="pending" ${booking.status === "pending" ? "selected" : ""}>Pending</option>
+                    <option value="progress" ${booking.status === "in-progress" ? "selected" : ""}>In Progress</option>
+                    <option value="completed" ${booking.status === "completed" ? "selected" : ""}>Completed</option>
+                    <option value="done" ${booking.status === "cancelled" ? "selected" : ""}>Done</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-2">
+                <button class="btn btn-success-custom w-100" onclick="updateStatus('${booking.id}', document.getElementById('modalStatusSelect').value)">
+                    <i class="fas fa-save"></i> Update Status
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-4 mb-2">
+            <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "cancelled" ? "disabled" : ""}>
+                <i class="fas fa-check"></i> Confirm Booking
+            </button>
+        </div>
+        <div class="col-md-4 mb-2">
+            <button class="btn btn-warning-custom w-100" onclick="rescheduleBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "cancelled" ? "disabled" : ""}>
+                <i class="fas fa-calendar-alt"></i> Reschedule
+            </button>
+        </div>
+        <div class="col-md-4 mb-2">
+            <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "cancelled" ? "disabled" : ""}>
+                <i class="fas fa-times"></i> Cancel Booking
+            </button>
+        </div>
+    </div>
+  `;
 
   const modalInstance = new bootstrap.Modal(modal);
   modalInstance.show();
 }
 
 function updateStatus(bookingId, newStatus) {
+  fetch(`../../helper/staffUpdateStatus.php?status=${newStatus}&id=${bookingId}`)
+    .then(e=>e.json())
+    .then(e=>{
+      if(e.success){
+        console.log("successs")
+      }else{
+        alert("Error")
+      }
+    })
   if (!newStatus) return;
 
-  const booking = bookings.find((b) => b.id === bookingId);
+  const booking = bookings.find((b) => b.id == bookingId);
   if (booking) {
     booking.status = newStatus;
     const tableContainer = document.getElementById("tableContainer");
@@ -436,18 +274,20 @@ function updateStatus(bookingId, newStatus) {
 
     setTimeout(() => {
       tableContainer.classList.remove("table-loading");
-      renderTable(getFilteredBookings());
+      // --- REFACTOR: Call filterBookings to re-render the table with current filters ---
+      filterBookings(); 
       updateStats();
       showNotification(
         `Booking ${bookingId} status updated to ${newStatus.replace("-", " ")}`,
         "success"
       );
 
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("bookingModal")
-      );
-      if (modal) {
-        modal.hide();
+      const modalEl = document.getElementById("bookingModal");
+      if (modalEl) {
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) {
+          modal.hide();
+        }
       }
     }, 1000);
   }
@@ -468,28 +308,27 @@ function cancelBooking(bookingId) {
   }
 }
 
+// Keep a reference to the current booking being edited
+let currentBookingId = null; 
+
 function rescheduleBooking(bookingId) {
-  const booking = bookings.find((b) => b.id === bookingId);
+  currentBookingId = bookingId;
+  const booking = bookings.find((b) => b.id == bookingId);
+
   if (booking) {
-    const newDate = prompt(
-      "Enter new date (YYYY-MM-DD):",
-      booking.scheduledDate
-    );
-    const newTime = prompt("Enter new time:", booking.scheduledTime);
+    document.getElementById("currentCustomer").textContent = booking.customerName;
+    document.getElementById("currentService").textContent = booking.serviceType;
+    document.getElementById("currentDate").textContent = formatDate(booking.scheduledDate);
+    document.getElementById("currentTime").textContent = booking.scheduledTime;
+    
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("newDate").min = today;
 
-    if (newDate && newTime) {
-      booking.scheduledDate = newDate;
-      booking.scheduledTime = newTime;
-      renderTable(getFilteredBookings());
-      showNotification(`Booking ${bookingId} rescheduled successfully`, "info");
+    document.getElementById("rescheduleForm").reset();
+    hideAlert();
 
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("bookingModal")
-      );
-      if (modal) {
-        modal.hide();
-      }
-    }
+    const modal = new bootstrap.Modal(document.getElementById("rescheduleModal"));
+    modal.show();
   }
 }
 
@@ -499,29 +338,16 @@ function refreshBookings() {
 
   setTimeout(() => {
     tableContainer.classList.remove("table-loading");
-    renderTable(getFilteredBookings());
+    // --- REFACTOR: Call filterBookings to re-render the table with current filters ---
+    filterBookings();
     updateStats();
     showNotification("Bookings refreshed successfully", "success");
   }, 800);
 }
 
-function getFilteredBookings() {
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  const statusFilter = document.getElementById("statusFilter").value;
-  const serviceFilter = document.getElementById("serviceFilter").value;
-  const dateFilter = document.getElementById("dateFilter").value;
+// --- REMOVED getFilteredBookings() as it was redundant ---
 
-  return bookings.filter((booking) => {
-    const matchesSearch = booking.customerName.toLowerCase().includes(search);
-    const matchesStatus = !statusFilter || booking.status === statusFilter;
-    const matchesService =
-      !serviceFilter ||
-      booking.serviceType.toLowerCase().replace(" ", "-") === serviceFilter;
-    const matchesDate = !dateFilter || booking.scheduledDate === dateFilter;
-
-    return matchesSearch && matchesStatus && matchesService && matchesDate;
-  });
-}
+// (The rest of your utility functions: getServiceIcon, getStatusIcon, etc. are fine and don't need changes)
 
 function getServiceIcon(serviceType) {
   const icons = {
@@ -544,30 +370,35 @@ function getStatusIcon(status) {
   return icons[status] || "info-circle";
 }
 
+// --- CLEANUP: Consolidated into a single, consistent formatDate function ---
 function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    // Add a check for invalid dates
+    if (isNaN(date.getTime())) {
+        return "Invalid Date";
+    }
+    return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
 }
+
 
 function showNotification(message, type = "info") {
   const notification = document.createElement("div");
   notification.className = `notification alert alert-${type}`;
 
   notification.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-${getNotificationIcon(type)} me-2"></i>
-                    <span>${message}</span>
-                    <button type="button" class="btn-close btn-close-white ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
-                </div>
-            `;
+    <div class="d-flex align-items-center">
+        <i class="fas fa-${getNotificationIcon(type)} me-2"></i>
+        <span>${message}</span>
+        <button type="button" class="btn-close btn-close-white ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+    </div>
+  `;
 
   document.body.appendChild(notification);
-
   setTimeout(() => notification.classList.add("show"), 100);
 
   setTimeout(() => {
@@ -591,29 +422,47 @@ function getNotificationIcon(type) {
 }
 
 function exportBookings() {
-  const filtered = getFilteredBookings();
-  const csvContent =
-    "data:text/csv;charset=utf-8," +
-    "ID,Customer Name,Phone,Email,Service Type,Vehicle,License Plate,Scheduled Date,Scheduled Time,Status,Cost,Duration,Notes\n" +
-    filtered
-      .map(
-        (booking) =>
-          `${booking.id},"${booking.customerName}","${booking.phone}","${booking.email}","${booking.serviceType}","${booking.vehicleInfo}","${booking.licensePlate}","${booking.scheduledDate}","${booking.scheduledTime}","${booking.status}","${booking.priority}","${booking.totalCost}","${booking.estimatedDuration}","${booking.notes}"`
-      )
-      .join("\n");
+    // We need to get the currently filtered data for export
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const statusFilter = document.getElementById("statusFilter").value;
+    const serviceFilter = document.getElementById("serviceFilter").value;
+    const dateFilter = document.getElementById("dateFilter").value;
 
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute(
-    "download",
-    `booking_requests_${new Date().toISOString().split("T")[0]}.csv`
-  );
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    const filtered = bookings.filter((booking) => {
+        const customerName = booking.customerName || '';
+        const serviceType = booking.serviceType || '';
+        const scheduledDate = booking.scheduledDate || '';
+        
+        const matchesSearch = customerName.toLowerCase().includes(search);
+        const matchesStatus = !statusFilter || booking.status == statusFilter;
+        const matchesService = !serviceFilter || serviceType.toLowerCase().replace(" ", "-") === serviceFilter;
+        const matchesDate = !dateFilter || scheduledDate == dateFilter;
 
-  showNotification("Bookings exported successfully", "success");
+        return matchesSearch && matchesStatus && matchesService && matchesDate;
+    });
+
+    const csvContent =
+        "data:text/csv;charset=utf-8," +
+        "ID,Customer Name,Phone,Email,Service Type,Vehicle,License Plate,Scheduled Date,Scheduled Time,Status,Cost,Duration,Notes\n" +
+        filtered
+        .map(
+            (b) =>
+            `"${b.id}","${b.customerName}","${b.phone}","${b.email}","${b.serviceType}","${b.vehicleInfo}","${b.licensePlate}","${b.scheduledDate}","${b.scheduledTime}","${b.status}","${b.totalCost}","${b.estimatedDuration}","${b.notes.replace(/"/g, '""')}"`
+        )
+        .join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute(
+        "download",
+        `booking_requests_${new Date().toISOString().split("T")[0]}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    showNotification("Bookings exported successfully", "success");
 }
 
 document.addEventListener("keydown", function (e) {
@@ -631,92 +480,37 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-setInterval(() => {
-  console.log("Auto-refreshing bookings...");
-}, 30000);
-
-let currentBookingId = null;
-let currentBookingData = null;
-
-function rescheduleBooking(bookingId) {
-  currentBookingId = bookingId;
-
-  currentBookingData = bookings
-    ? bookings.find((b) => b.id === bookingId)
-    : null;
-
-  if (currentBookingData) {
-    document.getElementById("currentCustomer").textContent =
-      currentBookingData.customerName;
-    document.getElementById("currentService").textContent =
-      currentBookingData.serviceType;
-    document.getElementById("currentDate").textContent = formatDate(
-      currentBookingData.scheduledDate
-    );
-    document.getElementById("currentTime").textContent =
-      currentBookingData.scheduledTime;
-  }
-
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("newDate").min = today;
-
-  document.getElementById("rescheduleForm").reset();
-  hideAlert();
-
-  const modal = new bootstrap.Modal(document.getElementById("rescheduleModal"));
-  modal.show();
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  const rescheduleBtn = document.getElementById("rescheduleBtn");
-  if (rescheduleBtn) {
-    rescheduleBtn.addEventListener("click", function () {
-      rescheduleBooking("BOOK001");
-    });
-  }
-
-  document
-    .getElementById("confirmReschedule")
-    .addEventListener("click", function () {
-      handleReschedule();
-    });
-
-  document.getElementById("newDate").addEventListener("change", validateForm);
-  document.getElementById("newTime").addEventListener("change", validateForm);
-});
-
+// The rest of the reschedule-related functions
 
 function handleReschedule() {
-  const form = document.getElementById("rescheduleForm");
-  const newDate = document.getElementById("newDate").value;
-  const newTime = document.getElementById("newTime").value;
-  const reason = document.getElementById("rescheduleReason").value;
-
   if (!validateForm()) {
     return;
   }
-
+  
+  const newDate = document.getElementById("newDate").value;
+  const newTime = document.getElementById("newTime").value;
+  const reason = document.getElementById("rescheduleReason").value;
+  
   const confirmBtn = document.getElementById("confirmReschedule");
   const originalText = confirmBtn.innerHTML;
-  confirmBtn.innerHTML =
-    '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+  confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
   confirmBtn.disabled = true;
 
   setTimeout(() => {
     try {
       performReschedule(currentBookingId, newDate, newTime, reason);
-
       showAlert("success", "Booking has been successfully rescheduled!");
 
       setTimeout(() => {
-        const modal = bootstrap.Modal.getInstance(
-          document.getElementById("rescheduleModal")
-        );
-        modal.hide();
-
-        if (typeof refreshBookings === "function") {
-          refreshBookings();
+        const modalEl = document.getElementById("rescheduleModal");
+        if(modalEl){
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
         }
+        
+        // Use your existing refresh function
+        refreshBookings();
+        
       }, 2000);
     } catch (error) {
       showAlert("danger", "Failed to reschedule booking. Please try again.");
@@ -729,25 +523,17 @@ function handleReschedule() {
 }
 
 function performReschedule(bookingId, newDate, newTime, reason) {
-  console.log("Rescheduling booking:", {
-    bookingId,
-    newDate,
-    newTime,
-    reason,
-  });
-
-  if (currentBookingData) {
-    currentBookingData.scheduledDate = newDate;
-    currentBookingData.scheduledTime = convertTo12Hour(newTime);
+  const bookingToUpdate = bookings.find(b => b.id == bookingId);
+  if (bookingToUpdate) {
+    bookingToUpdate.scheduledDate = newDate;
+    bookingToUpdate.scheduledTime = convertTo12Hour(newTime);
     if (reason) {
-      currentBookingData.notes += `\nRescheduled: ${reason}`;
+      bookingToUpdate.notes += `\nRescheduled: ${reason}`;
     }
+    console.log("Rescheduled booking:", bookingToUpdate);
+    // Here you would typically send an update to your server
   }
-
-  // You might also want to send this data to your server
-  // fetch('/api/reschedule-booking', { ... })
 }
-
 
 function validateForm() {
   const newDate = document.getElementById("newDate");
@@ -764,10 +550,7 @@ function validateForm() {
 
     if (selectedDate < today) {
       newDate.classList.add("is-invalid");
-      showAlert(
-        "danger",
-        "Please select a date that is today or in the future."
-      );
+      showAlert("danger", "Please select a date that is today or in the future.");
       isValid = false;
     } else {
       newDate.classList.remove("is-invalid");
@@ -780,6 +563,9 @@ function validateForm() {
   } else {
     newTime.classList.remove("is-invalid");
   }
+
+  // If form is valid so far, hide any previous alerts
+  if(isValid) hideAlert();
 
   return isValid;
 }
@@ -798,18 +584,10 @@ function hideAlert() {
 }
 
 function convertTo12Hour(time24) {
+  if(!time24) return "";
   const [hours, minutes] = time24.split(":");
   const hour = parseInt(hours);
   const ampm = hour >= 12 ? "PM" : "AM";
   const displayHour = hour % 12 || 12;
   return `${displayHour}:${minutes} ${ampm}`;
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 }
