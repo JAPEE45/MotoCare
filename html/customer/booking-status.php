@@ -174,7 +174,7 @@
               <span id="estimatedTimeText">2 hours remaining</span>
             </div>
 
-            <div class="action-buttons">
+            <div class="action-buttons" id="actionBtn">
               <button class="btn btn-cancel" onclick="cancelBooking()">
                 <i class="fas fa-times me-2"></i>Cancel Booking
               </button>

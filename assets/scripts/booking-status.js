@@ -27,6 +27,7 @@ initializePage()
 // bookingData = null;
 
 function initializePage() {
+
   if (bookingData) {
     showBookingContent();
     updateBookingDisplay();
@@ -83,6 +84,10 @@ function updateProgressSteps(status) {
   let progressWidth = 0;
   let statusText = "";
   let statusClass = "";
+
+  const actionBtn = document.getElementById("actionBtn");
+  status === "progress" ? actionBtn.style.display = "none" : actionBtn.style.display = "flex"
+  
 
   switch (status) {
     case "pending":
@@ -180,6 +185,7 @@ function changeStatus(newStatus) {
   if (bookingData) {
     bookingData.status = newStatus;
     updateProgressSteps(newStatus);
+    console.log(newStatus)
 
     // Update estimated time based on status
     switch (newStatus) {
@@ -208,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Only add event listeners if booking data exists and elements are present
   if (bookingData && document.getElementById("step1")) {
     const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
+    const step2 = document.getElementById("step2");   
     const step3 = document.getElementById("step3");
 
     // Add event listeners with null checks
