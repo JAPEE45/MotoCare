@@ -11,10 +11,7 @@ function login($username, $password, $conn) {
     $result = $stmt->get_result();
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
-
-        // ✅ Check password (use password_verify if passwords are hashed)
         if ($password === $user['password']) {
-            // Save user data in session
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];

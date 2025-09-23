@@ -1,57 +1,33 @@
 <?php
-include_once 'db.php';
+include 'db.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
 if ($data) {
-    $email = $data['email'];
-    $fullname = $data['fullname'];
-    $password = $data['password'];
-    $contact = $data['contact'];  
-    $email_id = $data['email_id'];
-    $picture = $data['picture'];
-    $address = $data['address'];
-    
-    $check = $conn->prepare("SELECT id FROM user WHERE email = ?");
-    $check->bind_param("s", $email);
-    $check->execute();
-    $check->store_result();
+    $username = $data["username"];
+    $password = $data["password"];
 
-    if ($check->num_rows > 0) {
-        echo json_encode([
-            "status" => "error", 
-            "message" => "Email already exists"
-        ]);
-        $check->close();
-        $conn->close();
-        exit();
-    }
-    $check->close();
+    $stmt = $conn->prepare("SELECT id, username, password FROM user WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    $stmt = $conn->prepare("INSERT INTO user (fullname, email, password, contact, email_id, picture, address) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $fullname, $email, $password, $contact, $email_id, $picture, $address);
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
 
-    if ($stmt->execute()) {
-        session_start();
-        $_SESSION['user'] = $email_id;
-        echo json_encode([
-            "status" => "success", 
-            "message" => "User added successfully"
-        ]);
+        // Direct plain-text comparison
+        if ($password === $row["password"]) {
+            echo json_encode(["success" => "hi", "user" => $row["username"]]);
+        } else {
+            echo json_encode(["error" => "invalid password"]);
+        }
     } else {
-        echo json_encode([
-            "status" => "error", 
-            "message" => $stmt->error
-        ]);
+        echo json_encode(["error" => "no user"]);
     }
 
     $stmt->close();
 } else {
-    echo json_encode([
-        "status" => "error", 
-        "message" => "No data received"
-    ]);
+    echo json_encode(["error" => "no data"]);
 }
 
 $conn->close();
