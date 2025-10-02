@@ -10,7 +10,7 @@ const initializeApp = async () => {
     }
     const data = await response.json();
     bookings = data; // Assign fetched data to the global variable
-
+    console.log(data)
     // --- KEY FIX: Initialize everything AFTER data is loaded ---
     renderTable(bookings);
     updateStats();
@@ -89,10 +89,10 @@ function renderTable(bookingData) {
             </td>
             <td>
                 <div class="fw-bold">${booking.vehicleInfo}</div>
-                <small class="sub-text">${booking.licensePlate}</small>
+                <small class="sub-text">${booking.vehicle_model}</small>
             </td>
             <td>
-                <div class="fw-bold">${booking.scheduledDate}</div>
+                <div class="fw-bold">${booking.scheduleDate}</div>
                 <small class="sub-text">${booking.scheduledTime}</small>
             </td>
             <td>
@@ -116,7 +116,7 @@ function renderTable(bookingData) {
 function updateStats() {
   const total = bookings.length;
   const pending = bookings.filter((b) => b.status === "pending").length;
-  const inProgress = bookings.filter((b) => b.status === "in-progress").length;
+  const inProgress = bookings.filter((b) => b.status === "progress").length;
   const completed = bookings.filter((b) => b.status === "completed").length;
 
   document.getElementById("totalBookings").textContent = total;
@@ -152,7 +152,6 @@ function viewBookingDetails(bookingId) {
   // Now `bookings` will always be populated when this is called
   const booking = bookings.find((b) => b.id == bookingId);
   selectedBooking = booking.id
- 
   if (!booking) {
       console.error("Booking not found:", bookingId);
       return;
@@ -175,18 +174,20 @@ function viewBookingDetails(bookingId) {
                 <div class="detail-value mb-2"><strong>${booking.customerName}</strong></div>
                 <div class="detail-value mb-1">📧 ${booking.email}</div>
                 <div class="detail-value">📱 ${booking.phone}</div>
+                <div class="detail-value">📱 ${booking.status}</div>
             </div>
             <div class="detail-group">
                 <div class="detail-label"><i class="fas fa-car me-2"></i>Vehicle Information</div>
                 <div class="detail-value mb-1"><strong>${booking.vehicleInfo}</strong></div>
-                <div class="detail-value">License: ${booking.licensePlate}</div>
+                <div class="detail-value"><span style="font-size:0.8rem!important">Model:</span>  ${booking.vehicle_model}</div>
+                <div class="detail-value"><span style="font-size:0.8rem!important">Plate Number:</span> ${booking.vehicle_plate_number}</div>
             </div>
             <div class="detail-group">
                 <div class="detail-label"><i class="fas fa-calendar me-2"></i>Service Details</div>
                 <div class="detail-value mb-1"><strong>${booking.serviceType}</strong></div>
-                <div class="detail-value mb-1">📅 ${formatDate(booking.scheduledDate)}</div>
+                <div class="detail-value mb-1">📅 ${formatDate(booking.scheduleDate)}</div>
                 <div class="detail-value mb-1">🕐 ${booking.scheduledTime}</div>
-                <div class="detail-value">⏱️ Duration: ${booking.estimatedDuration}</div>
+             
             </div>
         </div>
         <div class="col-md-6">
@@ -199,27 +200,25 @@ function viewBookingDetails(bookingId) {
                     </span>
                 </div>
             </div>
-            <div class="detail-group">
-                <div class="detail-label"><i class="fas fa-dollar-sign me-2"></i>Cost Information</div>
-                <div class="detail-value"><strong>${booking.totalCost}</strong></div>
-            </div>
+           
             <div class="detail-group">
                 <div class="detail-label"><i class="fas fa-clock me-2"></i>Booking Created</div>
                 <div class="detail-value">${new Date(booking.createdAt).toLocaleString()}</div>
             </div>
+             <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-sticky-note me-2"></i>Service Notes</div>
+                <div class="detail-value">${booking.notes}</div>
+           </div>
         </div>
     </div>
-    <div class="detail-group">
-        <div class="detail-label"><i class="fas fa-sticky-note me-2"></i>Service Notes</div>
-        <div class="detail-value">${booking.notes}</div>
-    </div>
-    <div class="status-update-section">
+   
+    <div class="status-update-section" style="display: ${booking.status == "not accepted" ? "none;important" : ""}">
         <div class="status-update-title"><i class="fas fa-edit me-2"></i>Update Status</div>
         <div class="row">
             <div class="col-md-6 mb-2">
                 <select class="form-select" id="modalStatusSelect">
                     <option value="pending" ${booking.status === "pending" ? "selected" : ""}>Pending</option>
-                    <option value="progress" ${booking.status === "in-progress" ? "selected" : ""}>In Progress</option>
+                    <option value="progress" ${booking.status === "progress" ? "selected" : ""}>In Progress</option>
                     <option value="completed" ${booking.status === "completed" ? "selected" : ""}>Completed</option>
                     <option value="done" ${booking.status === "cancelled" ? "selected" : ""}>Done</option>
                 </select>
@@ -233,18 +232,14 @@ function viewBookingDetails(bookingId) {
     </div>
     <div class="row mt-3">
         <div class="col-md-4 mb-2">
-            <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "cancelled" ? "disabled" : ""}>
+            <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
                 <i class="fas fa-check"></i> Confirm Booking
             </button>
         </div>
+      
         <div class="col-md-4 mb-2">
-            <button class="btn btn-warning-custom w-100" onclick="rescheduleBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "cancelled" ? "disabled" : ""}>
-                <i class="fas fa-calendar-alt"></i> Reschedule
-            </button>
-        </div>
-        <div class="col-md-4 mb-2">
-            <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "cancelled" ? "disabled" : ""}>
-                <i class="fas fa-times"></i> Cancel Booking
+            <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
+                <i class="fas fa-times"></i> Reject Booking
             </button>
         </div>
     </div>
@@ -293,8 +288,11 @@ function updateStatus(bookingId, newStatus) {
   }
 }
 
-function confirmBooking(bookingId) {
-  updateStatus(bookingId, "in-progress");
+async function confirmBooking(bookingId) {
+  // const res = await fetch(`../../helper/acceptBooking.php?id=${bookingId}`);
+  // const j = await res.json();
+  // console.log(j)
+  updateStatus(bookingId, "pending");
   showNotification(
     `Booking ${bookingId} confirmed and set to In Progress`,
     "success"
@@ -303,7 +301,7 @@ function confirmBooking(bookingId) {
 
 function cancelBooking(bookingId) {
   if (confirm("Are you sure you want to cancel this booking?")) {
-    updateStatus(bookingId, "cancelled");
+    updateStatus(bookingId, "rejected");
     showNotification(`Booking ${bookingId} has been cancelled`, "warning");
   }
 }

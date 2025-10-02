@@ -10,12 +10,15 @@ if ($data) {
     $time = $data['time'];
     $service_id = $data['service_id'];
     $vehicle_name = $data['vehicle_name'];
+    $notes = $data['notes'];
+    $vehicle_model = $data['vehicle_model'];
+    $vehicle_plate_number = $data['vehicle_plate_number'];
 
-    $stmt = $conn->prepare("INSERT INTO booking (user_id, shop, preferred_time, time, repair_status, vehicle_name, service_id) VALUES (?, ?, ?, ?, ?,?,?)");
+    $stmt = $conn->prepare("INSERT INTO booking (user_id, shop, preferred_time, time, status, vehicle_name, service_id, notes, vehicle_model, vehicle_plate_number) VALUES (?, ?, ?, ?, ?,?,?,?, ?, ?)");
 
-    $status = "pending";
+    $status = "not accepted";
 
-    $stmt->bind_param("isssssi", $user_id, $shop_id, $preferred_date, $time, $status, $vehicle_name, $service_id);
+    $stmt->bind_param("isssssisss", $user_id, $shop_id, $preferred_date, $time, $status, $vehicle_name, $service_id, $notes, $vehicle_model, $vehicle_plate_number);
 
     if ($stmt->execute()) {
         session_start();

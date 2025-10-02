@@ -154,6 +154,9 @@ async function addBooking(){
         shop_id : document.getElementById("shop_id").value,
         service_id : document.getElementById("services").value,
         vehicle_name : document.getElementById("vehicle_name").value,
+        notes : document.getElementById("notes").value,
+        vehicle_model : document.getElementById("vehicle_model").value,
+        vehicle_plate_number : document.getElementById("vehicle_plate_number").value,
       })
     })
     const d = await res.json()

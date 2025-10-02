@@ -3,43 +3,47 @@ session_start();
 include_once '../helper/db.php';
 
 function login($username, $password, $conn) {
-    // Prepare query
-    $stmt = $conn->prepare("SELECT role, id, username, password FROM user WHERE username = ?");
+  echo $username;
+    $stmt = $conn->prepare("SELECT role, id, username, email_id, password FROM user WHERE email = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
 
     $result = $stmt->get_result();
-    if ($result->num_rows === 1) {
+    if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
         if ($password === $user['password']) {
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user'] = $user['email_id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
 
             return true;
         } else {
+          echo "no";
             return false; // wrong password
         }
     } else {
+      echo "other ni";
         return false; // user not found
     }
 }
 $error = "";
-// ✅ Handle login request
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+   
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
     if (login($username, $password, $conn)) {
         // Redirect based on role
+        echo $username;
         if ($_SESSION['role'] === "staff") {
-            header("Location: ./staff/dashboard.php");
+            header("Location: /MotoCare/html/staff/dashboard.php");
             exit();
         } elseif ($_SESSION['role'] === "admin") {
-            header("Location: ./MotoCare/html/admin/dashboard.php");
+            header("Location: ./admin/dashboard.php");
             exit();
         } else {
-            header("Location: ./MotoCare/html/user/dashboard.php");
+            header("Location: ./customer/homepage.php");
             exit();
         }
     } else {
@@ -108,7 +112,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     window.onload = function () {
       google.accounts.id.initialize({
         client_id: GOOGLE_AUTH,
-        callback: handleCredentialResponse
+        callback: handleCredentialResponse,
+        auto_select: false
       });
 
       // Render Google Sign-In button

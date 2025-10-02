@@ -211,7 +211,7 @@ include '../../helper/checkingUser.php'
               </div>
               <div class="mb-3">
                 <label class="form-label" style="color: var(--text-light)"
-                  >Vehicle name</label
+                  >Vehicle Brand</label
                 >
                 <input
                   type="text"
@@ -219,6 +219,30 @@ include '../../helper/checkingUser.php'
                   required
                   id="vehicle_name"
                   name="vehicle_name"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" style="color: var(--text-light)"
+                  >Vehicle Model</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  required
+                  id="vehicle_model"
+                  name="vehicle_model"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" style="color: var(--text-light)"
+                  >Vehicle Plate Number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  required
+                  id="vehicle_plate_number"
+                  name="vehicle_plate_number"
                 />
               </div>
               <div class="row">
@@ -275,6 +299,7 @@ include '../../helper/checkingUser.php'
                   rows="3"
                   placeholder="Describe the service you need..."
                   name="notes"
+                  id="notes"
                 ></textarea>
               </div>
             </form>

@@ -13,7 +13,7 @@
     <div class="container">
         <div class="signup-container">
             <div class="signin-link">
-                <span>Already have an account? <a href="./signin.html" class="signin-link-text">Sign in</a></span>
+                <span>Already have an account? <a href="./signin.php" class="signin-link-text">Sign in</a></span>
             </div>
             <div class="signup-header">
                 <h1>Sign up</h1>

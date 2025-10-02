@@ -17,11 +17,14 @@ SELECT
     s.service_name,
     b.vehicle_name,
     b.total_cost,
-    b.status
+    b.status,
+    b.notes
 FROM booking b
 INNER JOIN user u ON b.user_id = u.id
 INNER JOIN services s ON b.service_id = s.id
-WHERE u.email_id = ? AND NOT b.status = 'done'
+WHERE u.email_id = ? AND b.status <> 'done'
+ORDER BY b.id DESC
+LIMIT 1;
 
 ";
 $stmt = $conn->prepare($sql);
