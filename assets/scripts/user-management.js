@@ -298,9 +298,7 @@ function renderUsers() {
       user.status
     }</span>
                     </td>
-                    <td>
-                        <small>${user.lastLogin}</small>
-                    </td>
+                
                    
                     <td>
                         <div class="action-buttons">
@@ -430,7 +428,7 @@ function viewProfile(userId) {
   document.getElementById(
     "profileStatus"
   ).className = `status-badge status-${user.status}`;
-  document.getElementById("profileLastLogin").textContent = user.lastLogin;
+  // document.getElementById("profileLastLogin").textContent = user.lastLogin;
   document.getElementById("profileAddress").textContent = user.address;
   document.getElementById("profileJoinDate").textContent = user.joinDate;
 

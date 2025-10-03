@@ -8,6 +8,7 @@ FROM booking
 WHERE shop = ? AND user_id = ?
   AND not status = 'cancelled' 
   AND not status = 'done'
+  or status = 'pending'
   AND status = 'not accepted';
 ");
     $stmt->bind_param("ii",$user_id, $user);

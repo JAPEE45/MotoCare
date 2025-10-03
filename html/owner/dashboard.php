@@ -82,7 +82,7 @@
                 <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="../../logout.php" class="dropdown-item-custom">
+                <a href="../../helper/logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
               </div>
@@ -113,7 +113,7 @@
             </div>
           </div>
         </div>
-
+      <p id="shopId" style="display:none"><?php echo $sid ?></p>
         <div class="col-xl-3 col-lg-6 col-md-6">
           <div class="stats-card">
             <div class="row align-items-center">
@@ -132,11 +132,11 @@
           <div class="stats-card">
             <div class="row align-items-center">
               <div class="col-8">
-                <h3 class="stats-number" id="totalAppointments"><?php echo $res['appointment'] ?></h3>
-                <p class="stats-label">Appointments</p>
+                <h3 class="stats-number" id="totalAppointments"><?php echo $row['shop_name'] ?></h3>
+                <p class="stats-label">Shop</p>
               </div>
               <div class="col-4 text-end">
-                <i class="fas fa-calendar-alt stats-icon"></i>
+                <!-- <i class="fas fa-calendar-alt stats-icon"></i> -->
               </div>
             </div>
           </div>

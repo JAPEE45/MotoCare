@@ -28,9 +28,17 @@ const dashboardData = {
   },
 };
 
+const shopId = document.getElementById("shopId").textContent
 // Initialize dashboard
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // animateCounters();
+  const res = await fetch(`../../helper/adminGraph.php?shop_id=${shopId}`)
+  const s = await res.json();
+  console.log(s)
+   const b = await fetch(`../../helper/getMonthly.php?shop_id=${shopId}`)
+  const bb = await b.json()
+  dashboardData.monthlyData = bb  
+  dashboardData.appointmentStatus = s
   initializeCharts();
 });
 
@@ -179,15 +187,15 @@ function initStatusChart() {
   });
 }
 
-// Refresh data (simulate real-time updates)
-setInterval(function () {
-  // Simulate small changes in data
-  dashboardData.customers += Math.floor(Math.random() * 3);
-  dashboardData.appointments += Math.floor(Math.random() * 2);
+// // Refresh data (simulate real-time updates)
+// setInterval(function () {
+//   // Simulate small changes in data
+//   dashboardData.customers += Math.floor(Math.random() * 3);
+//   dashboardData.appointments += Math.floor(Math.random() * 2);
 
-  // Update counters without animation for real-time feel
-  document.getElementById("totalCustomers").textContent =
-    dashboardData.customers.toLocaleString();
-  document.getElementById("totalAppointments").textContent =
-    dashboardData.appointments.toLocaleString();
-}, 30000); // Update every 30 seconds
+//   // Update counters without animation for real-time feel
+//   document.getElementById("totalCustomers").textContent =
+//     dashboardData.customers.toLocaleString();
+//   document.getElementById("totalAppointments").textContent =
+//     dashboardData.appointments.toLocaleString();
+// }, 30000); // Update every 30 seconds

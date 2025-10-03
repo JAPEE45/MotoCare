@@ -67,7 +67,7 @@
                 <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="../../logout.php" class="dropdown-item-custom">
+              <a href="../../helper/logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
               </div>

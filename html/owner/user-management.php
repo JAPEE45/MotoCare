@@ -72,7 +72,7 @@
                 <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="../../logout.php" class="dropdown-item-custom">
+               <a href="../../helper/logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
               </div>
@@ -143,7 +143,6 @@
                 <th>Contact</th>
                 <th>Role</th>
                 <th>Status</th>
-                <th>Last Login</th>
               
                 <th>Actions</th>
               </tr>
@@ -249,10 +248,10 @@
                           >
                         </p>
                       </div>
-                      <div class="col-6 mb-3">
+                      <!-- <div class="col-6 mb-3">
                         <strong>Last Login:</strong>
                         <p id="profileLastLogin">2024-01-15 10:30 AM</p>
-                      </div>
+                      </div> -->
                       <div class="col-6 mb-3">
                         <strong>Join Date:</strong>
                         <p id="profileJoinDate">2023-12-01</p>

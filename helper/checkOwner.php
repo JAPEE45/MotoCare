@@ -5,7 +5,7 @@
         header("Location: /MotoCare/html/signin.php");
      exit();
     }
-$smtp = $conn->prepare("SELECT u.fullname, u.id, s.id as shop_id, u.role FROM user u JOIN shop s ON u.id = s.owner_id WHERE u.email_id = ?");
+$smtp = $conn->prepare("SELECT u.fullname, u.id, s.id as shop_id, s.name as shop_name, u.role FROM user u JOIN shop s ON u.id = s.owner_id WHERE u.email_id = ?");
 $smtp->bind_param("s",$_SESSION['user']);
 $smtp->execute();
 $result = $smtp->get_result();
