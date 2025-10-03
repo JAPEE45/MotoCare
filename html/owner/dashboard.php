@@ -1,3 +1,21 @@
+<?php
+  include "../../helper/checkOwner.php";
+  include_once "../../helper/db.php";
+  $sid = $row['shop_id'];
+  $stmt = $conn->prepare("SELECT
+  (SELECT COUNT(*) FROM user WHERE role = 'staff' and shop_id =?) as staff_count,
+  (SELECT COUNT(*) FROM services WHERE shop_id = ?) as services_count,
+  (SELECT COUNT(*) FROM booking WHERE shop = ? AND status = 'not accepted') as appointment,
+  (SELECT COUNT(distinct u.id) FROM user u RIGHT JOIN booking b ON u.id = b.user_id AND shop = ?) as customer_count
+  ");
+  $stmt->bind_param("iiii",$sid,$sid,$sid,$sid);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $res = $result->fetch_assoc();
+  print_r($res);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,15 +54,15 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Dashboard</a>
+                <a class="nav-link" href="./dashboard.php">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./user-management.html"
+                <a class="nav-link" href="./user-management.php"
                   >User Management</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./services.html"
+                <a class="nav-link" href="./services.php"
                   >Services</a
                 >
               </li>
@@ -52,7 +70,7 @@
             <div class="profile-dropdown">
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
                   <p class="mb-0 text-muted">Shop Owner</p>
                 </div>
                 <i
@@ -61,10 +79,10 @@
                 ></i>
               </button>
               <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.html" class="dropdown-item-custom">
+                <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="../index.html" class="dropdown-item-custom">
+                <a href="../../logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
               </div>
@@ -86,7 +104,7 @@
           <div class="stats-card">
             <div class="row align-items-center">
               <div class="col-8">
-                <h3 class="stats-number" id="totalCustomers">0</h3>
+                <h3 class="stats-number" id="totalCustomers"><?php echo $res['customer_count'] ?></h3>
                 <p class="stats-label">Total Customers</p>
               </div>
               <div class="col-4 text-end">
@@ -100,7 +118,7 @@
           <div class="stats-card">
             <div class="row align-items-center">
               <div class="col-8">
-                <h3 class="stats-number" id="totalStaff">0</h3>
+                <h3 class="stats-number" id="totalStaff"><?php echo $res['staff_count'] ?></h3>
                 <p class="stats-label">Staff Members</p>
               </div>
               <div class="col-4 text-end">
@@ -114,7 +132,7 @@
           <div class="stats-card">
             <div class="row align-items-center">
               <div class="col-8">
-                <h3 class="stats-number" id="totalAppointments">0</h3>
+                <h3 class="stats-number" id="totalAppointments"><?php echo $res['appointment'] ?></h3>
                 <p class="stats-label">Appointments</p>
               </div>
               <div class="col-4 text-end">
@@ -128,7 +146,7 @@
           <div class="stats-card">
             <div class="row align-items-center">
               <div class="col-8">
-                <h3 class="stats-number" id="totalRevenue">0</h3>
+                <h3 class="stats-number" id="totalRevenue"><?php echo $res['services_count'] ?></h3>
                 <p class="stats-label">Services</p>
               </div>
               <div class="col-4 text-end">

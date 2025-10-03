@@ -39,7 +39,12 @@ const modalTitle = document.getElementById("modalTitle");
 const saveButton = document.getElementById("saveService");
 
 // Initialize
-document.addEventListener("DOMContentLoaded", function () {
+const shopId = document.getElementById("shopId").textContent
+document.addEventListener("DOMContentLoaded", async function () {
+  const res = await fetch(`../../helper/adminGetServices.php?shop_id=${shopId}`);
+  const k = await res.json();
+  console.log(k)
+  services = k
   renderServices();
 
   // Form submission
@@ -126,17 +131,20 @@ function resetForm() {
   saveButton.textContent = "Save Service";
 }
 
-function handleSaveService() {
+async function handleSaveService() {
   const formData = new FormData(serviceForm);
   const serviceData = {
+    shop_id: shopId,
+    id : editSelectedId,
     name: document.getElementById("serviceName").value,
     description: document.getElementById("serviceDescription").value,
-    price: parseFloat(document.getElementById("serviceMinPrice").value),
+    minPrice: parseFloat(document.getElementById("serviceMinPrice").value),
+    maxPrice: parseFloat(document.getElementById("serviceMaxPrice").value),
     icon: document.getElementById("serviceIcon").value,
   };
 
   // Validate required fields
-  if (!serviceData.name || !serviceData.price) {
+  if (!serviceData.name) {
     showNotification(
       "Validation Error",
       "Please fill in all required fields.",
@@ -147,7 +155,15 @@ function handleSaveService() {
 
   if (editingId) {
     // Update existing service
-    const index = services.findIndex((s) => s.id === editingId);
+    const res = await fetch("../../helper/adminEditServices.php",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(serviceData)
+  })
+  const k = await res.json()
+  console.log(k)
+    const index = services.findIndex((s) => s.id == editingId);
+    
     if (index !== -1) {
       services[index] = { ...services[index], ...serviceData };
       showNotification(
@@ -158,6 +174,14 @@ function handleSaveService() {
     }
   } else {
     // Add new service
+    alert("Add")
+    const ress = await fetch("../../helper/adminAddService.php",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(serviceData)
+  })
+  const kl = await ress.json()
+  console.log(kl)
     const newService = {
       id: Date.now(), // Simple ID generation
       ...serviceData,
@@ -177,11 +201,11 @@ function handleSaveService() {
   modal.hide();
   renderServices();
 }
-
+let editSelectedId = null
 function editService(id) {
-  const service = services.find((s) => s.id === id);
+  const service = services.find((s) => s.id == id);
   if (!service) return;
-
+  editSelectedId = id
   editingId = id;
   modalTitle.textContent = "Edit Service";
   saveButton.textContent = "Update Service";
@@ -198,12 +222,15 @@ function editService(id) {
   modal.show();
 }
 
-function deleteService(id) {
-  const service = services.find((s) => s.id === id);
+async function deleteService(id) {
+  const service = services.find((s) => s.id == id);
   if (!service) return;
 
   if (confirm(`Are you sure you want to delete "${service.name}"?`)) {
     services = services.filter((s) => s.id !== id);
+    const r = await fetch(`../../helper/adminDeleteService.php?service_id=${id}`);
+    const c = await r.json();
+    console.log(c)
     showNotification(
       "Service Deleted",
       `${service.name} has been deleted successfully.`,

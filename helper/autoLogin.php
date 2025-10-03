@@ -10,6 +10,7 @@ if($result->num_rows > 0){
   $row = $result->fetch_assoc();
   if($row['role'] == 'customer'){
     $_SESSION['user'] = $row['email_id'];
+    $_SESSION['user_id'] = $row['ID'];
      header("Location: /MotoCare/html/customer/homepage.php");
      exit();
   }

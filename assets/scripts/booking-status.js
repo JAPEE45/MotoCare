@@ -8,8 +8,9 @@ async function getBookingUpdate(){
   console.log("EWror")
     return
   }
- bookingData = {
-  id: "AH-2024-12345",
+ 
+  bookingData = {
+  id: json.booking_id,
   serviceType: json.service_name,
   vehicle: json.vehicle_name || 'N/A',
   appointmentDate: json.preferred_time || 'N/A',
@@ -17,7 +18,17 @@ async function getBookingUpdate(){
   status: json.status, // pending, progress, completed
   estimatedCompletion: "2 hours remaining",
 };
-document.getElementById("payment").textContent = bookingData.total_cost || 'N/A'
+ if(json.status == "cancelled" ){
+        bookingData = null
+  }
+// document.getElementById("payment").textContent = bookingData.total_cost || 'N/A'
+document.getElementById("vehicle_model").textContent = json.vehicle_model
+document.getElementById("shop_name").textContent = json.shop_name
+document.getElementById("shop_address").textContent = json.address
+const cancelBtn = document.getElementById("cancelBtn")
+if(json.status != "not accepted" && json.status != "pending"){
+  cancelBtn.disabled = true
+}
 initializePage()
 }
 
@@ -59,8 +70,8 @@ function updateBookingDisplay() {
   document.getElementById("appointmentDate").textContent =
     bookingData.appointmentDate;
   document.getElementById("timeSlot").textContent = bookingData.timeSlot;
-  document.getElementById("estimatedTimeText").textContent =
-    bookingData.estimatedCompletion;
+  // document.getElementById("estimatedTimeText").textContent =
+  //   bookingData.estimatedCompletion;
 
   // Update progress based on status
   updateProgressSteps(bookingData.status);
@@ -118,8 +129,8 @@ function updateProgressSteps(status) {
       progressWidth = 100;
       statusText = "Completed";
       statusClass = "status-completed";
-      document.getElementById("estimatedTimeText").textContent =
-        "Service completed!";
+      // document.getElementById("estimatedTimeText").textContent =
+      //   "Service completed!";
       break;
   }
 
@@ -152,16 +163,20 @@ function startStatusSimulation() {
         bookingData.estimatedCompletion = "Service completed!";
       }
 
-      document.getElementById("estimatedTimeText").textContent =
-        bookingData.estimatedCompletion;
+      // document.getElementById("estimatedTimeText").textContent =
+      //   bookingData.estimatedCompletion;
     }
   }, 5000); // Change status every 5 seconds
 }
 
-function cancelBooking() {
+async function cancelBooking() {
   if (confirm("Are you sure you want to cancel this booking?")) {
     // Simulate booking cancellation
+    const res = await fetch(`../../helper/cancelBooking.php?bookingId=${bookingData.id}`)
+    const j = await res.json()
+    console.log(j)
     bookingData = null;
+
     showNoBookingContent();
 
     // Show success message
@@ -200,8 +215,8 @@ function changeStatus(newStatus) {
         break;
     }
 
-    document.getElementById("estimatedTimeText").textContent =
-      bookingData.estimatedCompletion;
+    // document.getElementById("estimatedTimeText").textContent =
+    //   bookingData.estimatedCompletion;
   }
 }
 

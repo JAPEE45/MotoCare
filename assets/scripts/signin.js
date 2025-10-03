@@ -7,7 +7,7 @@ document.getElementById("signinButton").addEventListener("click", function (e) {
   } else if (login === "staff" && password === "staff") {
     window.location.href = "../../html/staff/dashboard.html";
   } else if (login === "owner" && password === "owner") {
-    window.location.href = "../../html/owner/dashboard.html";
+    window.location.href = "../../html/owner/dashboard.php";
   } else {
     alert("invalid");
   }

@@ -174,7 +174,7 @@ function viewBookingDetails(bookingId) {
                 <div class="detail-value mb-2"><strong>${booking.customerName}</strong></div>
                 <div class="detail-value mb-1">📧 ${booking.email}</div>
                 <div class="detail-value">📱 ${booking.phone}</div>
-                <div class="detail-value">📱 ${booking.status}</div>
+                <div class="detail-value">📱 ${booking.address}</div>
             </div>
             <div class="detail-group">
                 <div class="detail-label"><i class="fas fa-car me-2"></i>Vehicle Information</div>
@@ -220,7 +220,6 @@ function viewBookingDetails(bookingId) {
                     <option value="pending" ${booking.status === "pending" ? "selected" : ""}>Pending</option>
                     <option value="progress" ${booking.status === "progress" ? "selected" : ""}>In Progress</option>
                     <option value="completed" ${booking.status === "completed" ? "selected" : ""}>Completed</option>
-                    <option value="done" ${booking.status === "cancelled" ? "selected" : ""}>Done</option>
                 </select>
             </div>
             <div class="col-md-6 mb-2">

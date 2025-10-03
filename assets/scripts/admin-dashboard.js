@@ -30,7 +30,7 @@ const dashboardData = {
 
 // Initialize dashboard
 document.addEventListener("DOMContentLoaded", function () {
-  animateCounters();
+  // animateCounters();
   initializeCharts();
 });
 

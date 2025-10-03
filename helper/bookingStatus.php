@@ -16,13 +16,17 @@ SELECT
     s.id AS service_id,
     s.service_name,
     b.vehicle_name,
+    b.vehicle_model,
     b.total_cost,
     b.status,
-    b.notes
+    b.notes,
+    h.name as shop_name,
+    h.address
 FROM booking b
 INNER JOIN user u ON b.user_id = u.id
 INNER JOIN services s ON b.service_id = s.id
-WHERE u.email_id = ? AND b.status <> 'done'
+INNER JOIN shop h ON h.id = b.shop
+WHERE u.email_id = ? AND b.status <> 'finish'
 ORDER BY b.id DESC
 LIMIT 1;
 

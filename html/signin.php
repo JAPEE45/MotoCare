@@ -15,6 +15,7 @@ function login($username, $password, $conn) {
             $_SESSION['user'] = $user['email_id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
+            $_SESSION['user_id'] = $user['ID'];
 
             return true;
         } else {
@@ -34,13 +35,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = trim($_POST['password']);
 
     if (login($username, $password, $conn)) {
-        // Redirect based on role
         echo $username;
         if ($_SESSION['role'] === "staff") {
             header("Location: /MotoCare/html/staff/dashboard.php");
             exit();
         } elseif ($_SESSION['role'] === "admin") {
             header("Location: ./admin/dashboard.php");
+            exit();
+        } elseif ($_SESSION['role'] === "owner") {
+            header("Location: ./owner/dashboard.php");
             exit();
         } else {
             header("Location: ./customer/homepage.php");

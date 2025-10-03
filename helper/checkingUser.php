@@ -1,10 +1,10 @@
 <?php
   include 'db.php';  
   session_start();
-    // if(empty($_SESSION['user'])){
-    //     header("Location: ./ss/html/signin.php");
-    //  exit();
-    // }
+    if(empty($_SESSION['user'])){
+        header("Location: /MotoCare/html/signin.php");
+     exit();
+    }
 $smtp = $conn->prepare("SELECT * FROM user WHERE email_id = ?");
 $smtp->bind_param("s",$_SESSION['user']);
 $smtp->execute();
@@ -13,8 +13,8 @@ if($result->num_rows > 0){
   $row = $result->fetch_assoc();
   
 }else{
-  //  header("Location: /uu/html/signin.php");
-  //    exit();
+   header("Location: /uu/html/signin.php");
+     exit();
   
 }
 ?>

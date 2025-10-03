@@ -1,4 +1,4 @@
-// Sample booking data
+
 let bookings = [
   {
     id: 1,
@@ -92,7 +92,6 @@ let bookings = [
   },
 ];
 
-// Sample user data with enhanced details
 let users = [
   {
     id: 1,
@@ -200,32 +199,30 @@ let users = [
   },
 ];
 
+
 let filteredUsers = [...users];
 let currentEditingUser = null;
+const shopId = document.getElementById("shopId")
+document.addEventListener("DOMContentLoaded", async function () {
 
-// Initialize page
-document.addEventListener("DOMContentLoaded", function () {
+  const res = await fetch(`../../helper/ownerGetStaff.php?shop_id=${shopId.textContent}`)
+  const j = await res.json();
+  console.log(j)
+  users = j
+  filteredUsers = [...users]
   renderUsers();
   setupEventListeners();
 });
 
-// Setup event listeners
 function setupEventListeners() {
-  // Search functionality
   document
     .getElementById("searchInput")
     .addEventListener("input", debounce(applyFilters, 300));
-
-  // Filter changes
   document
-    .getElementById("roleFilter")
-    .addEventListener("change", applyFilters);
   document
     .getElementById("statusFilter")
     .addEventListener("change", applyFilters);
 }
-
-// Debounce function for search
 function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
@@ -238,18 +235,14 @@ function debounce(func, wait) {
   };
 }
 
-// Get user bookings
 function getUserBookings(userId) {
   return bookings.filter((booking) => booking.customerId === userId);
 }
 
-// Get total bookings count
 function getTotalBookings() {
   return bookings.length;
 }
 
-
-// Render users table
 function renderUsers() {
   const tbody = document.getElementById("usersTableBody");
   tbody.innerHTML = "";
@@ -275,14 +268,12 @@ function renderUsers() {
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="user-avatar me-3">
-                                ${user.firstName.charAt(
+                                ${user.fullname.charAt(
                                   0
-                                )}${user.lastName.charAt(0)}
+                                )}
                             </div>
                             <div>
-                                <strong>${user.firstName} ${
-      user.lastName
-    }</strong><br>
+                                <strong>${user.fullname}</strong><br>
                                 <small class="text-muted">ID: #${String(
                                   user.id
                                 ).padStart(3, "0")}</small>
@@ -310,11 +301,7 @@ function renderUsers() {
                     <td>
                         <small>${user.lastLogin}</small>
                     </td>
-                    <td>
-                        <span class="badge ${
-                          totalBookings > 0 ? "bg-success" : "bg-secondary"
-                        }">${totalBookings}</span>
-                    </td>
+                   
                     <td>
                         <div class="action-buttons">
                             <button class="btn btn-outline-info btn-sm" onclick="viewProfile(${
@@ -342,21 +329,18 @@ function renderUsers() {
 // Apply filters
 function applyFilters() {
   const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-  const roleFilter = document.getElementById("roleFilter").value;
   const statusFilter = document.getElementById("statusFilter").value;
 
   filteredUsers = users.filter((user) => {
     const matchesSearch =
       !searchTerm ||
-      user.firstName.toLowerCase().includes(searchTerm) ||
-      user.lastName.toLowerCase().includes(searchTerm) ||
+      user.fullname.toLowerCase().includes(searchTerm) ||
       user.email.toLowerCase().includes(searchTerm) ||
       user.phone.toLowerCase().includes(searchTerm);
 
-    const matchesRole = !roleFilter || user.role === roleFilter;
     const matchesStatus = !statusFilter || user.status === statusFilter;
 
-    return matchesSearch && matchesRole && matchesStatus;
+    return matchesSearch && matchesStatus;
   });
 
   renderUsers();
@@ -365,7 +349,6 @@ function applyFilters() {
 // Reset filters
 function resetFilters() {
   document.getElementById("searchInput").value = "";
-  document.getElementById("roleFilter").value = "";
   document.getElementById("statusFilter").value = "";
   filteredUsers = [...users];
   renderUsers();
@@ -427,16 +410,16 @@ function renderBookingHistory(userId) {
 
 // View user profile
 function viewProfile(userId) {
-  const user = users.find((u) => u.id === userId);
+  const user = users.find((u) => u.id == userId);
   if (!user) return;
 
   // Populate basic info
   document.getElementById(
     "profileAvatar"
-  ).textContent = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
+  ).textContent = `${user.fullname.charAt(0)}`;
   document.getElementById(
     "profileName"
-  ).textContent = `${user.firstName} ${user.lastName}`;
+  ).textContent = `${user.fullname}`;
   document.getElementById("profileRole").textContent = user.role;
   document.getElementById(
     "profileRole"
@@ -451,7 +434,6 @@ function viewProfile(userId) {
   document.getElementById("profileAddress").textContent = user.address;
   document.getElementById("profileJoinDate").textContent = user.joinDate;
 
-  // Show/hide fields based on role
   const isCustomer = user.role === "customer";
   const isStaff = user.role === "staff" || user.role === "admin";
 
@@ -465,7 +447,6 @@ function viewProfile(userId) {
     ).padStart(3, "0")}`;
   }
 
-  // Orders section - show for customers only
   document.getElementById("profileOrdersSection").style.display = isCustomer
     ? "block"
     : "none";
@@ -473,7 +454,6 @@ function viewProfile(userId) {
     document.getElementById("profileOrders").textContent = user.orders;
   }
 
-  // Booking history tab - show for customers only
   document.getElementById("bookingHistoryTab").style.display = isCustomer
     ? "block"
     : "none";
@@ -482,41 +462,37 @@ function viewProfile(userId) {
     renderBookingHistory(userId);
   }
 
-  // Reset to first tab
   const detailsTab = new bootstrap.Tab(document.getElementById("details-tab"));
   detailsTab.show();
 
-  // Show modal
+
   const modal = new bootstrap.Modal(
     document.getElementById("viewProfileModal")
   );
   modal.show();
 }
 
-// Edit user
+
 function editUser(userId) {
-  const user = users.find((u) => u.id === userId);
+  const user = users.find((u) => u.id == userId);
   if (!user) return;
 
   currentEditingUser = user;
-
-  // Populate edit form
   document.getElementById("editUserId").value = user.id;
-  document.getElementById("editFirstName").value = user.firstName;
-  document.getElementById("editLastName").value = user.lastName;
+  document.getElementById("editFullname").value = user.fullname;
   document.getElementById("editEmail").value = user.email;
   document.getElementById("editPhone").value = user.phone;
-  document.getElementById("editRole").value = user.role;
+  // document.getElementById("editRole").value = user.role;
   document.getElementById("editStatus").value = user.status;
   document.getElementById("editAddress").value = user.address;
 
-  // Show modal
+  
   const modal = new bootstrap.Modal(document.getElementById("editUserModal"));
   modal.show();
 }
 
 // Save user changes
-function saveUserChanges() {
+async function saveUserChanges() {
   if (!currentEditingUser) return;
 
   const userId = parseInt(document.getElementById("editUserId").value);
@@ -527,15 +503,27 @@ function saveUserChanges() {
   // Update user data
   users[userIndex] = {
     ...users[userIndex],
-    firstName: document.getElementById("editFirstName").value,
-    lastName: document.getElementById("editLastName").value,
+    fullname: document.getElementById("editFullname").value,
     email: document.getElementById("editEmail").value,
     phone: document.getElementById("editPhone").value,
-    role: document.getElementById("editRole").value,
     status: document.getElementById("editStatus").value,
     address: document.getElementById("editAddress").value,
   };
-
+  const bdy = {
+     fullname: document.getElementById("editFullname").value,
+    email: document.getElementById("editEmail").value,
+    phone: document.getElementById("editPhone").value,
+    status: document.getElementById("editStatus").value,
+    address: document.getElementById("editAddress").value,
+    user_id : userId
+  }
+  const res = await fetch("../../helper/adminUpdateStaff.php",{
+    method:"post",
+    headers:{'Content-Type': 'application/json'},
+    body:JSON.stringify(bdy)
+  })
+  const k = await res.json()
+  console.log(k)
   // Update displays
   applyFilters();
 
@@ -593,39 +581,38 @@ function addNewUser() {
 }
 
 // Create new user
-function createNewUser() {
-  // Get form data
+const createBtn = document.getElementById("createBtn")
+async function createNewUser() {
   const formData = {
-    id: Math.max(...users.map((u) => u.id)) + 1,
-    firstName: document.getElementById("addFirstName").value,
-    lastName: document.getElementById("addLastName").value,
+    fullname: document.getElementById("addFullname").value,
     email: document.getElementById("addEmail").value,
+    password: document.getElementById("addPassword").value,
     phone: document.getElementById("addPhone").value,
     role: "staff",
     status: "active",
     address: document.getElementById("addAddress").value,
-    lastLogin: "Never",
-    joinDate: new Date().toISOString().split("T")[0],
-    orders: 0,
+    shop_id : shopId.textContent
   };
-
-  // Add to users array
   users.push(formData);
-
-  // Update displays
+  createBtn.innerHTML = "Please Wait.."
+  createBtn.disabled = true
+  const res = await fetch("../../helper/adminAddStaff.php",{
+    method:"post",
+    headers:{'Content-Type':"application/json"},
+    body: JSON.stringify(formData)
+  })
+  const j = await res.json()
+  console.log(j)
   applyFilters();
-
-  // Close modal
   const modal = bootstrap.Modal.getInstance(
     document.getElementById("addUserModal")
   );
+  createBtn.disabled = false
+  createBtn.innerHTML = "Add Staff"
   modal.hide();
-
-  // Show success message
   showNotification("New user created successfully!", "success");
 }
 
-// Show notification
 function showNotification(message, type = "info") {
   // Create notification element
   const notification = document.createElement("div");

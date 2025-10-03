@@ -1,0 +1,28 @@
+<?php
+  include 'db.php';  
+  session_start();
+    if(empty($_SESSION['user'])){
+        header("Location: /MotoCare/html/signin.php");
+     exit();
+    }
+$smtp = $conn->prepare("SELECT u.fullname, u.id, s.id as shop_id, u.role FROM user u JOIN shop s ON u.id = s.owner_id WHERE u.email_id = ?");
+$smtp->bind_param("s",$_SESSION['user']);
+$smtp->execute();
+$result = $smtp->get_result();
+if($result->num_rows > 0){
+  $row = $result->fetch_assoc();
+  if($row['role'] != "owner"){
+    session_start();
+    if(empty($_SESSION['shop_id'])){
+        $_SESSION['shop_id'] = $row['shop_id'];
+    }
+    session_abort();
+    header("Location: /MotoCare/html/signin.php");
+     exit();
+  }
+}else{
+   header("Location: /MotoCare/html/signin.php");
+     exit();
+  
+}
+?>

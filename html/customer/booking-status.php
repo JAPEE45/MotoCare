@@ -135,6 +135,19 @@
 
             <div class="booking-details">
               <div class="detail-row">
+                <span class="detail-label">Shop name:</span>
+                <span class="detail-value" id="shop_name"
+                  ></span
+                >
+              </div>
+              
+              <div class="booking-details">
+                <div class="detail-row">
+                  <span class="detail-label">Shop Address:</span>
+                  <span class="detail-value" id="shop_address"
+                    ></span>
+                </div>
+              <div class="detail-row">
                 <span class="detail-label">Service Type:</span>
                 <span class="detail-value" id="serviceType"
                   ><?php echo $row['service_name'] ?></span
@@ -143,6 +156,10 @@
               <div class="detail-row">
                 <span class="detail-label">Vehicle:</span>
                 <span class="detail-value" id="vehicle"><?php echo $row['vehicle_name']  ?></span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Vehicle Model:</span>
+                <span class="detail-value" id="vehicle_model"></span>
               </div>
               <div class="detail-row">
                 <span class="detail-label">Appointment Date:</span>
@@ -156,37 +173,38 @@
                   >10:00 AM - 12:00 PM</span
                 >
               </div>
-              <div class="detail-row">
+              <!-- <div class="detail-row">
                 <span class="detail-label">Payment:</span>
                 <span class="detail-value" id="payment"
                   >$1,250</span
                 >
-              </div>
+              </div> -->
               <div class="detail-row">
                 <span class="detail-label">Current Status:</span>
                 <span class="status-badge" id="currentStatus">Pending</span>
               </div>
             </div>
 
-            <div class="estimated-time" id="estimatedTime">
+            <!-- <div class="estimated-time" id="estimatedTime">
               <i class="fas fa-hourglass-half me-2"></i>
               <strong>Estimated Completion:</strong>
               <span id="estimatedTimeText">2 hours remaining</span>
-            </div>
+            </div> -->
 
             <div class="action-buttons" id="actionBtn">
-              <button class="btn btn-cancel" onclick="cancelBooking()">
+              <button class="btn btn-cancel" id="cancelBtn" onclick="cancelBooking()">
                 <i class="fas fa-times me-2"></i>Cancel Booking
               </button>
-              <button class="btn btn-reschedule" onclick="rescheduleBooking()">
+              <!-- <button class="btn btn-reschedule" onclick="rescheduleBooking()">
                 <i class="fas fa-calendar-alt me-2"></i>Reschedule
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
 
         <!-- No Booking Default State -->
-        <div id="noBookingContent" class="no-booking-content fade-in">
+       
+      </div> <div id="noBookingContent" class="no-booking-content fade-in">
           <div class="no-booking-card">
             <div class="no-booking-container">
               <div class="no-booking-icon">
@@ -201,7 +219,7 @@
             </div>
           </div>
         </div>
-      </div>
+
     </div>
 
     <!-- Reschedule Modal -->

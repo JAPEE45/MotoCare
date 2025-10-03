@@ -1,6 +1,6 @@
 <?php
 
-include '../../helper/checkingUser.php'
+include '../../helper/checkingUser.php';
 ?>
 
 <!DOCTYPE html>
@@ -26,8 +26,8 @@ include '../../helper/checkingUser.php'
     <link rel="stylesheet" href="../../assets/styles/map.css">
   </head>
   <body>
-      <header
-    >
+    <header>
+      <p style="display:none;" id="userId><?php echo $row['ID'] ?></p>
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
           <a class="navbar-brand" href="homepage.php">

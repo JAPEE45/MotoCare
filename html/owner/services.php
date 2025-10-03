@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+
+<?php
+  include "../../helper/checkOwner.php";
+
+?><!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -17,7 +21,7 @@
     <link rel="stylesheet" href="../../assets/styles/navbar.css" />
   </head>
   <body>
-    <header>
+     <header>
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
           <a class="navbar-brand" href="booking-service.html">
@@ -35,21 +39,23 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Dashboard</a>
+                <a class="nav-link" href="./dashboard.php">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="./user-management.html"
+                <a class="nav-link" href="./user-management.php"
                   >User Management</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
+                <a class="nav-link" href="./services.php"
+                  >Services</a
+                >
               </li>
             </ul>
             <div class="profile-dropdown">
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold">Juan Dela Cruz</p>
+                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
                   <p class="mb-0 text-muted">Shop Owner</p>
                 </div>
                 <i
@@ -58,10 +64,10 @@
                 ></i>
               </button>
               <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.html" class="dropdown-item-custom">
+                <a href="../account.php" class="dropdown-item-custom">
                   <i class="fas fa-user-circle me-2"></i>Account
                 </a>
-                <a href="../index.html" class="dropdown-item-custom">
+                <a href="../../logout.php" class="dropdown-item-custom">
                   <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
               </div>
@@ -70,7 +76,8 @@
         </div>
       </nav>
     </header>
-
+  <p id="shopId" style="display:none"><?php echo $row['shop_id'] ?></p>
+  <p id="userId" style="display:none"><?php echo $row['id'] ?></p>
     <!-- Main Content -->
     <div class="container" style="margin-top: 100px">
       <!-- Page Header -->
