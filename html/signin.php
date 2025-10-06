@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header("Location: ./admin/dashboard.php");
             exit();
         } elseif ($_SESSION['role'] === "owner") {
+            
             header("Location: ./owner/dashboard.php");
             exit();
         } else {

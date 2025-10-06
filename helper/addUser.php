@@ -3,7 +3,7 @@ header("Content-Type: application/json");
 
 // connect to DB
 include_once 'db.php'; // this must contain $conn = new mysqli(...)
-
+include 'mailer.php';
 // get JSON request body
 $input = json_decode(file_get_contents("php://input"), true);
 
@@ -36,13 +36,17 @@ try {
         echo json_encode(["status" => "error", "message" => "Email already exists"]);
         exit;
     }
-
-    // insert new user (password stored as plain text)
     $stmt = $conn->prepare("INSERT INTO user (email, password, picture, fullname, email_id, address, contact, createdAt) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->bind_param("sssssss", $email, $password, $picture, $fullname, $email_id, $address, $contact);
 
     if ($stmt->execute()) {
+        $content = "<h1>Hi ".$fullname."</h1>
+        <p>Here's your account</p>
+        
+        <p>Username: ".$email."</p>
+        <p>Password: ".$password."</p>";
+        sendEmail($email, "Welcome to MotoCare",$content);
         echo json_encode(["status" => "success", "message" => "User registered successfully"]);
     } else {
         echo json_encode(["status" => "error", "message" => "Failed to register user"]);

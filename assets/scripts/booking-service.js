@@ -232,7 +232,7 @@ function viewBookingDetails(bookingId) {
     <div class="row mt-3">
         <div class="col-md-4 mb-2">
             <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
-                <i class="fas fa-check"></i> Confirm Booking
+                <i class="fas fa-check"></i> Accept Booking
             </button>
         </div>
       

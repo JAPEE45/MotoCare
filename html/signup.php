@@ -85,7 +85,6 @@
     const email = document.getElementById("email");
     const name = document.getElementById("name");
     email.disabled = true
-    name.disabled = true
     window.onload = function () {
       google.accounts.id.initialize({
         client_id: GOOGLE_AUTH,
@@ -99,7 +98,7 @@
         { theme: "outline", size: "large" }
       );
     };
-
+const btn = document.getElementById("registerBtn");
     function handleCredentialResponse(response) {
       console.log("Encoded JWT ID token: ", response.credential);
 
@@ -122,6 +121,8 @@
     
     }
     async function addUser() {
+      btn.disabled = true
+       btn.innerHTML = "Please Wait....."
   try {
     const datas = {
       email: data.email,
@@ -144,7 +145,7 @@
     const c = await a.json();
     console.log(c);
     if(c.status == "success"){
-        window.location.href = "customer/homepage.php"
+        window.location.href = "/MotoCare/html/signin.php"
     }
     if(c.status == "error"){
         alert(c.message)
@@ -153,6 +154,7 @@
   } catch (error) {
     console.log("Fetch error:", error);
   }
+ 
 }
 document.getElementById("registerBtn").addEventListener("click", ()=>{
     addUser();

@@ -113,7 +113,7 @@ async function bookService(shopName) {
     window.location.href = './booking-status.php'
   }
   const sel = document.getElementById("services")
-  sel.innerHTML = "<option value='' disabled selected>Select Time</option>";
+  sel.innerHTML = "<option value='' disabled selected>Select Service</option>";
   console.log(typeof serv)
   document.getElementById("shop_id").value = serv[0].shop_id
   serv[0].services.forEach(e=>{

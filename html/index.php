@@ -101,7 +101,7 @@
             an <span class="text-red-primary">appointment</span>?
           </h2>
           <p class="cta-subtitle">Quality repairs are closer than you think.</p>
-          <a href="./signin.html" class="cta-btn">Sign In Now!</a>
+          <a href="./signin.php" class="cta-btn">Sign In Now!</a>
         </div>
       </div>
     </section>
