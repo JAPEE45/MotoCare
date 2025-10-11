@@ -1,173 +1,167 @@
 <?php
-  require('../../helper/checkingUser.php');
+require('../../helper/checkingUser.php');
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <title>Auto Repair Hub - Find Quality Repair Shops</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
 
-    <link rel="stylesheet" href="../../assets/styles/homepage.css" />
-    <link rel="stylesheet" href="../../assets/styles/navbar.css" />
-  </head>
-  <body>
-    <header
-    >
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-          <a class="navbar-brand" href="homepage.html">
-            <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Moto</span>Care
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="./homepage.php">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="../index.php">About Us</a>
-              </li>
-                 <?php
-                  if(empty($row)){
-                    echo '  <li class="nav-item ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Auto Repair Hub - Find Quality Repair Shops</title>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    rel="stylesheet" />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../assets/styles/homepage.css" />
+  <link rel="stylesheet" href="../../assets/styles/navbar.css" />
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="homepage.html">
+          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Moto</span>Care
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="./homepage.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.php">About Us</a>
+            </li>
+            <?php
+            if (empty($row)) {
+              echo '  <li class="nav-item ">
                 <a class="nav-link " href="../signin.php">Sign In</a>
               </li>';
-                  }
-               ?>
-            
-              <!-- <li class="nav-item ">
+            }
+            ?>
+
+            <!-- <li class="nav-item ">
                 <a class="nav-link logged-out" href="./signin.html">Sign In</a>
               </li> -->
-            
-              <!-- <li class="nav-item ">
+
+            <!-- <li class="nav-item ">
                 <a class="nav-link signup logged-out" href="./signup.html">Sign Up</a>
               </li> -->
-            </ul>
-            <div class="profile-dropdown">
-              <button class="btn-user" id="profileBtn">
-                <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
-                  <p class="mb-0 text-muted">Customer</p>
-                </div>
-                <i
-                  class="fa-solid fa-angle-down"
-                  style="font-size: 0.8rem; color: var(--text-gray)"
-                ></i>
-              </button>
-              <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.php" class="dropdown-item-custom">
-                  <i class="fas fa-user-circle me-2"></i>Account
-                </a>
-                <a href="./booking-status.php" class="dropdown-item-custom">
-                  <i class="fa-solid fa-calendar-check me-2"></i>Booking
-                </a>
-                 <a href="../../helper/logout.php" class="dropdown-item-custom">
-                  <i class="fas fa-sign-out-alt me-2"></i>Sign Out
-                </a>
-            
+          </ul>
+          <div class="profile-dropdown">
+            <button class="btn-user" id="profileBtn">
+              <div class="d-flex flex-column gap-0">
+                <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
+                <p class="mb-0 text-muted">Customer</p>
               </div>
+              <i
+                class="fa-solid fa-angle-down"
+                style="font-size: 0.8rem; color: var(--text-gray)"></i>
+            </button>
+            <div class="dropdown-menu-custom" id="profileDropdown">
+              <a href="../account.php" class="dropdown-item-custom">
+                <i class="fas fa-user-circle me-2"></i>Account
+              </a>
+              <a href="./booking-list.php" class="dropdown-item-custom">
+                <i class="fa-solid fa-calendar-check me-2"></i>Booking
+              </a>
+              <a href="../../helper/logout.php" class="dropdown-item-custom">
+                <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+              </a>
+
             </div>
           </div>
         </div>
-      </nav>
-    </header>
-
-    <!-- Floating Background Elements -->
-    <div class="floating-element">
-      <i
-        class="fas fa-cog"
-        style="font-size: 4rem; color: var(--red-primary)"
-      ></i>
-    </div>
-    <div class="floating-element">
-      <i
-        class="fas fa-car"
-        style="font-size: 3rem; color: var(--red-primary)"
-      ></i>
-    </div>
-    <div class="floating-element">
-      <i
-        class="fas fa-tools"
-        style="font-size: 3.5rem; color: var(--red-primary)"
-      ></i>
-    </div>
-
-    <!-- Main Content -->
-    <main class="hero-section" id="home">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-10">
-            <h1 class="hero-title">Find a Repair Shop Near You</h1>
-            <p class="hero-subtitle mx-auto">
-              Connecting drivers with trusted auto repair shops for fast,
-              reliable, and affordable services.
-            </p>
-            <button class="btn find-location-btn" id="findLocationBtn">
-              <i class="fas fa-map-marker-alt"></i>Find Location
-            </button>
-          </div>
-        </div>
       </div>
+    </nav>
+  </header>
 
-      <!-- Features -->
-      <div class="features d-none d-lg-flex">
-        <div class="feature-item">
-          <div class="feature-icon">
-            <i class="fas fa-bolt"></i>
-          </div>
-          <div class="feature-text">Quick Search</div>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">
-            <i class="fas fa-shield-alt"></i>
-          </div>
-          <div class="feature-text">Verified Shops</div>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">
-            <i class="fas fa-star"></i>
-          </div>
-          <div class="feature-text">Top Rated</div>
-        </div>
-      </div>
-    </main>
+  <!-- Floating Background Elements -->
+  <div class="floating-element">
+    <i
+      class="fas fa-cog"
+      style="font-size: 4rem; color: var(--red-primary)"></i>
+  </div>
+  <div class="floating-element">
+    <i
+      class="fas fa-car"
+      style="font-size: 3rem; color: var(--red-primary)"></i>
+  </div>
+  <div class="floating-element">
+    <i
+      class="fas fa-tools"
+      style="font-size: 3.5rem; color: var(--red-primary)"></i>
+  </div>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-      <div class="loading-spinner"></div>
-      <div class="loading-text">
-        <i class="fas fa-map-marker-alt me-2"></i>Finding nearby shops...
-      </div>
-      <div class="loading-subtext">
-        Please wait while we search for nearby repair shops
+  <!-- Main Content -->
+  <main class="hero-section" id="home">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <h1 class="hero-title">Find a Repair Shop Near You</h1>
+          <p class="hero-subtitle mx-auto">
+            Connecting drivers with trusted auto repair shops for fast,
+            reliable, and affordable services.
+          </p>
+          <button class="btn find-location-btn" id="findLocationBtn">
+            <i class="fas fa-map-marker-alt"></i>Find Location
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Bootstrap JS -->
-   
+    <!-- Features -->
+    <div class="features d-none d-lg-flex">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div class="feature-text">Quick Search</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="feature-text">Verified Shops</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="feature-text">Top Rated</div>
+      </div>
+    </div>
+  </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">
+      <i class="fas fa-map-marker-alt me-2"></i>Finding nearby shops...
+    </div>
+    <div class="loading-subtext">
+      Please wait while we search for nearby repair shops
+    </div>
+  </div>
 
-    <script src="../../assets/scripts/homepage.js"></script>
-    <script src="../../assets/scripts/navbar.js"></script>
-  </body>
+  <!-- Bootstrap JS -->
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+  <script src="../../assets/scripts/homepage.js"></script>
+  <script src="../../assets/scripts/navbar.js"></script>
+</body>
+
 </html>
