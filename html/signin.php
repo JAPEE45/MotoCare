@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       const data = JSON.parse(atob(response.credential.split('.')[1]));
       console.log("User Info:", data);
       localStorage.setItem("email", JSON.stringify(data))
-      window.location.href = `account.php?uid=${data.sub}`
+      window.location.href = `signup.php?uid=${data.sub}`
 
       // Show user info in page
     //   document.body.innerHTML += `

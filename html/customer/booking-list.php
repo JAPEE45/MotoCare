@@ -1,116 +1,141 @@
 <?php
+require('../../helper/checkingUser.php');
 
-include '../../helper/checkingUser.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auto Repair Hub - Find Nearby Shops</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"
-    />
 
-    <link rel="stylesheet" href="../../assets/styles/navbar.css">
-    <link rel="stylesheet" href="../../assets/styles/map.css">
-  </head>
-  <body>
-    
-    <header>
-      <p style="display:none;" id="userId"><?php echo $row['ID'] ?></p>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-          <a class="navbar-brand" href="homepage.php">
-            <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Moto</span>Care
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="./homepage.php  ">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="../index.php">About Us</a>
-              </li>
-                 <?php
-                  if(empty($row)){
-                    echo '  <li class="nav-item ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MotoCare - Bookings</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../assets/styles/booking-list.css">
+  <link rel="stylesheet" href="../../assets/styles/navbar.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="homepage.html">
+          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Moto</span>Care
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="./homepage.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.php">About Us</a>
+            </li>
+            <?php
+            if (empty($row)) {
+              echo '  <li class="nav-item ">
                 <a class="nav-link " href="../signin.php">Sign In</a>
               </li>';
-                  }
-               ?>
-            
-              <!-- <li class="nav-item ">
+            }
+            ?>
+
+            <!-- <li class="nav-item ">
                 <a class="nav-link logged-out" href="./signin.html">Sign In</a>
               </li> -->
-            
-              <!-- <li class="nav-item ">
+
+            <!-- <li class="nav-item ">
                 <a class="nav-link signup logged-out" href="./signup.html">Sign Up</a>
               </li> -->
-            </ul>
-            <div class="profile-dropdown">
-              <button class="btn-user" id="profileBtn">
-                <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
-                  <p class="mb-0 text-muted">Customer</p>
-                </div>
-                <i
-                  class="fa-solid fa-angle-down"
-                  style="font-size: 0.8rem; color: var(--text-gray)"
-                ></i>
-              </button>
-              <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.php" class="dropdown-item-custom">
-                  <i class="fas fa-user-circle me-2"></i>Account
-                </a>
-                <a href="./booking-list.php" class="dropdown-item-custom">
-                  <i class="fa-solid fa-calendar-check me-2"></i>Booking
-                </a>
-                 <a href="../../helper/logout.php" class="dropdown-item-custom">
-                  <i class="fas fa-sign-out-alt me-2"></i>Sign Out
-                </a>
-            
+          </ul>
+          <div class="profile-dropdown">
+            <button class="btn-user" id="profileBtn">
+              <div class="d-flex flex-column gap-0">
+                <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
+                <p class="mb-0 text-muted">Customer</p>
               </div>
+              <i
+                class="fa-solid fa-angle-down"
+                style="font-size: 0.8rem; color: var(--text-gray)"></i>
+            </button>
+            <div class="dropdown-menu-custom" id="profileDropdown">
+              <a href="../account.php" class="dropdown-item-custom">
+                <i class="fas fa-user-circle me-2"></i>Account
+              </a>
+              <a href="./booking-list.php" class="dropdown-item-custom">
+                <i class="fa-solid fa-calendar-check me-2"></i>Booking
+              </a>
+              <a href="../../helper/logout.php" class="dropdown-item-custom">
+                <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+              </a>
+
             </div>
           </div>
         </div>
-      </nav>
-    </header>
-
-    <div class="container-fluid">
-      <!-- Navigation -->
-    
-
-      <!-- Map Section -->
-      <div class="row">
-        <div class="col-12 p-0">
-          <div class="map-container">
-            <div id="map"></div>
-          </div>
+      </div>
+    </nav>
+  </header>
+  <div class="container-main">
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <div class="filter-title">Filter & Search</div>
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <input type="search" class="form-control" id="searchCustomer" placeholder="Search by customer name...">
         </div>
+        <div class="col-12 col-md-3">
+          <select class="form-select" id="filterStatus">
+            <option selected>All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <select class="form-select" id="filterService">
+            <option selected>All Services</option>
+            <option value="Oil Change">Oil Change</option>
+            <option value="brake-service">Brake Service</option>
+            <option value="tire-rotation">Tire Rotation</option>
+          </select>
+        </div>
+        <!-- <div class="col-12 col-md-3">
+                <input type="date" class="form-control" id="filterDate" placeholder="dd/mm/yyyy">
+            </div> -->
       </div>
     </div>
 
-    <!-- Bootstrap Modal for Booking -->
+    <!-- Table -->
+    <div class="table-container">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>BOOKING ID</th>
+            <th>SHOP NAME</th>
+            <th>SERVICE</th>
+            <th>VEHICLE</th>
+            <th>APPOINTMENT DATE</th>
+            <th>STATUS</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsTable">
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal for Booking -->
     <div class="modal fade" id="bookingModal" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div
@@ -327,19 +352,19 @@ include '../../helper/checkingUser.php';
             <button
               type="button"
               class="btn btn-book"
-              onclick="submitBooking()"
             >
-              <i class="fas fa-check me-2"></i>Confirm Booking
+              <i class="fas fa-check me-2"></i>Save
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
-    <script src="../../assets/scripts/navbar.js"></script>
-    <script src="../../assets/scripts/map.js"></script>
-  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+  <script src="../../assets/scripts/booking-list.js"></script>
+  <script src="../../assets/scripts/navbar.js"></script>
+</body>
+
 </html>
