@@ -1,35 +1,36 @@
 // Sample booking data - Set to null to show default state
 let bookingData;
 async function getBookingUpdate(){
-  const res = await fetch("../../helper/bookingStatus.php")
+  const params = new URLSearchParams(window.location.search)
+  const buid = params.get("buid")
+  let url = "../../helper/bookingStatus.php";
+  if (buid) {
+    url += `?buid=${buid}`;
+  }
+  const res = await fetch(url)
   const json = await res.json()
   console.log(json)
   if(json.error){
-  console.log("EWror")
+    console.log("EWror")
     return
   }
- 
   bookingData = {
-  id: json.booking_id,
-  serviceType: json.service_name,
-  vehicle: json.vehicle_name || 'N/A',
-  appointmentDate: json.preferred_time || 'N/A',
-  timeSlot: "10:00 AM - 12:00 PM",
-  status: json.status, // pending, progress, completed
-  estimatedCompletion: "2 hours remaining",
-};
- if(json.status == "cancelled" ){
-        bookingData = null
+    id: json.booking_id,
+    serviceType: json.service_name,
+    vehicle: json.vehicle_name || 'N/A',
+    appointmentDate: json.preferred_time || 'N/A',
+    timeSlot: "10:00 AM - 12:00 PM",
+    status: json.status, // pending, progress, completed
+    estimatedCompletion: "2 hours remaining",
+  };
+  document.getElementById("vehicle_model").textContent = json.vehicle_model
+  document.getElementById("shop_name").textContent = json.shop_name
+  document.getElementById("shop_address").textContent = json.address
+  const cancelBtn = document.getElementById("cancelBtn")
+  if(json.status != "not accepted" && json.status != "pending"){
+    cancelBtn.disabled = true
   }
-// document.getElementById("payment").textContent = bookingData.total_cost || 'N/A'
-document.getElementById("vehicle_model").textContent = json.vehicle_model
-document.getElementById("shop_name").textContent = json.shop_name
-document.getElementById("shop_address").textContent = json.address
-const cancelBtn = document.getElementById("cancelBtn")
-if(json.status != "not accepted" && json.status != "pending"){
-  cancelBtn.disabled = true
-}
-initializePage()
+  initializePage()
 }
 
 
@@ -69,7 +70,6 @@ function updateBookingDisplay() {
   document.getElementById("vehicle").textContent = bookingData.vehicle;
   document.getElementById("appointmentDate").textContent =
     bookingData.appointmentDate;
-  document.getElementById("timeSlot").textContent = bookingData.timeSlot;
   // document.getElementById("estimatedTimeText").textContent =
   //   bookingData.estimatedCompletion;
 
@@ -108,6 +108,13 @@ function updateProgressSteps(status) {
       statusText = "Pending";
       statusClass = "status-pending";
       break;
+    case "cancelled":
+      document.getElementById("step1").classList.add("active");
+      document.getElementById("label1").classList.add("active");
+      progressWidth = 0;
+      statusText = "cancelled";
+      statusClass = "status-pending";
+      break;
 
     case "progress":
       document.getElementById("step1").classList.add("completed");
@@ -139,7 +146,7 @@ function updateProgressSteps(status) {
 
   // Update status badge
   const statusBadge = document.getElementById("currentStatus");
-  statusBadge.textContent = statusText;
+  statusBadge.textContent = bookingData.status;
   statusBadge.className = `status-badge ${statusClass}`;
 }
 
@@ -221,11 +228,12 @@ function changeStatus(newStatus) {
 }
 
 // Initialize page on load
-document.addEventListener("DOMContentLoaded", 
-getBookingUpdate);
+
+
 
 // Add some interactivity - click on steps to change status (for demo purposes)
 document.addEventListener("DOMContentLoaded", () => {
+  getBookingUpdate()
   // Only add event listeners if booking data exists and elements are present
   if (bookingData && document.getElementById("step1")) {
     const step1 = document.getElementById("step1");

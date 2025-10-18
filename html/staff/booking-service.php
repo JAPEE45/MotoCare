@@ -7,8 +7,8 @@
     //     header("Location: ./ss/html/signin.php");
     //  exit();
     // }
-$smtp = $conn->prepare("SELECT * FROM user WHERE email_id = ?");
-$smtp->bind_param("s",$_SESSION['user']);
+$smtp = $conn->prepare("SELECT * FROM user WHERE ID = ?");
+$smtp->bind_param("s",$_SESSION['user_id']);
 $smtp->execute();
 $result = $smtp->get_result();
 if($result->num_rows > 0){
@@ -63,6 +63,8 @@ if($result->num_rows > 0){
                 <a class="nav-link " href="./booking-service.php">Bookings</a>
               </li>
             </ul>
+            <p id="userContact" style="display:none;"><?php echo $row['contact']?></p>
+            <p id="userFullname" style="display:none;"><?php echo $row['fullname']?></p>
             <div class="profile-dropdown">
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
@@ -87,7 +89,7 @@ if($result->num_rows > 0){
         </div>
       </nav>
     </header>
-
+    <p id="staffShopId" style="display:none;"><?php echo $row['shop_id']?></p>
     <div class="container-fluid">
       <!-- Stats Cards -->
       <div class="row mb-4">

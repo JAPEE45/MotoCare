@@ -4,7 +4,7 @@ let bookings = [];
 // Main async function to fetch data and initialize the application
 const initializeApp = async () => {
   try {
-    const response = await fetch("../../helper/staffGetAllBooking.php");
+    const response = await fetch(`../../helper/staffGetAllBooking.php?shop_id=${document.getElementById("staffShopId").textContent}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -151,6 +151,7 @@ let selectedBooking = 0
 function viewBookingDetails(bookingId) {
   // Now `bookings` will always be populated when this is called
   const booking = bookings.find((b) => b.id == bookingId);
+  // alert(booking)
   selectedBooking = booking.id
   if (!booking) {
       console.error("Booking not found:", bookingId);
@@ -223,7 +224,7 @@ function viewBookingDetails(bookingId) {
                 </select>
             </div>
             <div class="col-md-6 mb-2">
-                <button class="btn btn-success-custom w-100" onclick="updateStatus('${booking.id}', document.getElementById('modalStatusSelect').value)">
+                <button class="btn btn-success-custom w-100" onclick="updateStatus('${booking.id}', document.getElementById('modalStatusSelect').value, '${booking.customerName}', '${booking.serviceType}', '${booking.phone}', '${booking.shop_name}')">
                     <i class="fas fa-save"></i> Update Status
                 </button>
             </div>
@@ -231,13 +232,13 @@ function viewBookingDetails(bookingId) {
     </div>
     <div class="row mt-3">
         <div class="col-md-4 mb-2">
-            <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
+            <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}', '${booking.customerName}', '${booking.serviceType}', '${booking.phone}', '${booking.shop_name}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
                 <i class="fas fa-check"></i> Accept Booking
             </button>
         </div>
       
         <div class="col-md-4 mb-2">
-            <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${booking.id}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
+            <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${booking.id}', '${booking.customerName}', '${booking.serviceType}', '${booking.phone}', '${booking.shop_name}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
                 <i class="fas fa-times"></i> Reject Booking
             </button>
         </div>
@@ -248,8 +249,8 @@ function viewBookingDetails(bookingId) {
   modalInstance.show();
 }
 
-function updateStatus(bookingId, newStatus) {
-  fetch(`../../helper/staffUpdateStatus.php?status=${newStatus}&id=${bookingId}`)
+function updateStatus(bookingId, newStatus, custumerName, serviceType,phone, shopName) {
+  fetch(`../../helper/staffUpdateStatus.php?status=${newStatus}&id=${bookingId}&phone=${phone}&fullname=${custumerName}&shopName=${shopName}&serviceType=${serviceType}`)
     .then(e=>e.json())
     .then(e=>{
       if(e.success){
@@ -287,20 +288,20 @@ function updateStatus(bookingId, newStatus) {
   }
 }
 
-async function confirmBooking(bookingId) {
+async function confirmBooking(bookingId, custumerName, serviceType,phone, shopName) {
   // const res = await fetch(`../../helper/acceptBooking.php?id=${bookingId}`);
   // const j = await res.json();
   // console.log(j)
-  updateStatus(bookingId, "pending");
+  updateStatus(bookingId, "pending", custumerName, serviceType,phone, shopName);
   showNotification(
     `Booking ${bookingId} confirmed and set to In Progress`,
     "success"
   );
 }
 
-function cancelBooking(bookingId) {
+function cancelBooking(bookingId, customerName, serviceType,phone, shopName) {
   if (confirm("Are you sure you want to cancel this booking?")) {
-    updateStatus(bookingId, "rejected");
+    updateStatus(bookingId, "rejected", customerName, serviceType,phone, shopName);
     showNotification(`Booking ${bookingId} has been cancelled`, "warning");
   }
 }

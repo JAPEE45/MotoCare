@@ -2,11 +2,11 @@
   include 'db.php';  
   session_start();
     if(empty($_SESSION['user_id'])){
-      header("Location: ./MotoCare/html/signin.php");
+      header("Location: ./MotoCare/html/signin.php?UWU=TRUE");
      exit();
     }
 $smtp = $conn->prepare("SELECT * FROM user WHERE id = ?");
-$smtp->bind_param("s",$_SESSION['user_id']);
+$smtp->bind_param("i",$_SESSION['user_id']);
 $smtp->execute();
 $result = $smtp->get_result();
 if($result->num_rows > 0){

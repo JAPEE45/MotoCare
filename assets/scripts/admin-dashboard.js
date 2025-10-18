@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   initializeCharts();
 });
 
-// Animate counter numbers
+
 function animateCounters() {
   animateCounter("totalCustomers", dashboardData.customers, 2000);
   animateCounter("totalStaff", dashboardData.staff, 1500);

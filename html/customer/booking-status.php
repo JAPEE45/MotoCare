@@ -1,6 +1,28 @@
 <?php
 require('../../helper/checkingUser.php');
+include '../../helper/db.php';
+session_start();
 
+$user_id = $_SESSION['user_id'] ?? null;
+$booking_id = $_GET['buid'] ?? null;
+
+if ($booking_id) {
+  // Get booking by ID
+  $stmt = $conn->prepare("SELECT b.*, s.service_name, sh.name as shop_name, sh.address as shop_address, u.fullname FROM booking b JOIN services s ON b.service_id = s.id JOIN shop sh ON b.shop = sh.id JOIN user u ON b.user_id = u.ID WHERE b.id = ? AND b.user_id = ?");
+  $stmt->bind_param("ii", $booking_id, $user_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $row = $result->fetch_assoc();
+  $stmt->close();
+} else {
+  // Get most recent booking for user
+  $stmt = $conn->prepare("SELECT b.*, s.service_name, sh.name as shop_name, sh.address as shop_address, u.fullname FROM booking b JOIN services s ON b.service_id = s.id JOIN shop sh ON b.shop = sh.id JOIN user u ON b.user_id = u.ID WHERE b.user_id = ? ORDER BY b.createdAt DESC LIMIT 1");
+  $stmt->bind_param("i", $user_id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $row = $result->fetch_assoc();
+  $stmt->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,7 +83,7 @@ require('../../helper/checkingUser.php');
           <div class="profile-dropdown">
             <button class="btn-user" id="profileBtn">
               <div class="d-flex flex-column gap-0">
-                <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
+                <p class="user-name mb-0 fw-bold"><?php echo isset($row['fullname']) ? htmlspecialchars($row['fullname']) : 'Customer'; ?></p>
                 <p class="mb-0 text-muted">Customer</p>
               </div>
               <i
