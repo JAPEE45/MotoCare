@@ -130,7 +130,7 @@ body {
 .btn-custom-primary {
     background: linear-gradient(135deg, var(--red-primary) 0%, var(--red-secondary) 100%);
     border: none;
-    color: var(--text-light);
+    color: white;
     padding: 16px 24px;
     border-radius: 12px;
     font-weight: 600;
@@ -144,8 +144,8 @@ body {
 }
 
 .btn-custom-secondary {
-    background: var(--text-lightgray3);
-    border: 1px solid var(--text-lightgray4);
+    background: var(--lightgray3);
+    border: 1px solid var(--lightgray4);
     color: var(--dark-tertiary);
     padding: 16px 24px;
     border-radius: 12px;
@@ -165,7 +165,7 @@ body {
 .btn-custom-danger {
     background: linear-gradient(135deg, var(--primary-red) 0%, var(--red-secondary) 100%);
     border: none;
-    color: var(--text-light);
+    color: white;
     padding: 16px 24px;
     border-radius: 12px;
     font-weight: 600;

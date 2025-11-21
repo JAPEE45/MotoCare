@@ -48,7 +48,7 @@ body {
 }
 
 .popup-content h5 {
-  color: var(--text-light);
+  color: white;
   margin-bottom: 0.5rem;
   font-weight: bold;
 }
@@ -68,7 +68,7 @@ body {
 
 .service-tag {
   background: var(--sky-blue);
-  color: var(--text-light);
+  color: white;
   padding: 0.2rem 0.6rem;
   border-radius: 8px;
   font-size: 0.75rem;
@@ -78,7 +78,7 @@ body {
 .btn-book {
   background: var(--red-primary);
   border: none;
-  color: var(--text-light);
+  color: white;
   padding: 0.6rem 1.5rem;
   border-radius: 20px;
   font-weight: bold;
@@ -90,7 +90,7 @@ body {
   background: var(--red-secondary);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-  color: var(--text-light);
+  color: white;
 }
 
 .close-btn {
@@ -146,6 +146,10 @@ select option,
 .form-label {
   font-weight: 700;
   text-transform: uppercase;
+}
+
+#bookingForm {
+  color: white;
 }
 
 .legend-pin {

@@ -320,7 +320,7 @@ include '../../helper/checkingUser.php';
               type="button"
               class="btn"
               style="
-                background: var(--gray-card);
+                background: var(--lightgray3);
                 color: var(--text-light);
                 border: 1px solid var(--dark-tertiary);
               "

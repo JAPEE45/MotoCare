@@ -63,7 +63,7 @@ body {
 .form-control {
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--text-lightgray4);
+    border-bottom: 1px solid var(--lightgray4);
     border-radius: 0 !important;
     color: #f0f6fc;
     padding: 0.75rem;
@@ -72,7 +72,7 @@ body {
 }
 
 .form-control:focus {
-    background-color: #0d1117;
+    background-color: var(--lightgray2);
     color: #f0f6fc;
     box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.3);
 }
@@ -132,7 +132,7 @@ body {
     left: 0;
     right: 0;
     height: 1px;
-    background-color: var(--text-lightgray4);
+    background-color: var(--lightgray3);
     z-index: -1;
 }
 

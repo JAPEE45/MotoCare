@@ -109,7 +109,7 @@ require('../../helper/checkingUser.php');
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-10">
-          <h1 class="hero-title">Find a Repair Shop Near You</h1>
+          <h1 class="hero-title">Find a <span style="color: var(--primary-red);">Repair</span> Shop Near You</h1>
           <p class="hero-subtitle mx-auto">
             Connecting drivers with trusted auto repair shops for fast,
             reliable, and affordable services.

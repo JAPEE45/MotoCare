@@ -16,9 +16,9 @@
     --text-gray: #9ca3af;
     --text-lightgray: #f6f8fa;
     --sky-blue: rgb(0, 100, 224);
-    --text-lightgray2: #f9fafb;
-    --text-lightgray3: #f3f4f6;
-    --text-lightgray4: #d1d5db;
+    --lightgray2: #f9fafb;
+    --lightgray3: #f3f4f6;
+    --lightgray4: #d1d5db;
 
     --gray-card: #374151;
 }

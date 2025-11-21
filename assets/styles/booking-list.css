@@ -24,6 +24,7 @@ body {
   margin: 2rem;
   border-radius: 8px;
   border: 1px solid var(--dark-tertiary);
+  color: white;
 }
 
 .filter-title {

@@ -54,10 +54,11 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    box-shadow: 0 0 0.15rem var(--dark-secondary);
 }
 
 .btn-user .user-name {
-    color: var(--text-light);
+    color: var(--lightgray2);
 }
 
 .btn-user .text-muted {
@@ -66,7 +67,7 @@
 }
 
 .btn-user:hover {
-    background-color: var(--dark-secondary);
+    opacity: 0.8;
 }
 
 .dropdown-menu-custom {
