@@ -24,7 +24,7 @@
     >
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="">
             <i class="fa-solid fa-motorcycle"></i
             ><span style="color: var(--primary-red)"> Moto</span>Care
           </a>
@@ -120,7 +120,7 @@
             >
               WHO WE WORK WITH
             </p>
-            <h2 class="fs-1 fw-bold">Our Partner Shops</h2>
+            <h2 class="service-partner-title fs-1 fw-bold">Our Partner Shops</h2>
           </div>
         </div>
 
@@ -177,7 +177,7 @@
             </h2>
             <p
               style="
-                color: var(--text-gray);
+                color: var(--primary-text);
                 line-height: 1.7;
                 margin-bottom: 30px;
               "
@@ -191,15 +191,12 @@
             </p>
             <p
               style="
-                color: var(--text-gray);
+                color: var(--primary-text);
                 line-height: 1.7;
                 margin-bottom: 50px;
               "
             >
-              We partner with local auto repair shops such as
-              <strong>Molje Lube, Precision Tech Motoshop, and CT Gear</strong>
-              to bridge the gap between traditional operations and modern
-              customer service. Through our platform, customers can
+              Through our platform, customers can
               <strong>book appointments online</strong>,
               <strong>locate the nearest motor shop</strong> via GIS map,
               <strong>track their repair progress</strong> in real time, and

@@ -1,7 +1,7 @@
 @import url('./variables.css');
 
 .navbar {
-    background: var(--dark-primary);
+    background: var(--primary-background);
     backdrop-filter: blur(20px);
     padding: 1rem 0;
     box-shadow: 0 0 5px var(--dark-primary);
@@ -10,10 +10,11 @@
 .navbar-brand {
     font-weight: bold;
     font-size: 1.5rem;
+    color: var(--primary-text);
 }
 
 .navbar-nav .nav-link {
-    color: var(--text-gray) !important;
+    color: var(--primary-text) !important;
     font-weight: 500;
     margin: 0 10px;
     transition: all 0.3s ease;
@@ -29,15 +30,14 @@
 }
 
 .navbar-nav .nav-link.signup {
-    background: transparent;
-    border: 1px solid var(--text-light);
-    color: var(--text-light);
+    background: var(--red-primary);
+    border: 1px solid var(--red-primary);
+    color: var(--text-light) !important;
     border-radius: 5px;
 }
 
 .navbar-nav .nav-link.signup:hover {
-    opacity: 0.7;
-    color: var(--text-light) !important;
+    opacity: 0.8;
 }
 
 .profile-dropdown {
