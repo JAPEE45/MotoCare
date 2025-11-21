@@ -175,3 +175,106 @@ select option,
     margin: 1rem 0;
   }
 }
+
+/* Animations for notifications */
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+/* Distance label styling */
+.distance-label {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Search results styling */
+.list-group-item {
+  background: #2a2e33 !important;
+  color: #fff !important;
+  border: 1px solid #3a3e43 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  background: #3a3e43 !important;
+  border-color: #ff6b6b !important;
+  transform: translateX(5px);
+}
+
+.list-group-item:first-child {
+  border-radius: 0 !important;
+}
+
+.list-group-item:last-child {
+  border-radius: 0 0 18px 18px !important;
+}
+
+/* Black & White Search Engine Styles */
+.form-control#shopSearch {
+  background: #fff !important;
+  color: #111 !important;
+  border: 1.5px solid #111 !important;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: none !important;
+}
+
+.form-control#shopSearch:focus {
+  background: #fff !important;
+  color: #111 !important;
+  border: 1.5px solid #111 !important;
+}
+
+.form-control#shopSearch::placeholder {
+  color: #888 !important;
+  opacity: 1;
+  font-style: italic;
+}
+
+#shopSearchResults {
+  background: #111 !important;
+  border: 1.5px solid #fff !important;
+  color: #fff !important;
+}
+
+.list-group-item {
+  background: #111 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  background: #fff !important;
+  color: #111 !important;
+  border-color: #111 !important;
+  transform: translateX(5px);
+}
+
+.list-group-item:first-child {
+  border-radius: 0 !important;
+}
+
+.list-group-item:last-child {
+  border-radius: 0 0 18px 18px !important;
+}

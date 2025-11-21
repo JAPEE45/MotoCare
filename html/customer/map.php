@@ -100,10 +100,14 @@ include '../../helper/checkingUser.php';
       <!-- Navigation -->
     
 
-      <!-- Map Section -->
+      <!-- Map Section with Search Engine Inside -->
       <div class="row">
         <div class="col-12 p-0">
           <div class="map-container">
+            <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1001; width: 350px; max-width: 90vw;">
+              <input type="text" id="shopSearch" class="form-control" placeholder="Search for a shop by name..." style="border-radius: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.18); font-size: 1.1rem; padding-left: 1.2rem; height: 48px; background: #fff; color: #111; border: 1.5px solid #111;">
+              <div id="shopSearchResults" class="list-group" style="position: absolute; top: 52px; left: 0; width: 100%; z-index: 1002; background: #111; border-radius: 0 0 18px 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.18); border: 1.5px solid #fff; color: #fff;"></div>
+            </div>
             <div id="map"></div>
           </div>
         </div>
@@ -329,7 +333,7 @@ include '../../helper/checkingUser.php';
               class="btn btn-book"
               onclick="submitBooking()"
             >
-              <i class="fas fa-check me-2"></i>Confirm Booking
+              <i class="fas fa-check me-2"></i>Submit
             </button>
           </div>
         </div>

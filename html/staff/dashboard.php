@@ -6,13 +6,20 @@
     //     header("Location: ./ss/html/signin.php");
     //  exit();
     // }
-$smtp = $conn->prepare("SELECT * FROM user WHERE email_id = ?");
-$smtp->bind_param("s",$_SESSION['user']);
+  $ID = $_SESSION['user_id'];
+$smtp = $conn->prepare("SELECT * FROM user WHERE ID = ?");
+$smtp->bind_param("i",$ID);
 $smtp->execute();
 $result = $smtp->get_result();
 if($result->num_rows > 0){
   $row = $result->fetch_assoc();
-  
+  $shop = $conn->prepare("SELECT * FROM shop WHERE id = ?");
+  $shop->bind_param("i",$row['shop_id']);
+  $shop->execute();
+  $shopResult = $shop->get_result();
+  if($shopResult->num_rows > 0){
+    $shopRow = $shopResult->fetch_assoc();
+  }
 }else{
   //  header("Location: /uu/html/signin.php");
   //    exit();
@@ -89,10 +96,11 @@ if($result->num_rows > 0){
 
 
     <div class="container-fluid px-4 py-4">
+    <input type="hidden" id="shopId" value="<?php echo isset($shopRow['id']) ? $shopRow['id'] : '' ?>">
       <!-- Welcome Section -->
       <div class="row mb-4">
         <div class="col-12">
-          <h2 class="mb-1">Welcome back!</h2>
+          <h2 class="mb-1">Welcome to <?php echo $shopRow['name'] ?>!</h2>
           <p class="text-muted" id="currentDate"></p>
         </div>
       </div>
@@ -222,5 +230,19 @@ if($result->num_rows > 0){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/scripts/staff-dashboard.js"></script>
     <script src="../../assets/scripts/navbar.js"></script>
+      <!-- Booking Details Modal -->
+      <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="bookingModalLabel">Bookings for Selected Date</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="bookingModalBody">
+              <!-- Booking details will be injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
   </body>
 </html>

@@ -126,17 +126,18 @@ document
     e.preventDefault();
 
     const saveBtn = e.target.querySelector('button[type="submit"]');
-    saveBtn.style.color = "#ffffff";
-    const originalText = saveBtn.innerHTML;
-
-    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
-    saveBtn.disabled = true;
-
-    setTimeout(() => {
-      saveBtn.innerHTML =
-        '<i class="fas fa-check me-2" style="color: #ffffff;"></i>Saved!';
-      saveBtn.style.background =
-        "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+    if (saveBtn) {
+      saveBtn.style.color = "#ffffff";
+      const originalText = saveBtn.innerHTML;
+      saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+      saveBtn.disabled = true;
+      setTimeout(() => {
+        saveBtn.innerHTML =
+          '<i class="fas fa-check me-2" style="color: #ffffff;"></i>Saved!';
+        saveBtn.style.background =
+          "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+      }, 2000);
+    }
 
       setTimeout(() => {
         saveBtn.innerHTML = originalText;

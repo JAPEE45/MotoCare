@@ -12,7 +12,7 @@
   $stmt->execute();
   $result = $stmt->get_result();
   $res = $result->fetch_assoc();
-  print_r($res);
+  
 
 
 ?>

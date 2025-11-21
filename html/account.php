@@ -1,5 +1,14 @@
 <?php
-    include '../helper/autoLogin.php';
+        // include '../helper/autoLogin.php';
+        include '../helper/db.php';
+        session_start();
+        $user = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+        $stmt = $conn->prepare("SELECT * FROM user WHERE ID = ?");
+        $stmt->bind_param("i", $user);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userData = $result->fetch_assoc();
+        $stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -48,22 +57,22 @@
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" value="Juan Dela Cruz">
+                                <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" value="<?php echo htmlspecialchars($userData['fullname'] ?? '', ENT_QUOTES); ?>">
                             </div>
                             
                             <div class="col-md-6 mb-3">
                                 <label for="contactNo" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="contact" placeholder="Enter your phone number" value="0912-345-6789">
+                                <input type="tel" class="form-control" id="contact" placeholder="Enter your phone number" value="<?php echo htmlspecialchars($userData['contact'] ?? '', ENT_QUOTES); ?>">
                             </div>
                             
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label">Email (Read-only)</label>
-                                <input type="email" class="form-control" id="email" value="juan.delacruz@example.com" readonly>
+                                <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($userData['email'] ?? '', ENT_QUOTES); ?>" readonly>
                             </div>
                             
                             <div class="col-12 mb-4">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" rows="3" id = 'address' placeholder="Enter your full address"></textarea>
+                                <textarea class="form-control" id="address" rows="3" id = 'address' placeholder="Enter your full address"><?php echo htmlspecialchars($userData['address'] ?? '', ENT_QUOTES); ?></textarea>
                             </div>
                         </div>
 
@@ -79,13 +88,13 @@
                         Account Settings
                     </div>
 
-                    <div class="change-field">
+                    <!-- <div class="change-field">
                         <h5><i class="fas fa-envelope me-2"></i>Email Address</h5>
-                        <p class="mb-3">Current: juan.delacruz@example.com</p>
+                        <p class="mb-3">Current: <?php echo isset($userData['email']) ? $userData['email'] : ''; ?></p>
                         <button type="button" class="btn btn-custom-secondary w-100" data-bs-toggle="modal" data-bs-target="#emailModal">
                             <i class="fas fa-edit me-2"></i>Change Email
                         </button>
-                    </div>
+                    </div> -->
 
                     <div class="change-field">
                         <h5><i class="fas fa-lock me-2"></i>Password</h5>
@@ -244,13 +253,7 @@
         </div>
     </div>
     <script>
-     const email = document.getElementById("email");
-const data = JSON.parse(localStorage.getItem("email")); // stored Google data
-
-console.log(data);
-
-email.value = data.email;
-document.getElementById("fullName").value = data.name;
+// Removed localStorage overwrite to ensure only database values are shown in inputs
 // para sa automated password
 function generateUniquePassword(seedNumber) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -260,45 +263,111 @@ function generateUniquePassword(seedNumber) {
     const index = (seed.charCodeAt(i % seed.length) + Math.floor(Math.random() * chars.length)) % chars.length;
     password += chars.charAt(index);
   }
-
   return password;
 }
 async function addUser() {
-  try {
-    const datas = {
-      email: data.email,
-      password: generateUniquePassword(data.sub), 
-      picture: data.picture,
-      fullname: data.name,   
-      email_id: data.sub,    
-      address: document.getElementById("address").value, // fixed
-      contact: document.getElementById("contact").value, // fixed
-    };
-
-    const a = await fetch("../helper/addUser.php", {
-      method: "POST",
-      headers: {   // fixed "headers"
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datas),
-    });
-
-    const c = await a.json();
-    console.log(c);
-    if(c.status == "success"){
-        window.location.href = "customer/homepage.php"
+    try {
+        const datas = {
+            email: document.getElementById("email").value,
+            fullname: document.getElementById("fullName").value,
+            address: document.getElementById("address").value,
+            contact: document.getElementById("contact").value
+        };
+        const a = await fetch("../helper/editAccount.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datas),
+        });
+        const c = await a.json();
+        console.log(c);
+        if(c.status == "success"){
+            location.reload();
+            // If you want to redirect based on role after reload, you can add logic here
+        }
+        if(c.status == "error"){
+                alert(c.message)
+        }
+    } catch (error) {
+        console.log("Fetch error:", error);
     }
-    if(c.status == "error"){
-        alert(c.message)
-    }
-  } catch (error) {
-    console.log("Fetch error:", error);
+}
+function goBack() {
+  const userRole = "<?php echo isset($userData['role']) ? $userData['role'] : 'customer'; ?>";
+  if(userRole === "staff") {
+    window.location.href = "staff/dashboard.php";
+  } else if(userRole === "admin") {
+    window.location.href = "owner/dashboard.html";
+  } else {
+    window.location.href = "customer/homepage.php";
   }
 }
+function changePassword() {
+  const currentPassword = document.getElementById("currentPassword").value;
+  const newPassword = document.getElementById("newPassword").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
 
-        // document.getELementById("dataInfo").addEventListener("click",()=>{
-        //     addUser()
-        // })
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    alert("Please fill in all fields.");
+    return;
+  }
+  if (newPassword !== confirmPassword) {
+    alert("New passwords do not match.");
+    return;
+  }
+  if (newPassword.length < 8) {
+    alert("Password must be at least 8 characters long.");
+    return;
+  }
+  fetch("../helper/changePassword.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ currentPassword, newPassword })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        alert("Password changed successfully!");
+        bootstrap.Modal.getInstance(document.getElementById("passwordModal")).hide();
+        document.getElementById("passwordForm").reset();
+      } else {
+        alert(data.message);
+      }
+    })
+    .catch(err => {
+      alert("Error changing password.");
+      console.error(err);
+    });
+}
+function confirmDeleteAccount() {
+  const password = prompt("Please enter your password to confirm account deletion:");
+  if (!password) {
+    alert("Account deletion cancelled.");
+    return;
+  }
+  if (!confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    return;
+  }
+  fetch("../helper/deleteAccount.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        alert("Account deleted successfully. Goodbye!");
+        window.location.href = "../html/signin.php";
+      } else {
+        alert(data.message);
+      }
+    })
+    .catch(err => {
+      alert("Error deleting account.");
+      console.error(err);
+    });
+}
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 

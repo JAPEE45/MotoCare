@@ -1,10 +1,9 @@
 <?php
 session_start();
 include_once '../helper/db.php';
-
+$error = "";
 function login($username, $password, $conn) {
-  echo $username;
-    $stmt = $conn->prepare("SELECT role, id, username, email_id, password FROM user WHERE email = ?");
+    $stmt = $conn->prepare("SELECT role, ID, username, email_id, password FROM user WHERE email = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
 
@@ -15,35 +14,30 @@ function login($username, $password, $conn) {
             $_SESSION['user'] = $user['email_id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
-            $_SESSION['user_id'] = $user['ID'];
-
+            $_SESSION['user_id'] = $user['ID']; 
             return true;
         } else {
-          echo "no";
-            return false; // wrong password
+            return false;
         }
     } else {
-      echo "other ni";
         return false; // user not found
     }
 }
-$error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-   
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
     if (login($username, $password, $conn)) {
-        echo $username;
+        $uid = $_SESSION['user_id'];
+
         if ($_SESSION['role'] === "staff") {
-            header("Location: /MotoCare/html/staff/dashboard.php");
+            header("Location: /MotoCare/html/staff/dashboard.php?uid=".$uid);
             exit();
         } elseif ($_SESSION['role'] === "admin") {
             header("Location: ./admin/dashboard.php");
             exit();
         } elseif ($_SESSION['role'] === "owner") {
-            
             header("Location: ./owner/dashboard.php");
             exit();
         } else {
@@ -51,10 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
     } else {
-        $error =  " Invalid username or password.";
+        $error = "Invalid username or password.";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="signin-card">
       <h1 class="signin-title">Sign in to <span>Moto</span>Care</h1>
-      <p class="signin-subtitle">Let's get started!</p>
+      <p class="signin-subtitle">Let's get started! <?php echo $error ?></p>
 
       <!-- Regular login form -->
       <form method ="post" action="signin.php">
@@ -134,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       const data = JSON.parse(atob(response.credential.split('.')[1]));
       console.log("User Info:", data);
       localStorage.setItem("email", JSON.stringify(data))
-      window.location.href = `signup.php?uid=${data.sub}`
+      window.location.href = `../helper/autoLogin.php?uid=${data.sub}`
 
       // Show user info in page
     //   document.body.innerHTML += `

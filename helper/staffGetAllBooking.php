@@ -2,7 +2,7 @@
 
 
 include_once 'db.php';
-
+$shop_id = $_GET['shop_id'];
 $sql = "
 SELECT 
     b.id,
@@ -19,15 +19,17 @@ SELECT
     b.vehicle_plate_number,
     b.time,
     u.address,
+    h.name as shop_name,
     u.contact
 FROM booking b
 INNER JOIN user u ON b.user_id = u.id
-INNER JOIN services s ON b.service_id = s.id   
+INNER JOIN services s ON b.service_id = s.id
+INNER JOIN shop h ON h.id = b.shop WHERE h.id = ?
 ORDER BY b.id DESC
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->execute();
+$stmt->execute([$shop_id]);
 $result = $stmt->get_result();
 
 $data = [];
@@ -36,6 +38,7 @@ while ($row = $result->fetch_assoc()) {
     $data[] = [
          "id"           => (int)$row["id"],
     "email"        => $row["email"],
+    "shop_name"        => $row["shop_name"],
     "address"        => $row["address"],
     "createdAt"    => $row['createdAt'],   
     "customerName" => $row["customer"],

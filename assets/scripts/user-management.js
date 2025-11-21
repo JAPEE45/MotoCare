@@ -1,4 +1,3 @@
-
 let bookings = [
   {
     id: 1,
@@ -199,7 +198,6 @@ let users = [
   },
 ];
 
-
 let filteredUsers = [...users];
 let currentEditingUser = null;
 const shopId = document.getElementById("shopId")
@@ -312,10 +310,8 @@ function renderUsers() {
                             })" title="Edit User">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="resetPassword(${
-                              user.id
-                            })" title="Reset Password">
-                                <i class="fas fa-key"></i>
+                            <button class="btn btn-outline-danger btn-sm" onclick="confirmDeleteStaff(${user.id}, '${user.fullname.replace(/'/g, "\'")}')" title="Delete Staff">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </td>
@@ -642,4 +638,34 @@ function showLoading() {
 function hideLoading() {
   document.querySelector(".loading").style.display = "none";
   document.getElementById("usersTable").style.display = "table";
+}
+
+function confirmDeleteStaff(staffId, staffName) {
+  const modal = document.getElementById('deleteStaffModal');
+  document.getElementById('deleteStaffName').textContent = staffName;
+  document.getElementById('confirmDeleteStaffBtn').onclick = function() {
+    deleteStaff(staffId);
+    const bsModal = bootstrap.Modal.getOrCreateInstance(modal);
+    bsModal.hide();
+  };
+  const bsModal = new bootstrap.Modal(modal);
+  bsModal.show();
+}
+
+function deleteStaff(staffId) {
+  fetch(`../../helper/deleteAccount.php`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: staffId })
+  })
+    .then(res => res.json())
+    .then(result => {
+      if (result.status === 'success') {
+        users = users.filter(u => u.id !== staffId);
+        filteredUsers = filteredUsers.filter(u => u.id !== staffId);
+        renderUsers();
+      } else {
+        alert('Failed to delete staff: ' + (result.message || 'Unknown error'));
+      }
+    });
 }

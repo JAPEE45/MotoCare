@@ -21,6 +21,7 @@ require('../../helper/checkingUser.php');
 
 <body>
   <header>
+    <p id="user_id" style="display:none;"><?php echo $row['ID'] ?></p>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container">
         <a class="navbar-brand" href="homepage.html">
@@ -94,20 +95,13 @@ require('../../helper/checkingUser.php');
         </div>
         <div class="col-12 col-md-3">
           <select class="form-select" id="filterStatus">
-            <option selected>All Statuses</option>
+            <option value="All Status" selected>All Status</option>
             <option value="pending">Pending</option>
             <option value="progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
         </div>
-        <div class="col-12 col-md-3">
-          <select class="form-select" id="filterService">
-            <option selected>All Services</option>
-            <option value="Oil Change">Oil Change</option>
-            <option value="brake-service">Brake Service</option>
-            <option value="tire-rotation">Tire Rotation</option>
-          </select>
-        </div>
+       
         <!-- <div class="col-12 col-md-3">
                 <input type="date" class="form-control" id="filterDate" placeholder="dd/mm/yyyy">
             </div> -->
@@ -172,7 +166,7 @@ require('../../helper/checkingUser.php');
             <form id="bookingForm">
               <div class="mb-3">
                 <label class="form-label"
-                  ><strong>Selected Shop:</strong></label
+                  ><strong >Selected Shop: <span id="selectedShop" style="color: white"></span></strong></label
                 >
                 <p
                   id="selectedShop"
@@ -182,61 +176,10 @@ require('../../helper/checkingUser.php');
                 ></p>
               </div>
               <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label" style="color: var(--text-light)"
-                    >Your Name</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    required
-                 
-                    value = <?php echo $row["fullname"] ?>
-                  />
-                    
-                  <input
-                    type="text"
-                    class="form-control"
-                    required
-                  style="display: none;"
-                    id="shop_id"
-                    name="shop_id"
-                  />
-                    
-                  <input
-                    type="text"
-                    class="form-control"
-                    required
-                    style = "display:none;"
-                    id="id"
-                    value = <?php echo $row["ID"] ?>
-                  />
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label" style="color: var(--text-light)"
-                    >Phone Number</label
-                  >
-                  <input
-                    type="tel"
-                    class="form-control"
-                    required
-                    value=<?php echo $row['contact'] ?>
-                  />
-                </div>
+                <input id="shop_id" name="shop_id" type="hidden"/>
               </div>
               <div class="mb-3">
-                <label class="form-label" style="color: var(--text-light)"
-                  >Email Address</label
-                >
-                <input
-                  type="email"
-                  class="form-control"
-                  required
-                  value = <?php echo $row['email'] ?>
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label" style="color: var(--text-light)"
+                <label class="form-label"  style="color: var(--text-light)"
                   >Vehicle Brand</label
                 >
                 <input
