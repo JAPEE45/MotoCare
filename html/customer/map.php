@@ -33,7 +33,7 @@ include '../../helper/checkingUser.php';
         <div class="container">
           <a class="navbar-brand" href="homepage.php">
             <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Moto</span>Care
+            ><span style="color: var(--primary-red)"> Auto</span>Repair Shop
           </a>
           <button
             class="navbar-toggler"

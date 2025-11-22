@@ -32,7 +32,7 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
-    <link rel="stylesheet" href="../../assets/styles/admin-dashboard.css">
+    <link rel="stylesheet" href="../../assets/styles/owner-dashboard.css">
     <link rel="stylesheet" href="../../assets/styles/navbar.css">
   </head>
   <body>
@@ -41,7 +41,7 @@
         <div class="container">
           <a class="navbar-brand" href="booking-service.html">
             <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Moto</span>Care
+            ><span style="color: var(--primary-red)"> Auto</span>Repair Shop
           </a>
           <button
             class="navbar-toggler"
@@ -175,7 +175,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/scripts/admin-dashboard.js"></script>
+    <script src="../../assets/scripts/owner-dashboard.js"></script>
 
     <script src="../../assets/scripts/navbar.js"></script>
   </body>

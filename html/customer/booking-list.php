@@ -9,7 +9,7 @@ require('../../helper/checkingUser.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MotoCare - Bookings</title>
+  <title>Auto Repair Shop - Bookings</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -25,7 +25,7 @@ require('../../helper/checkingUser.php');
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container">
         <a class="navbar-brand" href="homepage.html">
-          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Moto</span>Care
+          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Auto</span>Repair Shop
         </a>
         <button
           class="navbar-toggler"

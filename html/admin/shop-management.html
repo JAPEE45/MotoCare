@@ -1,579 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MotoCare - Shop Management</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Repair Shop - Admin Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"
-    />
-    <link rel="stylesheet" href="../../assets/styles/navbar.css" />
-    <link
-      rel="stylesheet"
-      href="../../assets/styles/admin-shop-management.css"
-    />
-  </head>
-  <body>
+    
+    <link rel="stylesheet" href="../../assets/styles/admin-shop-management.css">
+    <link rel="stylesheet" href="../../assets/styles/navbar.css">
+</head>
+<body>
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-          <a class="navbar-brand" href="booking-service.html">
-            <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Moto</span>Care
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="./dashboard.php">Dashboard</a>
+    <p id="user_id" style="display:none;"><?php echo $row['ID'] ?></p>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="homepage.html">
+          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Auto</span>Repair Shop
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="./dashboard.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Shop Management</a>
+            </li>
+            <?php
+            if (empty($row)) {
+              echo '  <li class="nav-item ">
+                <a class="nav-link " href="../signin.php">Sign In</a>
+              </li>';
+            }
+            ?>
+
+            <!-- <li class="nav-item ">
+                <a class="nav-link logged-out" href="./signin.html">Sign In</a>
               </li> -->
-              <li class="nav-item">
-                <a class="nav-link" href="./user-management.php"
-                  >Shop Management</a
-                >
-              </li>
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="./services.php"
-                  >Services</a
-                >
+
+            <!-- <li class="nav-item ">
+                <a class="nav-link signup logged-out" href="./signup.html">Sign Up</a>
               </li> -->
-            </ul>
-            <div class="profile-dropdown">
-              <button class="btn-user" id="profileBtn">
-                <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold">
-                    <?php echo $row['fullname'] ?>
-                  </p>
-                  <p class="mb-0 text-muted">Shop Owner</p>
-                </div>
-                <i
-                  class="fa-solid fa-angle-down"
-                  style="font-size: 0.8rem; color: var(--text-gray)"
-                ></i>
-              </button>
-              <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.php" class="dropdown-item-custom">
-                  <i class="fas fa-user-circle me-2"></i>Account
-                </a>
-                <a href="../../logout.php" class="dropdown-item-custom">
-                  <i class="fas fa-sign-out-alt me-2"></i>Sign Out
-                </a>
+          </ul>
+          <div class="profile-dropdown">
+            <button class="btn-user" id="profileBtn">
+              <div class="d-flex flex-column gap-0">
+                <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
+                <p class="mb-0 text-muted">Customer</p>
               </div>
+              <i
+                class="fa-solid fa-angle-down"
+                style="font-size: 0.8rem; color: var(--text-gray)"></i>
+            </button>
+            <div class="dropdown-menu-custom" id="profileDropdown">
+              <a href="../account.php" class="dropdown-item-custom">
+                <i class="fas fa-user-circle me-2"></i>Account
+              </a>
+              <a href="./booking-list.php" class="dropdown-item-custom">
+                <i class="fa-solid fa-calendar-check me-2"></i>Booking
+              </a>
+              <a href="../../helper/logout.php" class="dropdown-item-custom">
+                <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+              </a>
+
             </div>
           </div>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
+  </header>
 
     <!-- Main Content -->
-    <div class="main-content">
-      <div class="page-header">
-        <div class="page-title">
-          <h1>👥 Shop & Owner Management</h1>
-          <p>Manage all shops and their owner accounts</p>
+    <div class="container-main">
+        <div class="page-header">
+            <h2>Shop Management</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addShopModal">+ Add New Shop</button>
         </div>
-        <!-- <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addModal">
-                ➕ Add New Shop
-            </button> -->
-      </div>
 
-      <!-- Filter Section -->
-      <div class="filter-section">
-        <h5>🔍 Filter Shops</h5>
-        <div class="row g-3">
-          <div class="col-md-4">
-            <input
-              type="text"
-              class="form-control"
-              id="searchInput"
-              placeholder="Search by shop name, owner, or registration..."
-            />
-          </div>
-          <div class="col-md-3">
-            <select class="form-select" id="statusFilter">
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-          <div class="col-md-5">
-            <button class="btn-filter me-2" onclick="filterShops()">
-              🔍 Filter
-            </button>
-            <button class="btn-reset" onclick="resetFilter()">🔄 Reset</button>
-          </div>
+        <!-- Search Box -->
+        <div class="search-box">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search shops by name, owner, or address...">
         </div>
-      </div>
 
-      <!-- Table -->
-      <div class="user-table">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Shop</th>
-              <th>Registration No.</th>
-              <th>Owner</th>
-              <th>Contact</th>
-              <th>Address</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="shopsTableBody">
-            <tr>
-              <td>
-                <strong>QuickFix Garage</strong><br />
-                <small class="text-muted">ID: #001</small>
-              </td>
-              <td>BRN-2024-001</td>
-              <td>John Doe</td>
-              <td>
-                📧 john@quickfix.com<br />
-                📞 09123456789
-              </td>
-              <td>123 Main St, Manila</td>
-              <td><span class="badge-active">ACTIVE</span></td>
-              <td>
-                <button
-                  class="action-btn view"
-                  onclick="viewShop(0)"
-                  title="View"
-                >
-                  👁️
-                </button>
-                <button
-                  class="action-btn edit"
-                  onclick="editShop(0)"
-                  title="Edit"
-                >
-                  ✏️
-                </button>
-                <button
-                  class="action-btn delete"
-                  onclick="deleteShop(0)"
-                  title="Delete"
-                >
-                  🗑️
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>SpeedMoto Shop</strong><br />
-                <small class="text-muted">ID: #002</small>
-              </td>
-              <td>BRN-2024-002</td>
-              <td>Jane Smith</td>
-              <td>
-                📧 jane@speedmoto.com<br />
-                📞 09187654321
-              </td>
-              <td>456 Rizal Ave, Quezon City</td>
-              <td><span class="badge-active">ACTIVE</span></td>
-              <td>
-                <button
-                  class="action-btn view"
-                  onclick="viewShop(1)"
-                  title="View"
-                >
-                  👁️
-                </button>
-                <button
-                  class="action-btn edit"
-                  onclick="editShop(1)"
-                  title="Edit"
-                >
-                  ✏️
-                </button>
-                <button
-                  class="action-btn delete"
-                  onclick="deleteShop(1)"
-                  title="Delete"
-                >
-                  🗑️
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <!-- Table -->
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Shop</th>
+                        <th>Owner</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="shopTableBody">
+                    <!-- Data will be populated here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">➕ Add New Shop & Owner</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form id="addForm">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Shop Name *</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="addShopName"
-                    required
-                  />
+    <!-- Add Shop Modal -->
+    <div class="modal fade" id="addShopModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Shop</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="col-md-6">
-                  <label class="form-label">Business Registration No. *</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="addRegNo"
-                    required
-                  />
+                <div class="modal-body">
+                    <form id="addShopForm">
+                        <div class="mb-3">
+                            <label class="form-label">Shop Name</label>
+                            <input type="text" class="form-control" id="shopName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Owner Name</label>
+                            <input type="text" class="form-control" id="ownerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="contactNumber" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-control" id="address" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="status" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pin Location on Map</label>
+                            <p class="coordinates" id="coordinates">Latitude: - | Longitude: -</p>
+                            <div id="map"></div>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-12">
-                  <label class="form-label">Shop Address *</label>
-                  <textarea
-                    class="form-control"
-                    id="addAddress"
-                    rows="2"
-                    required
-                  ></textarea>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addShop()">Add Shop</button>
                 </div>
-                <div class="col-12">
-                  <label class="form-label">Coordinates</label>
-                  <div class="coordinates-display">
-                    <p>
-                      <strong>Longitude:</strong>
-                      <span id="addLongitude">Not set</span>
-                    </p>
-                    <p>
-                      <strong>Latitude:</strong>
-                      <span id="addLatitude">Not set</span>
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    class="btn-coordinates mt-2"
-                    onclick="openMapModal('add')"
-                  >
-                    📍 Add Coordinates
-                  </button>
-                </div>
-                <div class="col-12">
-                  <hr style="border-color: var(--dark-tertiary)" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Owner Full Name *</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="addOwnerName"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Owner Email *</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="addOwnerEmail"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Owner Phone Number *</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    id="addOwnerPhone"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Status *</label>
-                  <select class="form-select" id="addStatus" required>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn-add" onclick="registerShop()">
-              Register
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">✏️ Edit Shop & Owner</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form id="editForm">
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Shop Name *</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="editShopName"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Business Registration No. *</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="editRegNo"
-                    required
-                  />
-                </div>
-                <div class="col-12">
-                  <label class="form-label">Shop Address *</label>
-                  <textarea
-                    class="form-control"
-                    id="editAddress"
-                    rows="2"
-                    required
-                  ></textarea>
-                </div>
-                <div class="col-12">
-                  <label class="form-label">Coordinates</label>
-                  <div class="coordinates-display">
-                    <p>
-                      <strong>Longitude:</strong>
-                      <span id="editLongitude">Not set</span>
-                    </p>
-                    <p>
-                      <strong>Latitude:</strong>
-                      <span id="editLatitude">Not set</span>
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    class="btn-coordinates mt-2"
-                    onclick="openMapModal('edit')"
-                  >
-                    📍 Add Coordinates
-                  </button>
-                </div>
-                <div class="col-12">
-                  <hr style="border-color: var(--dark-tertiary)" />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Owner Full Name *</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="editOwnerName"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Owner Email *</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="editOwnerEmail"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Owner Phone Number *</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    id="editOwnerPhone"
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Status *</label>
-                  <select class="form-select" id="editStatus" required>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn-add" onclick="updateShop()">
-              Update
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- View Modal -->
-    <div class="modal fade" id="viewModal" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">👁️ Shop Details</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Shop Name</div>
-                  <div class="info-value" id="viewShopName"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Business Registration No.</div>
-                  <div class="info-value" id="viewRegNo"></div>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="info-group">
-                  <div class="info-label">Shop Address</div>
-                  <div class="info-value" id="viewAddress"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Longitude</div>
-                  <div class="info-value" id="viewLongitude"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Latitude</div>
-                  <div class="info-value" id="viewLatitude"></div>
-                </div>
-              </div>
-              <div class="col-12">
-                <hr style="border-color: var(--dark-tertiary)" />
-              </div>
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Owner Name</div>
-                  <div class="info-value" id="viewOwnerName"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Owner Email</div>
-                  <div class="info-value" id="viewOwnerEmail"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Owner Phone</div>
-                  <div class="info-value" id="viewOwnerPhone"></div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-group">
-                  <div class="info-label">Status</div>
-                  <div class="info-value" id="viewStatus"></div>
-                </div>
-              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-          </div>
         </div>
-      </div>
     </div>
 
-    <!-- Map Modal -->
-    <div class="modal fade" id="mapModal" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">📍 Select Shop Location</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <p class="text-muted mb-3">
-              Click on the map to select the shop location
-            </p>
-            <div id="map"></div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn-add" onclick="confirmLocation()">
-              Confirm Location
-            </button>
-          </div>
+    <!-- View Shop Modal -->
+    <div class="modal fade" id="viewShopModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Shop Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Shop Name</label>
+                        <p class="form-control-plaintext" id="viewShopName"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Owner Name</label>
+                        <p class="form-control-plaintext" id="viewOwnerName"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact Number</label>
+                        <p class="form-control-plaintext" id="viewContactNumber"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <p class="form-control-plaintext" id="viewAddress"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <p class="form-control-plaintext" id="viewStatus"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <p class="coordinates" id="viewCoordinates"></p>
+                        <div id="mapView"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Edit Shop Modal -->
+    <div class="modal fade" id="editShopModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Shop</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editShopForm">
+                        <input type="hidden" id="editShopId">
+                        <div class="mb-3">
+                            <label class="form-label">Shop Name</label>
+                            <input type="text" class="form-control" id="editShopName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Owner Name</label>
+                            <input type="text" class="form-control" id="editOwnerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="editContactNumber" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-control" id="editAddress" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="editStatus" required>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Update Location on Map</label>
+                            <p class="coordinates" id="editCoordinates"></p>
+                            <div id="mapEdit"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateShop()">Update Shop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Shop Modal -->
+    <div class="modal fade" id="deleteShopModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Shop</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong id="deleteShopName"></strong>?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                    <input type="hidden" id="deleteShopId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="../../assets/scripts/admin-shop-management.js"></script>
     <script src="../../assets/scripts/navbar.js"></script>
-    <script src="../../assets/scripts/shop-management.js"></script>
-  </body>
+</body>
 </html>

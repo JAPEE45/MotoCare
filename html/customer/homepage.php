@@ -26,7 +26,7 @@ require('../../helper/checkingUser.php');
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container">
         <a class="navbar-brand" href="homepage.html">
-          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Moto</span>Care
+          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Auto</span>Repair Shop
         </a>
         <button
           class="navbar-toggler"
