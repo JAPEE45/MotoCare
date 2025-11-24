@@ -2,7 +2,7 @@
 
 body {
     background: var(--dark-primary);
-    color: white;
+    color: var(--text-light);
     font-family: system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
 }
@@ -38,7 +38,7 @@ body {
 }
 
 .hero-description {
-    color: #d1d5db;
+    /* color: var(--text-muted); */
     font-size: 1.125rem;
     line-height: 1.7;
     max-width: 32rem;
@@ -88,12 +88,12 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    /* background: rgba(0, 0, 0, 0.4); */
     transition: all 0.3s ease;
 }
 
 .service-card:hover .service-overlay {
-    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
 }
 
 .service-card:hover .service-img {
@@ -146,6 +146,7 @@ body {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    color: white;
 }
 
 .cta-subtitle {
@@ -159,7 +160,7 @@ body {
     padding: 14px 35px;
     font-size: 1rem;
     font-weight: 600;
-    color: var(--text-light);
+    color: white;
     background: var(--red-primary);
     border: none;
     border-radius: 50px;
@@ -177,11 +178,11 @@ body {
 .footer-bottom {
     background-color: var(--dark-primary);
     padding: 20px 0;
-    border-top: 1px solid #374151;
+    /* border-top: 1px solid var(--text-light); */
 }
 
 .copyright {
-    color: #9ca3af;
+    color: var(--text-muted);
     font-size: 0.875rem;
     text-align: center;
     margin: 0;
@@ -189,7 +190,7 @@ body {
 
 .about-section {
     padding: 40px 0;
-    background-color: var(--dark-secondary);
+    background-color: var(--dark-primary);
 }
 
 .section-title {
@@ -292,6 +293,6 @@ body {
         width: 120%;
         top: 43%;
         right: -150px;
-        opacity: 0.5;
+        /* opacity: 0.8; */
     }
 }

@@ -37,7 +37,7 @@ body {
     font-weight: 600;
     text-align: center;
     margin-bottom: 0.4rem;
-    color: #f0f6fc;
+    color: var(--text-light);
 }
 
 .signin-subtitle {
@@ -45,7 +45,7 @@ body {
     font-weight: 400;
     text-align: center;
     margin-bottom: 1rem;
-    color: #f0f6fc;
+    color: var(--text-light);
     letter-spacing: 2px;
 }
 
@@ -63,7 +63,7 @@ body {
 .form-control {
     background: transparent;
     border: none;
-    border-bottom: 1px solid #21262d;
+    border-bottom: 1px solid var(--text-lightgray4);
     border-radius: 0 !important;
     color: #f0f6fc;
     padding: 0.75rem;
@@ -72,9 +72,9 @@ body {
 }
 
 .form-control:focus {
-    background-color: #0d1117;
+    background-color: var(--text-lightgray2);
     color: #f0f6fc;
-    box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.3);
+    /* box-shadow: 0 0 0 1px var(--primary-red); */
 }
 
 .form-control::placeholder {
@@ -132,14 +132,14 @@ body {
     left: 0;
     right: 0;
     height: 1px;
-    background-color: #21262d;
+    background-color: var(--text-lightgray4);
     z-index: -1;
 }
 
 .divider span {
     background: var(--dark-primary);
     padding: 0 1rem;
-    color: #7d8590;
+    color: var(--text-muted);
     font-size: 0.875rem;
 }
 

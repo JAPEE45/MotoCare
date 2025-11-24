@@ -24,7 +24,7 @@
     >
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="">
             <i class="fa-solid fa-motorcycle"></i
             ><span style="color: var(--primary-red)"> Moto</span>Care
           </a>
@@ -177,7 +177,6 @@
             </h2>
             <p
               style="
-                color: var(--text-gray);
                 line-height: 1.7;
                 margin-bottom: 30px;
               "
@@ -191,7 +190,6 @@
             </p>
             <p
               style="
-                color: var(--text-gray);
                 line-height: 1.7;
                 margin-bottom: 50px;
               "

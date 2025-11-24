@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <div class="signin-card">
       <h1 class="signin-title">Sign in to <span>Moto</span>Care</h1>
-      <p class="signin-subtitle">Let's get started! <?php echo $error ?></p>
+      <p class="signin-subtitle">Let's get started! </p>
 
       <!-- Regular login form -->
       <form method ="post" action="signin.php">
@@ -85,7 +85,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <input type="password" class="form-control" id="password" name="password" placeholder="Password">
           <a href="#" class="forgot-password">Forgot password?</a>
         </div>
+          
+  
         <button id="signinButton" type="submit" class="btn btn-signin">Sign in</button>
+        <?php if (!empty($error)): ?>
+
       </form>
 
       <div class="divider"><span>or</span></div>
