@@ -48,7 +48,7 @@
         <div class="container">
           <a class="navbar-brand" href="booking-service.html">
             <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Moto</span>Care
+            ><span style="color: var(--primary-red)"> Auto</span>Repair Shop
           </a>
           <button
             class="navbar-toggler"

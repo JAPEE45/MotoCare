@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MotoCare</title>
+    <title>Auto Repair Shop</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -26,7 +26,7 @@
         <div class="container">
           <a class="navbar-brand" href="">
             <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Moto</span>Care
+            ><span style="color: var(--primary-red)"> Auto</span>Repair Shop
           </a>
           <button
             class="navbar-toggler"
@@ -39,7 +39,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="./customer/homepage.php">Home</a>
+                <a class="nav-link" href="#home">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#partnership">Partnership</a>
@@ -75,7 +75,7 @@
       >
         <div class="row align-items-center g-5 hero-content">
           <div class="col-lg-6">
-            <div class="welcome-badge mb-4">WELCOME TO MotoCare</div>
+            <div class="welcome-badge mb-4">WELCOME TO Auto Repair Shop</div>
 
             <h1 class="hero-title mb-4">
               Your <span class="text-red-primary">Trusted</span> Motor<br />
@@ -120,7 +120,7 @@
             >
               WHO WE WORK WITH
             </p>
-            <h2 class="fs-1 fw-bold">Our Partner Shops</h2>
+            <h2 class="service-partner-title fs-1 fw-bold">Our Partner Shops</h2>
           </div>
         </div>
 
@@ -177,11 +177,12 @@
             </h2>
             <p
               style="
+                color: var(--primary-text);
                 line-height: 1.7;
                 margin-bottom: 30px;
               "
             >
-              <span class="text-logo">MotoCare</span> is a centralized,
+              <span class="text-logo"><span style="color: var(--primary-red)"> Auto</span>Repair Shop</span> is a centralized,
               web-based platform created to transform how auto repair services
               are managed and accessed in Virac, Catanduanes. Our goal is to
               make vehicle maintenance and repair more
@@ -190,14 +191,12 @@
             </p>
             <p
               style="
+                color: var(--primary-text);
                 line-height: 1.7;
                 margin-bottom: 50px;
               "
             >
-              We partner with local auto repair shops such as
-              <strong>Molje Lube, Precision Tech Motoshop, and CT Gear</strong>
-              to bridge the gap between traditional operations and modern
-              customer service. Through our platform, customers can
+              Through our platform, customers can
               <strong>book appointments online</strong>,
               <strong>locate the nearest motor shop</strong> via GIS map,
               <strong>track their repair progress</strong> in real time, and
@@ -248,7 +247,7 @@
     <div class="footer-bottom">
       <div class="container">
         <p class="copyright">
-          Copyright © 2025 MotoCare. All rights reserved.
+          Copyright © 2025 AutoRepair Shop. All rights reserved.
         </p>
       </div>
     </div>

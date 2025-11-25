@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign in to MotoCare · MotoCare</title>
+  <title>Sign in to AutoRepair Shop</title>
   
   <!-- Google Sign-In script -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -73,8 +73,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <i class="motocare-logo fa-solid fa-motorcycle"></i>
 
     <div class="signin-card">
-      <h1 class="signin-title">Sign in to <span>Moto</span>Care</h1>
-      <p class="signin-subtitle">Let's get started! </p>
+      <h1 class="signin-title">Sign in to <span>Auto</span>Repair Shop</h1>
+      <p class="signin-subtitle">Let's get started! <?php echo $error ?></p>
 
       <!-- Regular login form -->
       <form method ="post" action="signin.php">
@@ -89,6 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   
         <button id="signinButton" type="submit" class="btn btn-signin">Sign in</button>
         <?php if (!empty($error)): ?>
+  <p class="text-danger text-center mt-2"><?php echo $error; ?></p>
+<?php endif; ?>
+
 
       </form>
 

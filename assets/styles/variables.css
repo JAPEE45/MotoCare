@@ -1,25 +1,26 @@
 :root {
-    --red-primary: #ef4444;
-    --red-secondary: #dc2626;
-    /* --dark-primary: #0f0f0f; */
-    --dark-primary: #fff;
-    --dark-secondary: #1a1a1a;
-    --dark-tertiary: #2a2a2a;
+  --red-primary: #ef4444;
+  --red-secondary: #dc2626;
+  /* --dark-primary: #0f0f0f; */
+  /* --dark-primary: #fff; */
+  --primary-background: #fff;
+  --dark-secondary: #1a1a1a;
+  --dark-tertiary: #2a2a2a;
 
-    --primary-red: #e74c3c;
-    --dark-bg: #1a1a1a;
-    --darker-bg: #0d1117;
-    /* --text-light: #ffffff; */
-    --text-light: #000;
-    --text-gray: #9ca3af;
-    --text-lightgray: #f6f8fa;
-    --sky-blue: rgb(0, 100, 224);
-    --text-lightgray2: #f9fafb;
-    --text-lightgray3: #f3f4f6;
-    --text-lightgray4: #d1d5db;
-    --text-muted: #777;
+  --primary-red: #e74c3c;
+  --dark-bg: #1a1a1a;
+  --darker-bg: #0d1117;
+  /* --text-light: #ffffff; */
+  /* --text-light: #000; */
+  --primary-text: #000;
+  --text-gray: #9ca3af;
+  --text-lightgray: #f6f8fa;
+  --sky-blue: rgb(0, 100, 224);
+  --lightgray2: #f9fafb;
+  --lightgray3: #f3f4f6;
+  --lightgray4: #d1d5db;
 
-    --gray-card: #374151;
+  --gray-card: #374151;
 }
 
 /* --red-primary: #ef4444;

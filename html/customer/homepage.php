@@ -26,7 +26,7 @@ require('../../helper/checkingUser.php');
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container">
         <a class="navbar-brand" href="homepage.html">
-          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Moto</span>Care
+          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Auto</span>Repair Shop
         </a>
         <button
           class="navbar-toggler"
@@ -109,7 +109,7 @@ require('../../helper/checkingUser.php');
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-lg-10">
-          <h1 class="hero-title">Find a Repair Shop Near You</h1>
+          <h1 class="hero-title">Find a <span style="color: var(--primary-red);">Repair</span> Shop Near You</h1>
           <p class="hero-subtitle mx-auto">
             Connecting drivers with trusted auto repair shops for fast,
             reliable, and affordable services.
