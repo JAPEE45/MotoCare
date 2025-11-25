@@ -59,15 +59,12 @@ if($result->num_rows > 0){
       
       <nav class="sidebar-nav">
         <a href="./dashboard.php" class="nav-item active">
-          <i class="fas fa-tachometer-alt"></i>
           <span>Dashboard</span>
         </a>
         <a href="./booking-service.php" class="nav-item">
-          <i class="fas fa-calendar-check"></i>
           <span>Bookings</span>
         </a>
         <a href="./reports.php" class="nav-item">
-          <i class="fas fa-chart-bar"></i>
           <span>Reports</span>
         </a>
       </nav>

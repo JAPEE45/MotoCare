@@ -1,8 +1,8 @@
 @import url("./variables.css");
 
 body {
-  background-color: var(--darker-bg);
-  color: var(--text-light);
+  background-color: var(--primary-background);
+  color: var(--primary-text);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
@@ -15,7 +15,7 @@ body {
 .card {
   background-color: var(--dark-bg);
   border: 1px solid var(--gray-card);
-  color: var(--text-light);
+  color: white;
 }
 
 .appointment-card {
@@ -59,7 +59,7 @@ body {
 .btn-outline-secondary:hover {
   background-color: var(--gray-card);
   border-color: var(--gray-card);
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 .stat-card {
@@ -100,7 +100,7 @@ body {
 
 .calendar-day.selected {
   background-color: var(--red-primary);
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 .appointment-badge {

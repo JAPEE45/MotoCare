@@ -28,199 +28,9 @@ $shop_id = $row['shop_id'];
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="../../assets/styles/variables.css">
     <link rel="stylesheet" href="../../assets/styles/sidebar.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            min-height: 100vh;
-            color: #fff;
-        }
-        .main-content {
-            padding: 20px;
-        }
-        .content-wrapper {
-            max-width: 100%;
-        }
-        .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .page-title span {
-            color: #ef4444;
-        }
-        .page-subtitle {
-            color: #94a3b8;
-            margin-bottom: 30px;
-        }
-        .filter-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .filter-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #93c5fd;
-        }
-        .form-select, .form-control {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #fff;
-            border-radius: 10px;
-        }
-        .form-select:focus, .form-control:focus {
-            background: rgba(30, 41, 59, 0.9);
-            border-color: #3b82f6;
-            color: #fff;
-            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-        }
-        .form-select option {
-            background: #1e293b;
-            color: #fff;
-        }
-        .btn-filter {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-        .btn-filter:hover {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-        }
-        .btn-export {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-        .btn-export:hover {
-            background: linear-gradient(135deg, #059669, #047857);
-        }
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stats-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            transition: transform 0.3s;
-        }
-        .stats-card:hover {
-            transform: translateY(-5px);
-        }
-        .stats-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-        .stats-icon.blue { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-        .stats-icon.green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-        .stats-icon.red { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-        .stats-icon.yellow { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
-        .stats-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .stats-label {
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-        .chart-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            margin-bottom: 30px;
-        }
-        .chart-title {
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #f8fafc;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chart-title i {
-            color: #3b82f6;
-        }
-        .table-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 15px;
-            padding: 25px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        .table-card .table {
-            color: #fff;
-            margin-bottom: 0;
-        }
-        .table-card .table th {
-            background: rgba(59, 130, 246, 0.2);
-            color: #93c5fd;
-            font-weight: 600;
-            border: none;
-            padding: 15px;
-        }
-        .table-card .table td {
-            border-color: rgba(59, 130, 246, 0.1);
-            padding: 12px 15px;
-            vertical-align: middle;
-        }
-        .table-card .table tbody tr:hover {
-            background: rgba(59, 130, 246, 0.1);
-        }
-        .service-rank {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .rank-badge {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-        .rank-1 { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #000; }
-        .rank-2 { background: linear-gradient(135deg, #94a3b8, #64748b); color: #000; }
-        .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
-        .rank-default { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        @media print {
-            body { background: #fff; color: #000; }
-            .navbar, .filter-card, .export-buttons, .btn { display: none !important; }
-            .stats-card, .chart-card, .table-card { 
-                background: #fff; 
-                border: 1px solid #ddd;
-                color: #000;
-                break-inside: avoid;
-            }
-            .stats-value, .chart-title { color: #000; }
-            .stats-label { color: #666; }
-            .table { color: #000 !important; }
-        }
-    </style>
+    
+    <link rel="stylesheet" href="../../assets/styles/sidebar.css">
+    <link rel="stylesheet" href="../../assets/styles/reports.css">
 </head>
 <body>
     <!-- Mobile Overlay -->
@@ -237,16 +47,13 @@ $shop_id = $row['shop_id'];
       </div>
       
       <nav class="sidebar-nav">
-        <a href="./dashboard.php" class="nav-item">
-          <i class="fas fa-tachometer-alt"></i>
+        <a href="./dashboard.php" class="nav-item active">
           <span>Dashboard</span>
         </a>
         <a href="./booking-service.php" class="nav-item">
-          <i class="fas fa-calendar-check"></i>
           <span>Bookings</span>
         </a>
-        <a href="./reports.php" class="nav-item active">
-          <i class="fas fa-chart-bar"></i>
+        <a href="./reports.php" class="nav-item">
           <span>Reports</span>
         </a>
       </nav>
@@ -258,7 +65,7 @@ $shop_id = $row['shop_id'];
           </div>
           <div class="user-details">
             <span class="user-name"><?php echo $row['fullname'] ?></span>
-            <span class="user-role"><?php echo ucfirst($row['role']) ?></span>
+            <span class="user-role">Staff</span>
           </div>
         </div>
         <a href="../../helper/logout.php" class="nav-item logout-btn">
@@ -271,6 +78,7 @@ $shop_id = $row['shop_id'];
         <i class="fas fa-chevron-left"></i>
       </button>
     </aside>
+    
     
     <!-- Mobile Header -->
     <header class="mobile-header" id="mobileHeader">
