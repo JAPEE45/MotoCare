@@ -71,7 +71,7 @@ include '../../helper/checkingUser.php';
               <button class="btn-user" id="profileBtn">
                 <div class="d-flex flex-column gap-0">
                   <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
-                  <p class="mb-0 text-muted">Customer</p>
+                  <p class="mb-0 ">Customer</p>
                 </div>
                 <i
                   class="fa-solid fa-angle-down"
@@ -291,7 +291,7 @@ include '../../helper/checkingUser.php';
                 <div id="servicesCheckboxContainer" class="services-checkbox-container" style="max-height: 250px; overflow-y: auto; background: var(--dark-tertiary); border-radius: 8px; padding: 12px;">
                   <!-- Services checkboxes will be dynamically loaded -->
                 </div>
-                <small class="text-muted">
+                <small class="">
                   <i class="fas fa-info-circle me-1"></i>
                   You can select multiple services for one booking. Check all that apply.
                 </small>

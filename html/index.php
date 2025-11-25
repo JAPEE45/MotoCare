@@ -126,41 +126,47 @@
 
         <div class="row g-4 justify-content-center">
           <div class="col-12 col-lg-3">
-            <div class="service-card">
-              <div class="service-image position-relative">
-                <img
-                  src="../assets/images/moljelube.jpg"
-                  alt="Engine Repair"
-                  class="service-img"
-                />
-                <div class="service-overlay"></div>
+            <a href="./shop-infos.html" class="services-cards">
+              <div class="service-card">
+                <div class="service-image position-relative">
+                  <img
+                    src="../assets/images/moljelube.jpg"
+                    alt="Engine Repair"
+                    class="service-img"
+                  />
+                  <div class="service-overlay"></div>
+                </div>
+                <h3 class="service-title">MOLJE LUBE</h3>
               </div>
-              <h3 class="service-title">MOLJE LUBE</h3>
-            </div>
+            </a>
           </div>
 
           <div class="col-12 col-lg-3">
-            <div class="service-card">
-              <div class="service-image position-relative">
-                <img
-                  src="../assets/images/ptm.jpg"
-                  alt="Brake Repair"
-                  class="service-img"
-                />
-                <div class="service-overlay"></div>
+            <a href="./shop-infos.html" class="services-cards">
+              <div class="service-card">
+                <div class="service-image position-relative">
+                  <img
+                    src="../assets/images/ptm.jpg"
+                    alt="Brake Repair"
+                    class="service-img"
+                  />
+                  <div class="service-overlay"></div>
+                </div>
+                <h3 class="service-title">PRECISION TECH<br />MOTOSHOP</h3>
               </div>
-              <h3 class="service-title">PRECISION TECH<br />MOTOSHOP</h3>
-            </div>
+            </a>
           </div>
 
           <div class="col-12 col-lg-3">
-            <div class="service-card">
-              <div class="service-image position-relative">
-                <img src="" alt="CT GEAR" class="service-img" />
-                <div class="service-overlay"></div>
+            <a href="./shop-infos.html" class="services-cards">
+              <div class="service-card">
+                <div class="service-image position-relative">
+                  <img src="" alt="CT GEAR" class="service-img" />
+                  <div class="service-overlay"></div>
+                </div>
+                <h3 class="service-title">CT GEAR</h3>
               </div>
-              <h3 class="service-title">CT GEAR</h3>
-            </div>
+            </a>
           </div>
         </div>
       </div>

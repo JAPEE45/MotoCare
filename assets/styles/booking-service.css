@@ -7,8 +7,8 @@
 }
 
 body {
-  background-color: var(--dark-primary);
-  color: var(--text-light);
+  background-color: var(--primary-background);
+  color: var(--primary-text);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
 }
@@ -30,7 +30,7 @@ body {
 }
 
 .admin-title {
-  color: var(--text-light);
+  color: var(--primary-text);
   font-weight: 700;
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
@@ -92,7 +92,7 @@ body {
 }
 
 .filter-title {
-  color: var(--text-light);
+  color: var(--primary-text);
   font-weight: 600;
   margin-bottom: 1rem;
   font-size: 1.1rem;
@@ -103,7 +103,7 @@ body {
 .form-select {
   background-color: var(--dark-tertiary);
   border: 1px solid var(--gray-card);
-  color: var(--text-light);
+  color: var(--primary-text);
   border-radius: 8px;
   padding: 0.75rem;
   transition: all 0.3s ease;
@@ -114,7 +114,7 @@ body {
   background-color: var(--dark-tertiary);
   border-color: var(--red-primary);
   box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 .form-control::placeholder {
@@ -123,7 +123,7 @@ body {
 
 .form-select option {
   background-color: var(--dark-tertiary);
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 /* Table Styling */
@@ -137,13 +137,13 @@ body {
 
 .table {
   margin-bottom: 0;
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 .table thead th {
   background: transparent;
   border-color: var(--gray-card);
-  color: var(--text-light);
+  color: var(--primary-text);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -162,7 +162,7 @@ body {
   border-color: var(--gray-card);
   vertical-align: middle;
   background: transparent;
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 .sub-text {
@@ -266,7 +266,7 @@ body {
 }
 
 .modal-title {
-  color: var(--text-light);
+  color: var(--primary-text);
   font-weight: 600;
 }
 
@@ -275,7 +275,7 @@ body {
 }
 
 .modal-body {
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 .detail-group {
@@ -296,7 +296,7 @@ body {
 }
 
 .detail-value {
-  color: var(--text-light);
+  color: var(--primary-text);
   font-size: 1rem;
   font-weight: 500;
 }
@@ -374,7 +374,7 @@ body {
 
 .btn-outline-custom:hover {
   background: var(--gray-card);
-  color: var(--text-light);
+  color: var(--primary-text);
   transform: translateY(-1px);
 }
 
@@ -388,7 +388,7 @@ body {
 }
 
 .status-update-title {
-  color: var(--text-light);
+  color: var(--primary-text);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -487,7 +487,7 @@ body {
   background: var(--dark-secondary);
   border: 1px solid var(--gray-card);
   border-radius: 8px;
-  color: var(--text-light);
+  color: var(--primary-text);
   padding: 1rem;
   opacity: 0;
   transform: translateX(100%);
@@ -510,7 +510,7 @@ body {
 .btn-primary-custom {
   background-color: var(--sky-blue);
   border-color: var(--sky-blue);
-  color: var(--text-light);
+  color: var(--primary-text);
   font-weight: 500;
   padding: 12px 24px;
   border-radius: 8px;
@@ -520,14 +520,14 @@ body {
 .btn-primary-custom:hover {
   background-color: rgba(0, 100, 224, 0.9);
   border-color: rgba(0, 100, 224, 0.9);
-  color: var(--text-light);
+  color: var(--primary-text);
   transform: translateY(-1px);
 }
 
 .btn-secondary-custom {
   background-color: var(--gray-card);
   border-color: var(--gray-card);
-  color: var(--text-light);
+  color: var(--primary-text);
   font-weight: 500;
   padding: 12px 24px;
   border-radius: 8px;
@@ -537,7 +537,7 @@ body {
 .btn-secondary-custom:hover {
   background-color: rgba(55, 65, 81, 0.9);
   border-color: rgba(55, 65, 81, 0.9);
-  color: var(--text-light);
+  color: var(--primary-text);
 }
 
 /* Alert Styling */
@@ -580,7 +580,7 @@ body {
 }
 
 .current-booking-info .info-value {
-  color: var(--text-light);
+  color: var(--primary-text);
   font-weight: 600;
   margin-bottom: 8px;
 }
