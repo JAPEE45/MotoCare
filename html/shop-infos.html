@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Precision Tech</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/styles/shop-infos.css">
+  </head>
+  <body>
+    <div class="">
+      <div class="main-content">
+        <div class="shop-card">
+          <!-- Left Section -->
+          <div class="left-section">
+            <div class="shop-logo-container">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/3097/3097099.png"
+                alt="Precision Tech"
+                class="shop-logo"
+              />
+            </div>
+            <div class="shop-info">
+              <h1 class="shop-name">Precision Tech</h1>
+              <div class="owner-name">
+                <i class="fas fa-user-tie"></i>
+                <span>Owned by John Martinez</span>
+              </div>
+              <div class="location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span
+                  >123 Main Street, Downtown District, Metro Manila,
+                  Philippines</span
+                >
+              </div>
+              <div class="rating-section">
+                <div class="stars">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="rating-number">4.8</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Section -->
+          <div class="right-section">
+            <div class="right-container-1">
+              <h2 class="services-header">Our Services</h2>
+              <div class="services-list">
+                <div class="service-item">
+                  <div class="service-icon">
+                    <i class="fas fa-oil-can"></i>
+                  </div>
+                  <span class="service-name">Oil Change</span>
+                </div>
+                <div class="service-item">
+                  <div class="service-icon">
+                    <i class="fas fa-cog"></i>
+                  </div>
+                  <span class="service-name">Engine Repair</span>
+                </div>
+                <div class="service-item">
+                  <div class="service-icon">
+                    <i class="fas fa-car-battery"></i>
+                  </div>
+                  <span class="service-name">Battery Service</span>
+                </div>
+                <div class="service-item">
+                  <div class="service-icon">
+                    <i class="fas fa-tire"></i>
+                  </div>
+                  <span class="service-name">Tire Replacement</span>
+                </div>
+                <div class="service-item">
+                  <div class="service-icon">
+                    <i class="fas fa-brake"></i>
+                  </div>
+                  <span class="service-name">Brake Service</span>
+                </div>
+                <div class="service-item">
+                  <div class="service-icon">
+                    <i class="fas fa-diagnose"></i>
+                  </div>
+                  <span class="service-name">Diagnostics</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="right-container-2">
+              <div class="stats-section">
+                <div class="bookings-counter">
+                  <div class="counter-number" id="bookingCounter">0</div>
+                  <div class="counter-label">Total Bookings</div>
+                </div>
+              </div>
+
+              <button class="book-now-btn" onclick="handleBooking()">
+                <i class="fas fa-calendar-check"></i> Book Now!
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/scripts/shop-infos.js"></script>
+  </body>
+</html>

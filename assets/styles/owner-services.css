@@ -4,7 +4,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+  background: var(--primary-background);
   color: var(--text-light);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
@@ -78,7 +78,7 @@ body {
 .service-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-light);
+  color: white;
   margin-bottom: 0.5rem;
 }
 
@@ -137,7 +137,7 @@ body {
 
 .btn-outline-light {
   border: 2px solid var(--text-gray);
-  color: var(--text-light);
+  color: white;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-weight: 500;
@@ -171,6 +171,7 @@ body {
   background: var(--dark-secondary);
   border: 1px solid var(--dark-tertiary);
   border-radius: 16px;
+  color: white;
 }
 
 .modal-header {
@@ -208,7 +209,7 @@ body {
 .toast {
   background: var(--dark-secondary);
   border: 1px solid var(--dark-tertiary);
-  color: var(--text-light);
+  color: white;
 }
 
 .toast-header {
