@@ -12,14 +12,17 @@ body {
   min-height: 100vh;
 }
 
+.content-wrapper {
+  padding: 20px;
+}
+
 .main-header {
   background: transparent;
   /* border: 1px solid var(--dark-tertiary); */
   border-radius: 15px;
   /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
-  margin: 30px 0 50px;
-
-  padding: 30px;
+  margin: 20px 0 30px;
+  padding: 20px;
 }
 
 .main-header h1 {

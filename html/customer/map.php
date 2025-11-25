@@ -238,18 +238,6 @@ include '../../helper/checkingUser.php';
                   name="vehicle_model"
                 />
               </div>
-              <div class="mb-3">
-                <label class="form-label" style="color: var(--text-light)"
-                  >Vehicle Plate Number</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  required
-                  id="vehicle_plate_number"
-                  name="vehicle_plate_number"
-                />
-              </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label" style="color: var(--text-light)"
@@ -272,28 +260,41 @@ include '../../helper/checkingUser.php';
                     id="time"
                   >
                     <option value="" disabled selected>Select Time</option>
+                    <option value="08:00">8:00 AM</option>
+                    <option value="08:30">8:30 AM</option>
                     <option value="09:00">9:00 AM</option>
+                    <option value="09:30">9:30 AM</option>
                     <option value="10:00">10:00 AM</option>
+                    <option value="10:30">10:30 AM</option>
                     <option value="11:00">11:00 AM</option>
+                    <option value="11:30">11:30 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="12:30">12:30 PM</option>
+                    <option value="13:00">1:00 PM</option>
+                    <option value="13:30">1:30 PM</option>
                     <option value="14:00">2:00 PM</option>
+                    <option value="14:30">2:30 PM</option>
                     <option value="15:00">3:00 PM</option>
+                    <option value="15:30">3:30 PM</option>
                     <option value="16:00">4:00 PM</option>
+                    <option value="16:30">4:30 PM</option>
+                    <option value="17:00">5:00 PM</option>
+                    <option value="17:30">5:30 PM</option>
                   </select>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label" style="color: var(--text-light)"
-                    >Services</label
-                  >
-                  <select
-                    class="form-control"
-                    required
-                    id="services"
-                    name="service_id"
-                  >
-                   
-                  
-                  </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" style="color: var(--text-light); font-weight: 600;">
+                  <i class="fas fa-tools me-2" style="color: var(--red-primary);"></i>
+                  Select Services <span style="color: var(--text-gray); font-size: 0.85rem;">(Choose 1-5 services)</span>
+                </label>
+                <div id="servicesCheckboxContainer" class="services-checkbox-container" style="max-height: 250px; overflow-y: auto; background: var(--dark-tertiary); border-radius: 8px; padding: 12px;">
+                  <!-- Services checkboxes will be dynamically loaded -->
                 </div>
+                <small class="text-muted">
+                  <i class="fas fa-info-circle me-1"></i>
+                  You can select multiple services for one booking. Check all that apply.
+                </small>
               </div>
               <div class="mb-3">
                 <label class="form-label" style="color: var(--text-light)"
@@ -343,7 +344,8 @@ include '../../helper/checkingUser.php';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
-    <script src="../../assets/scripts/navbar.js"></script>
-    <script src="../../assets/scripts/map.js"></script>
+    <script src="../../assets/scripts/navbar.js?v=2.0"></script>
+    <script src="../../assets/scripts/map.js?v=2.0"></script>
+    <!-- UPDATED: Multiple services selection with checkboxes - Nov 25, 2025 -->
   </body>
 </html>

@@ -19,6 +19,7 @@ if ($bookingId) {
         u.email_id,
         s.id AS service_id,
         s.service_name,
+        b.service_ids,
         b.vehicle_name,
         b.vehicle_model,
         b.vehicle_plate_number,
@@ -29,7 +30,7 @@ if ($bookingId) {
         h.address
     FROM booking b
     INNER JOIN user u ON b.user_id = u.id
-    INNER JOIN services s ON b.service_id = s.id
+    LEFT JOIN services s ON b.service_id = s.id
     INNER JOIN shop h ON h.id = b.shop
     WHERE u.email_id = ? AND b.id = ? AND b.status <> 'finish'
     ORDER BY b.id DESC
@@ -65,6 +66,7 @@ if ($bookingId) {
         u.email_id,
         s.id AS service_id,
         s.service_name,
+        b.service_ids,
         b.vehicle_name,
         b.vehicle_model,
         b.vehicle_plate_number,
@@ -75,7 +77,7 @@ if ($bookingId) {
         h.address
     FROM booking b
     INNER JOIN user u ON b.user_id = u.id
-    INNER JOIN services s ON b.service_id = s.id
+    LEFT JOIN services s ON b.service_id = s.id
     INNER JOIN shop h ON h.id = b.shop
     WHERE u.email_id = ? AND b.status <> 'finish'
     ORDER BY b.id DESC

@@ -130,7 +130,7 @@ if ($booking_id) {
                 <div class="step" id="step1">
                   <i class="fas fa-clock"></i>
                 </div>
-                <div class="step-label" id="label1">Pending</div>
+                <div class="step-label" id="label1">On Queue</div>
               </div>
 
               <div class="step-wrapper">
@@ -188,7 +188,7 @@ if ($booking_id) {
               </div> -->
               <div class="detail-row">
                 <span class="detail-label">Current Status:</span>
-                <span class="status-badge" id="currentStatus">Pending</span>
+                <span class="status-badge" id="currentStatus">On Queue</span>
               </div>
             </div>
 

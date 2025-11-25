@@ -20,6 +20,11 @@ function initMap() {
     json.forEach((shop) => {
       const customIcon = L.divIcon({
         html: `<div style="
+            position: relative;
+            width: 40px;
+            height: 55px;
+          ">
+          <div style="
             width: 40px;
             height: 40px;
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
@@ -32,33 +37,45 @@ function initMap() {
             justify-content: center;
             cursor: pointer;">
             <i class="${shop.icon}" style="color: white; font-size: 16px; transform: rotate(45deg);"></i>
-          </div>`,
+          </div>
+        </div>`,
         className: "custom-marker",
-        iconSize: [40, 40],
-        iconAnchor: [20, 35],
+        iconSize: [40, 55],
+        iconAnchor: [20, 50],
+        popupAnchor: [0, -45]
       });
 
       const popupContent = `
-        <div class="popup-content">
-          <h5><i class="${shop.icon} me-2"></i>${shop.name}</h5>
-          <p><i class="fas fa-map-marker-alt me-2"></i>${shop.address}</p>
-          <p><i class="fas fa-phone me-2"></i>${shop.phone}</p>
+        <div class="popup-content" style="min-width: 280px;">
+          <h5 style="font-size: 1.2rem; font-weight: 700; color: #1a1a2e; margin-bottom: 10px;">
+            <i class="${shop.icon} me-2" style="color: #ef4444;"></i>${shop.name}
+          </h5>
+          <p style="margin-bottom: 8px;"><i class="fas fa-map-marker-alt me-2" style="color: #3b82f6;"></i>${shop.address}</p>
+          <p style="margin-bottom: 8px;"><i class="fas fa-phone me-2" style="color: #10b981;"></i>${shop.phone || 'Available after booking'}</p>
           <div class="services-list mb-2">
-            ${shop.services.map(service => `<span class="service-tag">${service.service_name}</span>`).join("")}
+            ${shop.services.map(service => `<span class="service-tag" style="background: #e0e7ff; color: #3730a3; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; margin: 2px; display: inline-block;">${service.service_name}</span>`).join("")}
           </div>
-          <p><small><i class="fas fa-star text-warning"></i> ${shop.rating}/10 rating • ${shop.hours} hours</small></p>
-          <button class="btn btn-book w-100" onclick="bookService('${shop.name}')">
+          <p style="margin-bottom: 12px;"><small><i class="fas fa-star" style="color: #fbbf24;"></i> ${shop.rating}/10 rating • ${shop.hours} hours</small></p>
+          <button class="btn btn-book w-100" onclick="bookService('${shop.name}')" style="background: linear-gradient(135deg, #ef4444, #dc2626); border: none; padding: 10px; border-radius: 8px; color: white; font-weight: 600;">
             <i class="fas fa-calendar-plus me-2"></i>Book Service
           </button>
         </div>
       `;
 
-      L.marker(shop.coordinates, { icon: customIcon })
+      const marker = L.marker(shop.coordinates, { icon: customIcon })
         .addTo(map)
         .bindPopup(popupContent, {
-          maxWidth: 300,
+          maxWidth: 350,
           className: "custom-popup",
         });
+      
+      // Add prominent tooltip with shop name - visible on hover
+      marker.bindTooltip(`<strong style="font-size: 16px; font-weight: 700; color: #fff;">${shop.name}</strong>`, {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -50],
+        className: 'shop-name-tooltip'
+      });
     });
   }
 
@@ -106,34 +123,136 @@ function initMap() {
 }
 
 async function bookService(shopName) {
+  console.log("=== bookService called for:", shopName);
   document.getElementById("selectedShop").textContent = shopName;
   const modal = new bootstrap.Modal(document.getElementById("bookingModal"));
   const serv = shp.filter(e=>e.name == shopName)
+  console.log("Filtered shop data:", serv);
 
-  // const userId = document.getElementById("userId").textContent
+  if (!serv || serv.length === 0) {
+    console.error("ERROR: No shop found with name:", shopName);
+    alert("Shop not found. Please try again.");
+    return;
+  }
+
+  // Check if user already has a pending booking
   const res = await fetch(`../../helper/checkBookService.php?ddd=${serv[0].shop_id}`)
   const j = await res.json()
-  console.log(serv)
-  console.log(j)
+  console.log("Check booking response:", j)
 
   if(j.success){
+    alert("You already have a pending booking at this shop!");
     window.location.href = `./booking-status.php?buid=${j.success.id}`
+    return;
   }
-  const sel = document.getElementById("services")
-  sel.innerHTML = "<option value='' disabled selected>Select Service</option>";
-  console.log(typeof serv)
+  
+  // Build checkboxes for multiple service selection
+  const container = document.getElementById("servicesCheckboxContainer")
+  if (!container) {
+    console.error("ERROR: servicesCheckboxContainer not found in DOM!");
+    alert("Error: Service container not found. Please refresh the page.");
+    return;
+  }
+  
+  // Clear previous content
+  container.innerHTML = "";
+  
+  if (!serv[0].services || serv[0].services.length === 0) {
+    console.error("ERROR: No services available for this shop");
+    container.innerHTML = '<p class="text-warning">No services available for this shop.</p>';
+    modal.show();
+    return;
+  }
+  
+  console.log("✅ Building checkboxes for", serv[0].services.length, "services:");
   document.getElementById("shop_id").value = serv[0].shop_id
-  serv[0].services.forEach(e=>{
-    const node = document.createElement("option")
-    node.value = e.id
-    node.textContent = e.service_name.toUpperCase()
-    sel.appendChild(node)
+  
+  serv[0].services.forEach((service, index) => {
+    console.log(`  ${index + 1}. ${service.service_name} (ID: ${service.id}) - ₱${service.labor_price || 'N/A'}`);
+    
+    const checkboxDiv = document.createElement("div")
+    checkboxDiv.className = "form-check mb-2"
+    checkboxDiv.style.padding = "10px"
+    checkboxDiv.style.background = "var(--dark-secondary)"
+    checkboxDiv.style.borderRadius = "6px"
+    
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.className = "form-check-input service-checkbox"
+    checkbox.value = service.id
+    checkbox.id = `service_${service.id}`
+    checkbox.style.width = "20px"
+    checkbox.style.height = "20px"
+    checkbox.style.cursor = "pointer"
+    
+    const label = document.createElement("label")
+    label.className = "form-check-label"
+    label.htmlFor = `service_${service.id}`
+    label.style.color = "var(--text-light)"
+    label.style.cursor = "pointer"
+    label.style.marginLeft = "8px"
+    label.innerHTML = `<strong>${service.service_name.toUpperCase()}</strong> ${service.labor_price ? `<span class="text-muted">(Labor: ₱${service.labor_price})</span>` : ''}`
+    
+    checkboxDiv.appendChild(checkbox)
+    checkboxDiv.appendChild(label)
+    container.appendChild(checkboxDiv)
   })
+  
+  console.log("✅ Total checkboxes created:", container.querySelectorAll('.service-checkbox').length);
+  console.log("✅ Container HTML:", container.innerHTML.substring(0, 200) + "...");
+  
+  // Add validation message container
+  const validationMsg = document.createElement("div")
+  validationMsg.id = "serviceValidationMsg"
+  validationMsg.className = "text-danger mt-2"
+  validationMsg.style.display = "none"
+  validationMsg.style.padding = "8px 12px"
+  validationMsg.style.borderRadius = "6px"
+  validationMsg.style.background = "rgba(239, 68, 68, 0.1)"
+  validationMsg.textContent = "Please select at least 1 service (maximum 5)"
+  container.appendChild(validationMsg)
+  
+  // Add event listeners to checkboxes to clear validation message when user selects
+  document.querySelectorAll('.service-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const selected = document.querySelectorAll('.service-checkbox:checked').length;
+      const msg = document.getElementById('serviceValidationMsg');
+      console.log("✓ Services selected:", selected);
+      if (selected >= 1 && selected <= 5) {
+        msg.style.display = 'none';
+      }
+    });
+  });
+  
+  console.log("✅ Modal opening with checkboxes...");
   modal.show();
 }
 
 
 async function addBooking(){
+    // Get selected service IDs
+    const selectedServices = Array.from(document.querySelectorAll('.service-checkbox:checked')).map(cb => parseInt(cb.value));
+    
+    // Validate service selection (1-5 services)
+    if (selectedServices.length === 0) {
+      const validationMsg = document.getElementById("serviceValidationMsg");
+      validationMsg.textContent = "Please select at least 1 service";
+      validationMsg.style.display = "block";
+      return;
+    }
+    
+    if (selectedServices.length > 5) {
+      const validationMsg = document.getElementById("serviceValidationMsg");
+      validationMsg.textContent = "You can select a maximum of 5 services";
+      validationMsg.style.display = "block";
+      return;
+    }
+    
+    // Hide validation message if validation passes
+    document.getElementById("serviceValidationMsg").style.display = "none";
+    
+    console.log("Selected services:", selectedServices);
+    
     const res = await fetch("../../helper/addBooking.php",{
       method:"POST",
       headers:{
@@ -145,20 +264,26 @@ async function addBooking(){
         preferred_date: document.getElementById("preferred_date").value,
         time: document.getElementById("time").value,
         shop_id : document.getElementById("shop_id").value,
-        service_id : document.getElementById("services").value,
+        service_ids : selectedServices, // Array of service IDs
         vehicle_name : document.getElementById("vehicle_name").value,
         notes : document.getElementById("notes").value,
         vehicle_model : document.getElementById("vehicle_model").value,
-        vehicle_plate_number : document.getElementById("vehicle_plate_number").value,
       })
     })
     const d = await res.json()
   
-    if(d.error){
+    console.log("Booking response:", d);
+    
+    if(d.status === "error"){
+      alert("Error: " + d.message);
       console.log(d.message)
       return
     }
+    
+    if(d.status === "success"){
+      alert("Booking successful! Transaction #: " + d.transaction_number);
       window.location.href = "./booking-status.php";
+    }
 }
 function submitBooking() {
   addBooking()

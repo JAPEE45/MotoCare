@@ -35,11 +35,21 @@ async function fetchBookings() {
     price: b.totalCost,
     notes: b.notes,
     shop: b.shop_name,
-    plate: b.vehicle_plate_number
+    plate: b.vehicle_plate_number,
+    transaction_number: b.transaction_number
   }));
     // duration removed
   bookingsByDate = {};
-  appointments.forEach(b => {
+  
+  // Filter out completed bookings from calendar view
+  // Only show: On Queue, In Progress, Confirmed (statuses that need attention)
+  const calendarAppointments = appointments.filter(b => 
+    b.status !== 'completed' && 
+    b.status !== 'cancelled' && 
+    b.status !== 'rejected'
+  );
+  
+  calendarAppointments.forEach(b => {
     if (!bookingsByDate[b.date]) bookingsByDate[b.date] = [];
     bookingsByDate[b.date].push(b);
   });
@@ -241,6 +251,10 @@ function showAppointments() {
         : appointment.status === "ongoing" || appointment.status === "pending" || appointment.status === "progress"
         ? "bg-warning"
         : "bg-danger";
+      
+      // Convert status for display (Pending -> On Queue)
+      const displayStatus = appointment.status === "pending" ? "On Queue" : 
+                           (appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1));
 
       appointmentsHTML += `
         <div class="appointment-card rounded p-3 mb-3 border-start">
@@ -251,7 +265,7 @@ function showAppointments() {
             </div>
             <span class="badge ${badgeClass}">
               <i class="fas ${iconClass} me-1"></i>
-              ${appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+              ${displayStatus}
             </span>
           </div>
           <div class="mb-2">

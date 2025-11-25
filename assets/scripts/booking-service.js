@@ -73,7 +73,7 @@ function renderTable(bookingData) {
       (booking) => `
         <tr class="">
             <td>
-                <strong>${booking.id}</strong>
+                <strong>${booking.transaction_number || 'TRANS-' + String(booking.id).padStart(11, '0')}</strong>
             </td>
             <td>
                 <div class="fw-bold">${booking.customerName}</div>
@@ -98,7 +98,7 @@ function renderTable(bookingData) {
             <td>
                 <span class="status-badge status-${booking.status}">
                     <i class="fas fa-${getStatusIcon(booking.status)}"></i>
-                    ${booking.status.replace("-", " ")}
+                    ${booking.status === 'pending' ? 'On Queue' : booking.status.replace("-", " ")}
                 </span>
             </td>
             <td>
@@ -162,9 +162,14 @@ function viewBookingDetails(bookingId) {
   const modalTitle = document.getElementById("modalTitle");
   const modalBody = document.getElementById("modalBody");
 
+  const transactionNum = booking.transaction_number || 'TRANS-' + String(booking.id).padStart(11, '0');
+  
+  // Escape service type for safe use in HTML attributes
+  const safeServiceType = booking.serviceType.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+  
   modalTitle.innerHTML = `
     <i class="fas fa-info-circle me-2"></i>
-    Booking Details - ${booking.id}
+    Booking Details - ${transactionNum}
   `;
 
   modalBody.innerHTML = `
@@ -206,9 +211,13 @@ function viewBookingDetails(bookingId) {
                 <div class="detail-label"><i class="fas fa-clock me-2"></i>Booking Created</div>
                 <div class="detail-value">${new Date(booking.createdAt).toLocaleString()}</div>
             </div>
-             <div class="detail-group">
+            <div class="detail-group">
                 <div class="detail-label"><i class="fas fa-sticky-note me-2"></i>Service Notes</div>
                 <div class="detail-value">${booking.notes}</div>
+           </div>
+           <div class="detail-group">
+                <div class="detail-label"><i class="fas fa-money-bill-wave me-2"></i>Total Cost</div>
+                <div class="detail-value"><strong>${booking.totalCost || 'Not set'}</strong></div>
            </div>
         </div>
     </div>
@@ -217,14 +226,19 @@ function viewBookingDetails(bookingId) {
         <div class="status-update-title"><i class="fas fa-edit me-2"></i>Update Status</div>
         <div class="row">
             <div class="col-md-6 mb-2">
-                <select class="form-select" id="modalStatusSelect">
-                    <option value="pending" ${booking.status === "pending" ? "selected" : ""}>Pending</option>
+                <select class="form-select" id="modalStatusSelect" onchange="toggleCostInput()">
+                    <option value="pending" ${booking.status === "pending" ? "selected" : ""}>On Queue</option>
                     <option value="progress" ${booking.status === "progress" ? "selected" : ""}>In Progress</option>
                     <option value="completed" ${booking.status === "completed" ? "selected" : ""}>Completed</option>
                 </select>
             </div>
-            <div class="col-md-6 mb-2">
-                <button class="btn btn-success-custom w-100" onclick="updateStatus('${booking.id}', document.getElementById('modalStatusSelect').value, '${booking.customerName}', '${booking.serviceType}', '${booking.phone}', '${booking.shop_name}')">
+            <div class="col-md-6 mb-2" id="costInputContainer" style="display: ${booking.status === "progress" || booking.status === "pending" ? "none" : "block"}">
+                <input type="number" class="form-control" id="totalCostInput" placeholder="Enter total cost (₱)" value="${booking.totalCost ? booking.totalCost.replace(/[₱,]/g, '') : ''}" min="0" step="0.01">
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <button class="btn btn-success-custom w-100" onclick="updateStatusWithCost('${booking.id}', '${booking.customerName}', '${safeServiceType}', '${booking.phone}', '${booking.shop_name}')">
                     <i class="fas fa-save"></i> Update Status
                 </button>
             </div>
@@ -232,13 +246,13 @@ function viewBookingDetails(bookingId) {
     </div>
     <div class="row mt-3">
         <div class="col-md-4 mb-2">
-            <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}', '${booking.customerName}', '${booking.serviceType}', '${booking.phone}', '${booking.shop_name}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
+            <button class="btn btn-success-custom w-100" onclick="confirmBooking('${booking.id}', '${booking.customerName}', '${safeServiceType}', '${booking.phone}', '${booking.shop_name}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
                 <i class="fas fa-check"></i> Accept Booking
             </button>
         </div>
       
         <div class="col-md-4 mb-2">
-            <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${booking.id}', '${booking.customerName}', '${booking.serviceType}', '${booking.phone}', '${booking.shop_name}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
+            <button class="btn btn-danger-custom w-100" onclick="cancelBooking('${booking.id}', '${booking.customerName}', '${safeServiceType}', '${booking.phone}', '${booking.shop_name}')" ${booking.status === "completed" || booking.status === "rejected" || booking.status != "not accepted" ? "disabled" : ""}>
                 <i class="fas fa-times"></i> Reject Booking
             </button>
         </div>
@@ -249,8 +263,45 @@ function viewBookingDetails(bookingId) {
   modalInstance.show();
 }
 
-function updateStatus(bookingId, newStatus, custumerName, serviceType,phone, shopName) {
-  fetch(`../../helper/staffUpdateStatus.php?status=${newStatus}&id=${bookingId}&phone=${phone}&fullname=${custumerName}&shopName=${shopName}&serviceType=${serviceType}`)
+// Toggle cost input visibility based on status selection
+function toggleCostInput() {
+  const statusSelect = document.getElementById('modalStatusSelect');
+  const costInputContainer = document.getElementById('costInputContainer');
+  
+  if (statusSelect.value === 'completed') {
+    costInputContainer.style.display = 'block';
+  } else {
+    costInputContainer.style.display = 'none';
+  }
+}
+
+function updateStatusWithCost(bookingId, customerName, serviceType, phone, shopName) {
+  const newStatus = document.getElementById('modalStatusSelect').value;
+  const totalCostInput = document.getElementById('totalCostInput');
+  let totalCost = null;
+  
+  // Validate cost input if status is completed
+  if (newStatus === 'completed') {
+    totalCost = parseFloat(totalCostInput.value);
+    
+    if (!totalCost || totalCost <= 0) {
+      alert('Please enter a valid total cost before marking as completed.');
+      totalCostInput.focus();
+      return;
+    }
+  }
+  
+  updateStatus(bookingId, newStatus, customerName, serviceType, phone, shopName, totalCost);
+}
+
+function updateStatus(bookingId, newStatus, custumerName, serviceType, phone, shopName, totalCost = null) {
+  let url = `../../helper/staffUpdateStatus.php?status=${newStatus}&id=${bookingId}&phone=${phone}&fullname=${custumerName}&shopName=${shopName}&serviceType=${serviceType}`;
+  
+  if (totalCost !== null) {
+    url += `&total_cost=${totalCost}`;
+  }
+  
+  fetch(url)
     .then(e=>e.json())
     .then(e=>{
       if(e.success){

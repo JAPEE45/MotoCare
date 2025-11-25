@@ -21,7 +21,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auto Repair Hub - Admin Dashboard</title>
+    <title>Owner Dashboard - MotoCare</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
@@ -33,66 +33,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
     <link rel="stylesheet" href="../../assets/styles/owner-dashboard.css">
-    <link rel="stylesheet" href="../../assets/styles/navbar.css">
+    <link rel="stylesheet" href="../../assets/styles/sidebar.css">
   </head>
   <body>
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-          <a class="navbar-brand" href="booking-service.html">
-            <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Auto</span>Repair Shop
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="./dashboard.php">Dashboard</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./user-management.php"
-                  >User Management</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="./services.php"
-                  >Services</a
-                >
-              </li>
-            </ul>
-            <div class="profile-dropdown">
-              <button class="btn-user" id="profileBtn">
-                <div class="d-flex flex-column gap-0">
-                  <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
-                  <p class="mb-0 text-muted">Shop Owner</p>
-                </div>
-                <i
-                  class="fa-solid fa-angle-down"
-                  style="font-size: 0.8rem; color: var(--text-gray)"
-                ></i>
-              </button>
-              <div class="dropdown-menu-custom" id="profileDropdown">
-                <a href="../account.php" class="dropdown-item-custom">
-                  <i class="fas fa-user-circle me-2"></i>Account
-                </a>
-                <a href="../../helper/logout.php" class="dropdown-item-custom">
-                  <i class="fas fa-sign-out-alt me-2"></i>Sign Out
-                </a>
-              </div>
-            </div>
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <img src="../../assets/images/logo.svg" alt="MotoCare Logo" onerror="this.style.display='none'">
+          <i class="fa-solid fa-motorcycle" style="display:none"></i>
+        </div>
+        <span class="sidebar-title">MotoCare</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="./dashboard.php" class="nav-item active">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="./user-management.php" class="nav-item">
+          <i class="fas fa-users-cog"></i>
+          <span>User Management</span>
+        </a>
+        <a href="./services.php" class="nav-item">
+          <i class="fas fa-tools"></i>
+          <span>Services</span>
+        </a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">
+            <?php echo strtoupper(substr($row['fullname'], 0, 1)); ?>
+          </div>
+          <div class="user-details">
+            <span class="user-name"><?php echo $row['fullname'] ?></span>
+            <span class="user-role">Shop Owner</span>
           </div>
         </div>
-      </nav>
+        <a href="../../helper/logout.php" class="nav-item logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+      
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    </aside>
+    
+    <!-- Mobile Header -->
+    <header class="mobile-header" id="mobileHeader">
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <span class="mobile-title">MotoCare</span>
+      <div class="mobile-user">
+        <?php echo strtoupper(substr($row['fullname'], 0, 1)); ?>
+      </div>
     </header>
 
-    <div class="main-content" id="mainContent">
+    <main class="main-content" id="mainContent">
+      <div class="content-wrapper">
       <div class="top-bar d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
           <h2 class="gradient-text mb-0">Dashboard</h2>
@@ -172,11 +177,11 @@
           </div>
         </div>
       </div>      
-    </div>
+      </div>
+    </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../../assets/scripts/owner-dashboard.js"></script>
-
-    <script src="../../assets/scripts/navbar.js"></script>
+    <script src="../../assets/scripts/sidebar.js"></script>
   </body>
 </html>

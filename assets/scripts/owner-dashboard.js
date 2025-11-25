@@ -158,7 +158,7 @@ function initStatusChart() {
   new Chart(ctx, {
     type: "doughnut",
     data: {
-      labels: ["Pending", "Confirmed", "Completed", "Cancelled"],
+      labels: ["On Queue", "Confirmed", "Completed", "Cancelled"],
       datasets: [
         {
           data: [

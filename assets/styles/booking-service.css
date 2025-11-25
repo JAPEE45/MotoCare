@@ -10,8 +10,11 @@ body {
   background-color: var(--dark-primary);
   color: var(--text-light);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  padding-top: 6rem;
   line-height: 1.6;
+}
+
+.content-wrapper {
+  padding: 20px;
 }
 
 /* Header */

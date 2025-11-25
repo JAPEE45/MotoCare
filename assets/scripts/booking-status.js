@@ -11,12 +11,39 @@ async function getBookingUpdate(){
   const json = await res.json()
   console.log(json)
   if(json.error){
-    console.log("EWror")
+    console.log("Error")
     return
   }
+  
+  // Get service names for display
+  let serviceDisplay = json.service_name || 'N/A';
+  if (json.service_ids) {
+    // If multiple services, fetch their names
+    const serviceIds = json.service_ids.split(',').map(id => id.trim());
+    if (serviceIds.length > 1) {
+      try {
+        const shopId = json.shop || new URLSearchParams(window.location.search).get("shop");
+        if (shopId) {
+          const servicesRes = await fetch(`../../helper/getShopAndServices.php?shop_id=${shopId}`);
+          const servicesData = await servicesRes.json();
+          if (servicesData.status === 'success' && servicesData.services) {
+            const serviceNames = servicesData.services
+              .filter(s => serviceIds.includes(s.id.toString()))
+              .map(s => s.service_name);
+            if (serviceNames.length > 0) {
+              serviceDisplay = serviceNames.join(', ');
+            }
+          }
+        }
+      } catch (e) {
+        console.log("Could not fetch service names:", e);
+      }
+    }
+  }
+  
   bookingData = {
     id: json.booking_id,
-    serviceType: json.service_name,
+    serviceType: serviceDisplay,
     vehicle: json.vehicle_name || 'N/A',
     appointmentDate: json.preferred_time || 'N/A',
     timeSlot: "10:00 AM - 12:00 PM",
@@ -105,7 +132,7 @@ function updateProgressSteps(status) {
       document.getElementById("step1").classList.add("active");
       document.getElementById("label1").classList.add("active");
       progressWidth = 0;
-      statusText = "Pending";
+      statusText = "On Queue";
       statusClass = "status-pending";
       break;
     case "cancelled":

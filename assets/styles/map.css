@@ -282,3 +282,106 @@ select option,
 .list-group-item:last-child {
   border-radius: 0 0 18px 18px !important;
 }
+
+/* Shop Name Tooltip Styling */
+.shop-name-tooltip {
+  background: linear-gradient(135deg, #1e293b, #0f172a) !important;
+  border: 2px solid #3b82f6 !important;
+  border-radius: 10px !important;
+  padding: 10px 16px !important;
+  color: #fff !important;
+  font-family: 'Segoe UI', sans-serif !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  font-size: 15px !important;
+}
+
+.shop-name-tooltip::before {
+  border-top-color: #3b82f6 !important;
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: #3b82f6 !important;
+}
+
+/* Custom popup styling */
+.custom-popup .leaflet-popup-content-wrapper {
+  background: linear-gradient(145deg, #1e293b, #0f172a) !important;
+  border: 2px solid rgba(59, 130, 246, 0.3) !important;
+  border-radius: 15px !important;
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: #1e293b !important;
+}
+
+/* Multiple Services Selection Styling */
+.services-checkbox-container {
+  background: var(--dark-tertiary);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.services-checkbox-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.services-checkbox-container::-webkit-scrollbar-track {
+  background: var(--dark-secondary);
+  border-radius: 3px;
+}
+
+.services-checkbox-container::-webkit-scrollbar-thumb {
+  background: var(--red-primary);
+  border-radius: 3px;
+}
+
+.services-checkbox-container::-webkit-scrollbar-thumb:hover {
+  background: var(--red-secondary);
+}
+
+.services-checkbox-container .form-check {
+  padding: 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: var(--dark-secondary);
+  margin-bottom: 8px !important;
+}
+
+.services-checkbox-container .form-check:hover {
+  background: rgba(59, 130, 246, 0.1);
+  transform: translateX(3px);
+}
+
+.services-checkbox-container .form-check-input {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--red-primary);
+  cursor: pointer;
+}
+
+.services-checkbox-container .form-check-input:checked {
+  background-color: var(--red-primary);
+  border-color: var(--red-primary);
+}
+
+.services-checkbox-container .form-check-input:focus {
+  border-color: var(--red-primary);
+  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
+}
+
+.services-checkbox-container .form-check-label {
+  cursor: pointer;
+  margin-left: 8px;
+  user-select: none;
+}
+
+#serviceValidationMsg {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--red-primary);
+}

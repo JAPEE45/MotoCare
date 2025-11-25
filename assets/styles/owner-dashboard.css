@@ -4,6 +4,8 @@ body {
   background-color: var(--primary-background);
   color: var(--text-light);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .gradient-text {
@@ -14,14 +16,8 @@ body {
   font-size: 3.5rem;
 }
 
-.main-content {
-  transition: all 0.3s ease;
-  padding: 2rem;
-  margin-top: 50px;
-}
-
-.main-content.expanded {
-  margin-left: 70px;
+.content-wrapper {
+  padding: 20px;
 }
 
 .top-bar {

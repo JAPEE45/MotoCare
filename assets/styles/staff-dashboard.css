@@ -4,7 +4,12 @@ body {
   background-color: var(--darker-bg);
   color: var(--text-light);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  padding-top: 5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.content-wrapper {
+  padding: 20px;
 }
 
 .card {

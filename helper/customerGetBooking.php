@@ -18,7 +18,7 @@ try {
             sv.service_name
             FROM booking b
             JOIN shop s ON b.shop = s.id
-            JOIN services sv ON b.service_id = sv.id
+            LEFT JOIN services sv ON b.service_id = sv.id
             WHERE b.user_id = ?
             ORDER BY b.createdAt DESC";
             
@@ -28,10 +28,30 @@ try {
     
     $bookings = [];
     while ($row = $result->fetch_assoc()) {
+        // Get all services if multiple
+        $services_display = $row['service_name'] ?? "N/A";
+        if (!empty($row['service_ids'])) {
+            $service_ids = explode(',', $row['service_ids']);
+            if (count($service_ids) > 0) {
+                $services_query = $conn->prepare("SELECT service_name FROM services WHERE id IN (" . implode(',', array_map('intval', $service_ids)) . ")");
+                $services_query->execute();
+                $services_result = $services_query->get_result();
+                $service_names = [];
+                while ($srv = $services_result->fetch_assoc()) {
+                    $service_names[] = $srv['service_name'];
+                }
+                if (count($service_names) > 0) {
+                    $services_display = implode(', ', $service_names);
+                }
+            }
+        }
+        
         $bookings[] = [
             'id' => $row['id'],
             'shopName' => $row['name'],
-            'service' => $row['service_name'],
+            'service' => $services_display,
+            'service_id' => $row['service_id'],
+            'service_ids' => $row['service_ids'],
             'status' => $row['status'],
             'dateTime' => $row['preferred_time'],
             'vehicle' => $row['vehicle_name'],
@@ -39,6 +59,9 @@ try {
             'vehicle_plate_number' => $row['vehicle_plate_number'],
             'address' => $row['address'],
             'notes' => $row['notes'],
+            'time' => $row['time'],
+            'shop_name' => $row['name'],
+            'shopName' => $row['name'],
         ];
     }
     
