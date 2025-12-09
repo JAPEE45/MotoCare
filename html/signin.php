@@ -91,7 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
   <div class="motocare-container">
-    <i class="motocare-logo fa-solid fa-motorcycle"></i>
 
     <div class="signin-card">
       <h1 class="signin-title">Sign in to <span>Auto</span>Repair Shop</h1>

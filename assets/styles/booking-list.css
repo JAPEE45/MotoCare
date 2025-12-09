@@ -139,7 +139,7 @@ body {
 .btn-book {
   background: var(--red-primary);
   border: none;
-  color: var(--text-light);
+  color: white;
   padding: 0.6rem 1.5rem;
   border-radius: 20px;
   font-weight: bold;

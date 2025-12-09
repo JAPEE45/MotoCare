@@ -48,8 +48,8 @@ function initMap() {
 
       const popupContent = `
         <div class="popup-content" style="min-width: 280px;">
-          <h5 style="font-size: 1.2rem; font-weight: 700; color: #1a1a2e; margin-bottom: 10px;">
-            <i class="${shop.icon} me-2" style="color: #ef4444;"></i>${shop.name}
+          <h5 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;">
+            ${shop.name}
           </h5>
           <p style="margin-bottom: 8px;"><i class="fas fa-map-marker-alt me-2" style="color: #3b82f6;"></i>${shop.address}</p>
           <p style="margin-bottom: 8px;"><i class="fas fa-phone me-2" style="color: #10b981;"></i>${shop.phone || 'Available after booking'}</p>

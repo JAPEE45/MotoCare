@@ -25,7 +25,7 @@ require('../../helper/checkingUser.php');
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <div class="container">
         <a class="navbar-brand" href="homepage.html">
-          <i class="fa-solid fa-motorcycle"></i><span style="color: var(--primary-red)"> Auto</span>Repair Shop
+          <span style="color: var(--primary-red)"> Auto</span>Repair Shop
         </a>
         <button
           class="navbar-toggler"
@@ -161,7 +161,7 @@ require('../../helper/checkingUser.php');
           </div>
           <div
             class="modal-body"
-            style="background: var(--dark-secondary); color: var(--text-light)"
+            style="background: var(--dark-secondary); color: white"
           >
             <form id="bookingForm">
               <div class="mb-3">
@@ -267,7 +267,7 @@ require('../../helper/checkingUser.php');
                 <div id="servicesCheckboxContainer" class="services-checkbox-container" style="max-height: 250px; overflow-y: auto; background: var(--dark-tertiary); border-radius: 8px; padding: 12px;">
                   <!-- Services checkboxes will be dynamically loaded -->
                 </div>
-                <small class="text-muted">
+                <small class="text-muted" style="color: var(--lightgray4) !important">
                   <i class="fas fa-info-circle me-1"></i>
                   You can select multiple services for one booking. Check all that apply.
                 </small>
@@ -298,7 +298,7 @@ require('../../helper/checkingUser.php');
               class="btn"
               style="
                 background: var(--gray-card);
-                color: var(--text-light);
+                color: white;
                 border: 1px solid var(--dark-tertiary);
               "
               data-bs-dismiss="modal"
@@ -308,6 +308,7 @@ require('../../helper/checkingUser.php');
             <button
               type="button"
               class="btn btn-book"
+              style=
             >
               <i class="fas fa-check me-2"></i>Save
             </button>

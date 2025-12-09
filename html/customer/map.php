@@ -59,8 +59,7 @@ if ($selectedShopId > 0) {
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
           <a class="navbar-brand" href="homepage.php">
-            <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Auto</span>Repair Shop
+            <span style="color: var(--primary-red)"> Auto</span>Repair Shop
           </a>
           <button
             class="navbar-toggler"

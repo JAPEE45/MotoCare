@@ -45,7 +45,6 @@ if ($row['role'] !== 'admin') {
       <div class="sidebar-header">
         <div class="sidebar-logo">
           <img src="../../assets/images/logo.svg" alt="MotoCare Logo" onerror="this.style.display='none'">
-          <i class="fa-solid fa-motorcycle" style="display:none"></i>
         </div>
         <span class="sidebar-title">MotoCare</span>
       </div>

@@ -223,7 +223,7 @@ function viewBookingDetails(bookingId) {
     </div>
    
     <div class="status-update-section" style="display: ${booking.status == "not accepted" ? "none;important" : ""}">
-        <div class="status-update-title"><i class="fas fa-edit me-2"></i>Update Status</div>
+        <div class="status-update-title" style='color: white !important;'><i class="fas fa-edit me-2"></i>Update Status</div>
         <div class="row">
             <div class="col-md-6 mb-2">
                 <select class="form-select" id="modalStatusSelect" onchange="toggleCostInput()">

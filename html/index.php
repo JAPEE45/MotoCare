@@ -25,8 +25,7 @@
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
           <a class="navbar-brand" href="">
-            <i class="fa-solid fa-motorcycle"></i
-            ><span style="color: var(--primary-red)"> Auto</span>Repair Shop
+            <span style="color: var(--primary-red)"> Auto</span>Repair Shop
           </a>
           <button
             class="navbar-toggler"
@@ -78,7 +77,7 @@
             <div class="welcome-badge mb-4">WELCOME TO Auto Repair Shop</div>
 
             <h1 class="hero-title mb-4">
-              Your <span class="text-red-primary">Trusted</span> Motor<br />
+              Your <span class="text-red-primary">Trusted</span> Vehicle<br />
               Repair Service<br />
               Provider
             </h1>
