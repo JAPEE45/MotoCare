@@ -1,0 +1,387 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--dark-primary);
+  min-height: 100vh;
+  padding-top: 5rem;
+  overflow: hidden;
+}
+
+.hero-section {
+  background: var(--dark-secondary);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  color: var(--text-light);
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--dark-tertiary);
+}
+
+.map-container {
+  position: relative;
+  height: 90vh;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  border: none;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+/* Custom Leaflet popup styles */
+.leaflet-popup-content-wrapper {
+  background: var(--dark-secondary);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--dark-tertiary);
+}
+
+.leaflet-popup-content {
+  margin: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.popup-content h5 {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.popup-content p {
+  color: var(--text-gray);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.services-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.service-tag {
+  background: var(--sky-blue);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.btn-book {
+  background: var(--red-primary);
+  border: none;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-book:hover {
+  background: var(--red-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  color: white;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: var(--red-primary);
+}
+
+.legend {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  background: var(--dark-tertiary);
+  border: 1px solid var(--dark-tertiary);
+  color: var(--text-light);
+}
+
+.form-control:focus {
+  background: var(--dark-tertiary);
+  color: var(--text-light);
+}
+
+select,
+select option,
+.form-control {
+  color: var(--text-light);
+}
+
+.form-label {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#bookingForm {
+  color: white;
+}
+
+.legend-pin {
+  width: 15px;
+  height: 15px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  border: 2px solid white;
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    height: 100vh;
+  }
+
+  .shop-info {
+    min-width: 250px;
+    max-width: 280px;
+    padding: 1rem;
+  }
+
+  .legend {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 1rem 0;
+  }
+}
+
+/* Animations for notifications */
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+/* Distance label styling */
+.distance-label {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Search results styling */
+.list-group-item {
+  background: #2a2e33 !important;
+  color: #fff !important;
+  border: 1px solid #3a3e43 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  background: #3a3e43 !important;
+  border-color: #ff6b6b !important;
+  transform: translateX(5px);
+}
+
+.list-group-item:first-child {
+  border-radius: 0 !important;
+}
+
+.list-group-item:last-child {
+  border-radius: 0 0 18px 18px !important;
+}
+
+/* Black & White Search Engine Styles */
+.form-control#shopSearch {
+  background: #fff !important;
+  color: #111 !important;
+  border: 1.5px solid #111 !important;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: none !important;
+}
+
+.form-control#shopSearch:focus {
+  background: #fff !important;
+  color: #111 !important;
+  border: 1.5px solid #111 !important;
+}
+
+.form-control#shopSearch::placeholder {
+  color: #888 !important;
+  opacity: 1;
+  font-style: italic;
+}
+
+#shopSearchResults {
+  background: #111 !important;
+  border: 1.5px solid #fff !important;
+  color: #fff !important;
+}
+
+.list-group-item {
+  background: #111 !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+  background: #fff !important;
+  color: #111 !important;
+  border-color: #111 !important;
+  transform: translateX(5px);
+}
+
+.list-group-item:first-child {
+  border-radius: 0 !important;
+}
+
+.list-group-item:last-child {
+  border-radius: 0 0 18px 18px !important;
+}
+
+/* Shop Name Tooltip Styling */
+.shop-name-tooltip {
+  background: linear-gradient(135deg, #1e293b, #0f172a) !important;
+  border: 2px solid #3b82f6 !important;
+  border-radius: 10px !important;
+  padding: 10px 16px !important;
+  color: #fff !important;
+  font-family: 'Segoe UI', sans-serif !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  font-size: 15px !important;
+}
+
+.shop-name-tooltip::before {
+  border-top-color: #3b82f6 !important;
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: #3b82f6 !important;
+}
+
+/* Custom popup styling */
+.custom-popup .leaflet-popup-content-wrapper {
+  background: linear-gradient(145deg, #1e293b, #0f172a) !important;
+  border: 2px solid rgba(59, 130, 246, 0.3) !important;
+  border-radius: 15px !important;
+}
+
+.custom-popup .leaflet-popup-tip {
+  background: #1e293b !important;
+}
+
+/* Multiple Services Selection Styling */
+.services-checkbox-container {
+  background: var(--dark-tertiary);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.services-checkbox-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.services-checkbox-container::-webkit-scrollbar-track {
+  background: var(--dark-secondary);
+  border-radius: 3px;
+}
+
+.services-checkbox-container::-webkit-scrollbar-thumb {
+  background: var(--red-primary);
+  border-radius: 3px;
+}
+
+.services-checkbox-container::-webkit-scrollbar-thumb:hover {
+  background: var(--red-secondary);
+}
+
+.services-checkbox-container .form-check {
+  padding: 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: var(--dark-secondary);
+  margin-bottom: 8px !important;
+}
+
+.services-checkbox-container .form-check:hover {
+  background: rgba(59, 130, 246, 0.1);
+  transform: translateX(3px);
+}
+
+.services-checkbox-container .form-check-input {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--red-primary);
+  cursor: pointer;
+}
+
+.services-checkbox-container .form-check-input:checked {
+  background-color: var(--red-primary);
+  border-color: var(--red-primary);
+}
+
+.services-checkbox-container .form-check-input:focus {
+  border-color: var(--red-primary);
+  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
+}
+
+.services-checkbox-container .form-check-label {
+  cursor: pointer;
+  margin-left: 8px;
+  user-select: none;
+}
+
+#serviceValidationMsg {
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--red-primary);
+}

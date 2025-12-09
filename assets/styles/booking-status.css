@@ -1,0 +1,372 @@
+@import url("./variables.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+}
+
+.container-main {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+  margin-top: 100px;
+}
+
+.status-card {
+  background: var(--dark-secondary);
+  border: 1px solid var(--dark-tertiary);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+}
+
+.booking-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.booking-id {
+  background: var(--red-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.progress-container {
+  margin: 2rem 0;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.progress-line {
+  position: absolute;
+  top: 30%;
+  left: 10px;
+  right: 40px;
+  height: 4px;
+  background: var(--dark-tertiary);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.progress-line-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-primary), var(--sky-blue));
+  transition: width 0.8s ease;
+  border-radius: 2px;
+}
+
+.step {
+  background: var(--dark-tertiary);
+  border: 3px solid var(--dark-tertiary);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.step.active {
+  background: var(--red-primary);
+  border-color: var(--red-primary);
+  animation: pulse 2s infinite;
+}
+
+.step.completed {
+  background: var(--sky-blue);
+  border-color: var(--sky-blue);
+}
+
+.step i {
+  color: var(--text-light);
+  font-size: 1.2rem;
+}
+
+.step-label {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.step-wrapper {
+  z-index: 0;
+}
+
+.step-label.active {
+  color: var(--red-primary);
+  font-weight: bold;
+}
+
+.step-label.completed {
+  color: var(--sky-blue);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.booking-details {
+  background: var(--dark-tertiary);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--gray-card);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.detail-label {
+  color: var(--text-gray);
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.status-pending {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
+.status-progress {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--red-primary);
+  border: 1px solid var(--red-primary);
+}
+
+.status-completed {
+  background: rgba(0, 100, 224, 0.2);
+  color: var(--sky-blue);
+  border: 1px solid var(--sky-blue);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 2px solid var(--red-primary);
+  color: var(--red-primary);
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: var(--red-primary);
+  color: white;
+}
+
+.btn-reschedule {
+  background: var(--sky-blue);
+  border: 2px solid var(--sky-blue);
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-reschedule:hover {
+  background: transparent;
+  color: var(--sky-blue);
+}
+
+.estimated-time {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 10px;
+  border-left: 4px solid var(--red-primary);
+}
+
+/* Default State Styles */
+.no-booking-container {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.no-booking-content {
+  justify-content: center;
+  align-items: center;
+}
+
+.no-booking-icon {
+  font-size: 4rem;
+  color: var(--text-gray);
+  margin-bottom: 1.5rem;
+}
+
+.no-booking-title {
+  color: var(--text-light);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.no-booking-subtitle {
+  color: var(--text-gray);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.no-booking-card {
+  background: var(--dark-secondary);
+  border: 2px dashed var(--text-gray);
+  border-radius: 15px;
+  padding: 3rem 2rem;
+  max-width: 500px;
+  width: 100%;
+  align-self: center;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Styles */
+.modal-content {
+  background: var(--dark-secondary);
+  border: 1px solid var(--gray-card);
+  border-radius: 15px;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--gray-card);
+  background: linear-gradient(135deg, var(--sky-blue), #1e90ff);
+  color: white;
+}
+
+.modal-body {
+  background: var(--dark-secondary);
+  color: var(--text-light);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--gray-card);
+  background: var(--dark-secondary);
+}
+
+.form-control,
+.form-select {
+  background: var(--dark-tertiary);
+  border: 1px solid var(--gray-card);
+  color: var(--text-light);
+  border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: var(--dark-tertiary);
+  border-color: var(--sky-blue);
+  box-shadow: 0 0 0 0.2rem rgba(0, 100, 224, 0.25);
+  color: var(--text-light);
+}
+
+.form-label {
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.btn-close {
+  filter: invert(1);
+}
+
+@media (max-width: 768px) {
+  .progress-steps {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .progress-line {
+    width: 4px;
+    height: 80%;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .step {
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,345 @@
+@import url('./variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    var(--lightgray2) 0%,
+    var(--lightgray3) 100%
+  );
+}
+
+.container-fluid {
+  height: 100vh;
+  padding: 0;
+}
+
+.main-content {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  /* padding: 2rem; */
+}
+
+.shop-card {
+  background: var(--primary-background);
+  /* border-radius: 24px; */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* height: 85vh; */
+}
+
+.left-section {
+  background: linear-gradient(
+    135deg,
+    var(--dark-secondary) 0%,
+    var(--dark-tertiary) 100%
+  );
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.left-section::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(239, 68, 68, 0.1) 0%,
+    transparent 70%
+  );
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.shop-logo-container {
+  position: relative;
+  z-index: 2;
+  /* text-align: center; */
+  margin-bottom: 2rem;
+}
+
+.shop-logo {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(239, 68, 68, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.shop-logo:hover {
+  transform: scale(1.05);
+}
+
+.shop-info {
+  position: relative;
+  z-index: 2;
+  color: var(--text-lightgray);
+}
+
+.shop-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-background);
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.owner-name {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.location {
+  font-size: 1rem;
+  color: var(--text-lightgray);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.location i {
+  color: var(--red-primary);
+}
+
+.rating-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stars {
+  color: #fbbf24;
+  font-size: 1.5rem;
+}
+
+.rating-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-background);
+}
+
+.right-section {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.right-container-2 {
+  border-top: 1px solid var(--lightgray4);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.services-header {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark-secondary);
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.services-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--red-primary), var(--red-secondary));
+  border-radius: 2px;
+}
+
+.services-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.service-item {
+  background: var(--lightgray2);
+  padding: 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.service-item:hover {
+  background: var(--primary-background);
+  border-color: var(--red-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.1);
+}
+
+.service-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--red-primary), var(--red-secondary));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.service-name {
+  font-weight: 600;
+  color: var(--dark-secondary);
+  font-size: 0.95rem;
+}
+
+.stats-section {
+  /* background: linear-gradient(135deg, var(--lightgray2), var(--lightgray3)); */
+  padding: 1rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.bookings-counter {
+  text-align: center;
+}
+
+.counter-number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--red-primary), var(--red-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.counter-label {
+  font-size: 1.1rem;
+  color: var(--text-gray);
+  font-weight: 600;
+}
+
+.book-now-btn {
+  width: 40%;
+  padding: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--red-primary), var(--red-secondary));
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+  max-height: max-content;
+}
+
+.book-now-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(239, 68, 68, 0.4);
+}
+
+.book-now-btn:active {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 992px) {
+  body {
+    overflow: auto;
+  }
+  .right-container-2 {
+    display:unset;
+  }
+  .book-now-btn {
+    width: 100%;
+  }
+  .shop-card {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .main-content {
+    height: auto;
+    min-height: 100vh;
+    align-items: flex-start;
+  }
+
+  .services-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .shop-name {
+    font-size: 2rem;
+  }
+
+  .services-header {
+    font-size: 1.5rem;
+  }
+
+  .counter-number {
+    font-size: 2.5rem;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--red-primary);
+  border-radius: 4px;
+}

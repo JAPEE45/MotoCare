@@ -1,0 +1,183 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--lightgray2);
+  color: var(--primary-text);
+}
+
+.container-main {
+  max-width: 1400px;
+  padding: 0 2rem;
+  margin-top: 100px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-header h2 {
+  color: var(--primary-text);
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: var(--red-primary);
+  border: none;
+  padding: 0.6rem 1.5rem;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: var(--red-secondary);
+}
+
+.search-box {
+  background: var(--primary-background);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-box input {
+  border: 1px solid var(--lightgray4);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+}
+
+.table-container {
+  background: var(--primary-background);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: var(--lightgray3);
+  color: var(--primary-text);
+  font-weight: 600;
+  border-bottom: 2px solid var(--lightgray4);
+  padding: 1rem;
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.badge.bg-success {
+  background-color: #10b981 !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--red-primary) !important;
+}
+
+.btn-action {
+  padding: 0.4rem 0.8rem;
+  margin: 0 0.2rem;
+  font-size: 0.875rem;
+  border-radius: 4px;
+}
+
+.btn-view {
+  background-color: var(--sky-blue);
+  color: white;
+  border: none;
+}
+
+.btn-edit {
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+}
+
+.btn-delete {
+  background-color: var(--red-primary);
+  color: white;
+  border: none;
+}
+
+.modal-header {
+  background-color: var(--lightgray3);
+  border-bottom: 2px solid var(--lightgray4);
+}
+
+.modal-title {
+  color: var(--primary-text);
+  font-weight: 600;
+}
+
+#map,
+#mapEdit,
+#mapView {
+  height: 400px;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 1px solid var(--lightgray4);
+}
+
+.coordinates {
+  background-color: var(--lightgray3);
+  padding: 0.8rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-family: monospace;
+  color: var(--primary-text);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--primary-text);
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+  border: 1px solid var(--lightgray4);
+  padding: 0.6rem;
+  border-radius: 6px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--red-primary);
+  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25);
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .btn-action {
+    display: block;
+    width: 100%;
+    margin: 0.2rem 0;
+  }
+}
