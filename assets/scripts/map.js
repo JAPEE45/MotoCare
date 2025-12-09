@@ -3,6 +3,7 @@ let shp = []
 let current_services = []
 let userLocation = null; // Store user's current location
 let currentRoute = null; // Store current route polyline
+let shopMarkers = {}; // Store markers by shop name for later access
 
 function initMap() {
   map = L.map("map").setView([13.586, 124.2374], 14);
@@ -69,6 +70,9 @@ function initMap() {
           className: "custom-popup",
         });
       
+      // Store marker reference by shop name for later access
+      shopMarkers[shop.name] = marker;
+      
       // Add prominent tooltip with shop name - visible on hover
       marker.bindTooltip(`<strong style="font-size: 16px; font-weight: 700; color: #fff;">${shop.name}</strong>`, {
         permanent: false,
@@ -77,6 +81,9 @@ function initMap() {
         className: 'shop-name-tooltip'
       });
     });
+    
+    // Check if shop_id was passed from shop-infos.php and auto-open booking
+    checkForSelectedShop();
   }
 
   getShopAndService();
@@ -288,6 +295,48 @@ async function addBooking(){
 function submitBooking() {
   addBooking()
 
+}
+
+// Check if shop was pre-selected from shop-infos.php page
+function checkForSelectedShop() {
+  const selectedShopIdEl = document.getElementById('selectedShopId');
+  const selectedShopNameEl = document.getElementById('selectedShopName');
+  const selectedShopLatEl = document.getElementById('selectedShopLat');
+  const selectedShopLngEl = document.getElementById('selectedShopLng');
+  
+  if (!selectedShopIdEl || !selectedShopNameEl) {
+    console.log("No selected shop elements found");
+    return;
+  }
+  
+  const selectedShopId = parseInt(selectedShopIdEl.textContent.trim());
+  const selectedShopName = selectedShopNameEl.textContent.trim();
+  const selectedShopLat = parseFloat(selectedShopLatEl.textContent.trim());
+  const selectedShopLng = parseFloat(selectedShopLngEl.textContent.trim());
+  
+  console.log("Selected shop from URL:", { selectedShopId, selectedShopName, selectedShopLat, selectedShopLng });
+  
+  if (selectedShopId > 0 && selectedShopName) {
+    console.log("✅ Shop pre-selected from shop-infos page:", selectedShopName);
+    
+    // Center map on the selected shop
+    if (selectedShopLat && selectedShopLng) {
+      map.setView([selectedShopLat, selectedShopLng], 16);
+    }
+    
+    // Wait a moment for the map to settle, then open popup and booking modal
+    setTimeout(() => {
+      // Open the marker popup if available
+      if (shopMarkers[selectedShopName]) {
+        shopMarkers[selectedShopName].openPopup();
+      }
+      
+      // Auto-open booking modal for the selected shop
+      setTimeout(() => {
+        bookService(selectedShopName);
+      }, 500);
+    }, 1000);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function () {

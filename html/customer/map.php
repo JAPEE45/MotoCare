@@ -1,6 +1,28 @@
 <?php
 
 include '../../helper/checkingUser.php';
+
+// Get shop_id from URL parameter if provided (from shop-infos.php booking redirect)
+$selectedShopId = isset($_GET['shop_id']) ? intval($_GET['shop_id']) : 0;
+$selectedShopName = '';
+$selectedShopLat = 0;
+$selectedShopLng = 0;
+
+// If shop_id is provided, get shop details
+if ($selectedShopId > 0) {
+    include '../../helper/db.php';
+    $shopQuery = "SELECT name, lat, lg FROM shop WHERE id = ?";
+    $stmt = $conn->prepare($shopQuery);
+    $stmt->bind_param("i", $selectedShopId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($shopData = $result->fetch_assoc()) {
+        $selectedShopName = $shopData['name'];
+        $selectedShopLat = floatval($shopData['lat']);
+        $selectedShopLng = floatval($shopData['lg']);
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,6 +50,11 @@ include '../../helper/checkingUser.php';
   <body>
     
     <header>
+      <!-- Hidden fields for shop data from URL parameter -->
+      <p style="display:none;" id="selectedShopId"><?php echo $selectedShopId; ?></p>
+      <p style="display:none;" id="selectedShopName"><?php echo htmlspecialchars($selectedShopName); ?></p>
+      <p style="display:none;" id="selectedShopLat"><?php echo $selectedShopLat; ?></p>
+      <p style="display:none;" id="selectedShopLng"><?php echo $selectedShopLng; ?></p>
       <p style="display:none;" id="userId"><?php echo $row['ID'] ?></p>
       <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">

@@ -2,6 +2,17 @@
 session_start();
 include_once '../helper/db.php';
 $error = "";
+
+// Get redirect parameters if provided (from shop-infos.php booking)
+$redirect = isset($_GET['redirect']) ? $_GET['redirect'] : '';
+$shop_id = isset($_GET['shop_id']) ? intval($_GET['shop_id']) : 0;
+
+// Store redirect info in session for use after login
+if ($redirect === 'map' && $shop_id > 0) {
+    $_SESSION['redirect_after_login'] = 'map';
+    $_SESSION['redirect_shop_id'] = $shop_id;
+}
+
 function login($username, $password, $conn) {
     $stmt = $conn->prepare("SELECT role, ID, username, email_id, password FROM user WHERE email = ?");
     $stmt->bind_param("s", $username);
@@ -30,6 +41,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (login($username, $password, $conn)) {
         $uid = $_SESSION['user_id'];
+
+        // Check if there's a redirect after login (from shop-infos booking)
+        if (isset($_SESSION['redirect_after_login']) && $_SESSION['redirect_after_login'] === 'map' && isset($_SESSION['redirect_shop_id'])) {
+            $shopId = $_SESSION['redirect_shop_id'];
+            // Clear redirect session variables
+            unset($_SESSION['redirect_after_login']);
+            unset($_SESSION['redirect_shop_id']);
+            header("Location: ./customer/map.php?shop_id=" . $shopId);
+            exit();
+        }
 
         if ($_SESSION['role'] === "staff") {
             header("Location: /MotoCare/html/staff/dashboard.php?uid=".$uid);

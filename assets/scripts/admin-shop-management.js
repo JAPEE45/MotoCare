@@ -1,39 +1,118 @@
-let shops = [
-  {
-    id: 1,
-    shopName: "Quick Fix Auto",
-    owner: "John Smith",
-    contact: "+1 234-567-8900",
-    address: "Virac Town Center, Virac, Catanduanes",
-    status: "Active",
-    lat: 13.5884,   // Virac
-    lng: 124.2372,
-  },
-  {
-    id: 2,
-    shopName: "Speedy Repairs",
-    owner: "Maria Garcia",
-    contact: "+1 234-567-8901",
-    address: "Bato Public Market, Bato, Catanduanes",
-    status: "Active",
-    lat: 13.6122,   // Bato
-    lng: 124.2287,
-  },
-  {
-    id: 3,
-    shopName: "Elite Auto Service",
-    owner: "Robert Johnson",
-    contact: "+1 234-567-8902",
-    address: "Baras Town Proper, Baras, Catanduanes",
-    status: "Inactive",
-    lat: 13.6510,   // Baras
-    lng: 124.3315,
-  },
-];
-
+let shops = [];
 let map, marker, mapEdit, markerEdit, mapView, markerView;
 let selectedLat, selectedLng;
 let editLat, editLng;
+let currentEditShopId, currentEditOwnerId;
+
+// Load shops on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadShops();
+});
+
+// Load shops from backend
+async function loadShops() {
+  try {
+    console.log('Fetching shops...');
+    // Add cache-busting timestamp to prevent browser caching
+    const timestamp = new Date().getTime();
+    const response = await fetch(`../../helper/adminGetShops.php?t=${timestamp}`, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+    console.log('Response status:', response.status);
+    
+    const text = await response.text();
+    console.log('Raw response:', text);
+    
+    const data = JSON.parse(text);
+    console.log('Parsed data:', data);
+    
+    if (data.status === 'success' && data.data) {
+      shops = data.data;
+      console.log('Shops loaded:', shops.length);
+      renderShops();
+    } else {
+      console.error('Failed to load shops:', data);
+      showNotification(data.message || 'Failed to load shops', 'error');
+    }
+  } catch (error) {
+    console.error('Error loading shops:', error);
+    showNotification('Error loading shops: ' + error.message, 'error');
+  }
+}
+
+function renderShops() {
+  console.log('renderShops called with', shops.length, 'shops');
+  const tbody = document.getElementById('shopsTableBody');
+  if (!tbody) {
+    console.error('Table body element not found');
+    return;
+  }
+  
+  // Clear existing content completely
+  while (tbody.firstChild) {
+    tbody.removeChild(tbody.firstChild);
+  }
+  
+  if (!shops || shops.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center">No shops found</td></tr>';
+    return;
+  }
+  
+  shops.forEach((shop, index) => {
+    console.log(`Rendering shop ${index}:`, shop.shop_id, shop.shop_name);
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${shop.shop_name || ''}</td>
+      <td>${shop.owner_name || 'N/A'}</td>
+      <td>${shop.contact || 'N/A'}</td>
+      <td>${shop.address || ''}</td>
+      <td>
+        <span class="badge bg-${shop.total_bookings > 0 ? 'success' : 'secondary'}">
+          ${shop.total_bookings || 0} bookings
+        </span>
+      </td>
+      <td>₱${parseFloat(shop.total_revenue || 0).toLocaleString()}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="viewShop(${shop.shop_id})">
+          <i class="fas fa-eye"></i> View
+        </button>
+        <button class="btn btn-sm btn-warning" onclick="editShop(${shop.shop_id})">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+        <button class="btn btn-sm btn-danger" onclick="deleteShop(${shop.shop_id})">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+  console.log('renderShops complete');
+}
+
+function showNotification(message, type = 'success') {
+  let alertClass = 'alert-success';
+  if (type === 'error') alertClass = 'alert-danger';
+  else if (type === 'warning') alertClass = 'alert-warning';
+  
+  const alertDiv = document.createElement('div');
+  alertDiv.className = `alert ${alertClass} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+  alertDiv.style.zIndex = '9999';
+  alertDiv.style.maxWidth = '500px';
+  alertDiv.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  document.body.appendChild(alertDiv);
+  
+  setTimeout(() => {
+    alertDiv.remove();
+  }, type === 'warning' ? 8000 : 3000);
+}
 
 // Initialize maps when modals are shown
 document
@@ -121,16 +200,17 @@ function initViewMap() {
   if (mapView) {
     mapView.remove();
   }
-  const shop = shops.find(
-    (s) => s.id === parseInt(document.getElementById("viewShopName").dataset.id)
-  );
+  const shopId = parseInt(document.getElementById("viewShopName").dataset.id);
+  const shop = shops.find((s) => s.shop_id === shopId);
   if (shop) {
-    mapView = L.map("mapView").setView([shop.lat, shop.lng], 13);
+    const lat = parseFloat(shop.lat);
+    const lng = parseFloat(shop.lg);
+    mapView = L.map("mapView").setView([lat, lng], 13);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "© OpenStreetMap contributors",
     }).addTo(mapView);
 
-    markerView = L.marker([shop.lat, shop.lng]).addTo(mapView);
+    markerView = L.marker([lat, lng]).addTo(mapView);
   }
 }
 
@@ -167,43 +247,109 @@ function renderTable(data = shops) {
 }
 
 // Add shop
-function addShop() {
-  const newShop = {
-    id: shops.length > 0 ? Math.max(...shops.map((s) => s.id)) + 1 : 1,
-    shopName: document.getElementById("shopName").value,
-    owner: document.getElementById("ownerName").value,
-    contact: document.getElementById("contactNumber").value,
-    address: document.getElementById("address").value,
-    status: document.getElementById("status").value,
-    lat: selectedLat || 14.5995,
-    lng: selectedLng || 120.9842,
-  };
-
-  shops.push(newShop);
-  renderTable();
-  bootstrap.Modal.getInstance(document.getElementById("addShopModal")).hide();
-  document.getElementById("addShopForm").reset();
-  document.getElementById("coordinates").textContent =
-    "Latitude: - | Longitude: -";
-  selectedLat = null;
-  selectedLng = null;
+async function addShop() {
+  const shopName = document.getElementById("shopName").value.trim();
+  const ownerName = document.getElementById("ownerName").value.trim();
+  const contact = document.getElementById("contactNumber").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const email = document.getElementById("ownerEmail").value.trim();
+  
+  // Validate required fields
+  if (!shopName || !ownerName || !contact || !address || !email) {
+    showNotification('Please fill in all required fields', 'error');
+    return;
+  }
+  
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showNotification('Please enter a valid email address', 'error');
+    return;
+  }
+  
+  if (!selectedLat || !selectedLng) {
+    showNotification('Please select a location on the map', 'error');
+    return;
+  }
+  
+  // Show loading state
+  const addBtn = document.querySelector('#addShopModal .btn-primary');
+  const originalText = addBtn.innerHTML;
+  addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Shop...';
+  addBtn.disabled = true;
+  
+  const formData = new FormData();
+  formData.append('shop_name', shopName);
+  formData.append('owner_name', ownerName);
+  formData.append('contact', contact);
+  formData.append('address', address);
+  formData.append('lat', selectedLat);
+  formData.append('lng', selectedLng);
+  formData.append('email', email);
+  
+  try {
+    const response = await fetch('../../helper/adminAddShop.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const text = await response.text();
+    console.log('Add shop response:', text);
+    
+    const data = JSON.parse(text);
+    
+    // Reset button state
+    addBtn.innerHTML = originalText;
+    addBtn.disabled = false;
+    
+    if (data.status === 'success') {
+      // Check if email was sent successfully
+      if (data.email_sent) {
+        showNotification('Shop added successfully! Login credentials have been sent to the owner\'s email.', 'success');
+      } else {
+        // Email failed - show the generated password
+        const password = data.generated_password || 'Check server logs';
+        showNotification(`Shop added but email failed to send. Generated password: ${password}`, 'warning');
+        alert(`IMPORTANT: Email could not be sent!\\n\\nPlease provide these credentials to the owner manually:\\n\\nEmail: ${email}\\nPassword: ${password}`);
+      }
+      bootstrap.Modal.getInstance(document.getElementById("addShopModal")).hide();
+      document.getElementById("addShopForm").reset();
+      document.getElementById("coordinates").textContent = "Latitude: - | Longitude: -";
+      selectedLat = null;
+      selectedLng = null;
+      loadShops();
+    } else {
+      showNotification(data.message || 'Failed to add shop', 'error');
+    }
+  } catch (error) {
+    console.error('Error adding shop:', error);
+    // Reset button state on error
+    const addBtn = document.querySelector('#addShopModal .btn-primary');
+    if (addBtn) {
+      addBtn.innerHTML = 'Add Shop';
+      addBtn.disabled = false;
+    }
+    showNotification('Error adding shop: ' + error.message, 'error');
+  }
 }
 
 // View shop
 function viewShop(id) {
-  const shop = shops.find((s) => s.id === id);
+  const shop = shops.find((s) => s.shop_id === id);
   if (shop) {
-    document.getElementById("viewShopName").textContent = shop.shopName;
-    document.getElementById("viewShopName").dataset.id = shop.id;
-    document.getElementById("viewOwnerName").textContent = shop.owner;
-    document.getElementById("viewContactNumber").textContent = shop.contact;
+    document.getElementById("viewShopName").textContent = shop.shop_name;
+    document.getElementById("viewShopName").dataset.id = shop.shop_id;
+    document.getElementById("viewOwnerName").textContent = shop.owner_name || 'N/A';
+    document.getElementById("viewContactNumber").textContent = shop.contact || 'N/A';
     document.getElementById("viewAddress").textContent = shop.address;
-    document.getElementById("viewStatus").textContent = shop.status;
+    document.getElementById("viewEmail").textContent = shop.email || 'N/A';
+    document.getElementById("viewBookings").textContent = `Total: ${shop.total_bookings}, Completed: ${shop.completed_bookings}`;
+    document.getElementById("viewRevenue").textContent = `₱${parseFloat(shop.total_revenue || 0).toLocaleString()}`;
     document.getElementById(
       "viewCoordinates"
-    ).textContent = `Latitude: ${shop.lat.toFixed(
+    ).textContent = `Latitude: ${parseFloat(shop.lat).toFixed(
       6
-    )} | Longitude: ${shop.lng.toFixed(6)}`;
+    )} | Longitude: ${parseFloat(shop.lg).toFixed(6)}`;
 
     new bootstrap.Modal(document.getElementById("viewShopModal")).show();
   }
@@ -211,16 +357,16 @@ function viewShop(id) {
 
 // Edit shop
 function editShop(id) {
-  const shop = shops.find((s) => s.id === id);
+  const shop = shops.find((s) => s.shop_id === id);
   if (shop) {
-    document.getElementById("editShopId").value = shop.id;
-    document.getElementById("editShopName").value = shop.shopName;
-    document.getElementById("editOwnerName").value = shop.owner;
-    document.getElementById("editContactNumber").value = shop.contact;
+    currentEditShopId = shop.shop_id;
+    currentEditOwnerId = shop.owner_id;
+    document.getElementById("editShopName").value = shop.shop_name;
+    document.getElementById("editOwnerName").value = shop.owner_name || '';
+    document.getElementById("editContactNumber").value = shop.contact || '';
     document.getElementById("editAddress").value = shop.address;
-    document.getElementById("editStatus").value = shop.status;
-    editLat = shop.lat;
-    editLng = shop.lng;
+    editLat = parseFloat(shop.lat);
+    editLng = parseFloat(shop.lg);
     document.getElementById(
       "editCoordinates"
     ).textContent = `Latitude: ${editLat.toFixed(
@@ -232,44 +378,142 @@ function editShop(id) {
 }
 
 // Update shop
-function updateShop() {
-  const id = parseInt(document.getElementById("editShopId").value);
-  const shop = shops.find((s) => s.id === id);
-
-  if (shop) {
-    shop.shopName = document.getElementById("editShopName").value;
-    shop.owner = document.getElementById("editOwnerName").value;
-    shop.contact = document.getElementById("editContactNumber").value;
-    shop.address = document.getElementById("editAddress").value;
-    shop.status = document.getElementById("editStatus").value;
-    shop.lat = editLat;
-    shop.lng = editLng;
-
-    renderTable();
-    bootstrap.Modal.getInstance(
-      document.getElementById("editShopModal")
-    ).hide();
+async function updateShop() {
+  console.log('Update shop called');
+  console.log('Current edit shop ID:', currentEditShopId);
+  console.log('Current edit owner ID:', currentEditOwnerId);
+  
+  const shopName = document.getElementById("editShopName").value;
+  const ownerName = document.getElementById("editOwnerName").value;
+  const contact = document.getElementById("editContactNumber").value;
+  const address = document.getElementById("editAddress").value;
+  
+  console.log('Form values:', { shopName, ownerName, contact, address, editLat, editLng });
+  
+  // Validate required fields
+  if (!shopName || !address) {
+    showNotification('Please fill in all required fields', 'error');
+    return;
+  }
+  
+  // Validate coordinates
+  if (!editLat || !editLng) {
+    showNotification('Please select a location on the map', 'error');
+    return;
+  }
+  
+  // Validate IDs
+  if (!currentEditShopId) {
+    showNotification('Invalid shop ID', 'error');
+    return;
+  }
+  
+  const formData = new FormData();
+  formData.append('shop_id', currentEditShopId);
+  formData.append('owner_id', currentEditOwnerId || '');
+  formData.append('shop_name', shopName);
+  formData.append('owner_name', ownerName || '');
+  formData.append('contact', contact || '');
+  formData.append('address', address);
+  formData.append('lat', editLat);
+  formData.append('lng', editLng);
+  
+  console.log('Sending update request...');
+  console.log('FormData contents:');
+  for (let [key, value] of formData.entries()) {
+    console.log(`  ${key}: ${value}`);
+  }
+  
+  try {
+    const response = await fetch('../../helper/adminUpdateShop2.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    console.log('Response status:', response.status);
+    const text = await response.text();
+    console.log('Update response RAW:', text);
+    
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (parseError) {
+      console.error('JSON Parse Error:', parseError);
+      console.error('Raw text was:', text);
+      showNotification('Server returned invalid response', 'error');
+      return;
+    }
+    
+    console.log('Parsed data:', data);
+    
+    if (data.debug) {
+      console.log('DEBUG INFO:');
+      console.log('  Old name:', data.debug.old_name);
+      console.log('  New name:', data.debug.new_name);
+      console.log('  Name changed:', data.debug.name_changed);
+      console.log('  Affected rows:', data.debug.affected_rows);
+    }
+    
+    if (data.status === 'success') {
+      showNotification('Shop updated successfully', 'success');
+      const modalElement = document.getElementById("editShopModal");
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide();
+      }
+      // Force reload shops
+      console.log('Reloading shops...');
+      await loadShops();
+      console.log('Shops reloaded');
+    } else {
+      console.error('Update failed:', data.message);
+      showNotification(data.message || 'Failed to update shop', 'error');
+    }
+  } catch (error) {
+    console.error('Error updating shop:', error);
+    showNotification('Error updating shop: ' + error.message, 'error');
   }
 }
 
 // Delete shop
+let deleteShopId;
+
 function deleteShop(id) {
-  const shop = shops.find((s) => s.id === id);
+  const shop = shops.find((s) => s.shop_id === id);
   if (shop) {
-    document.getElementById("deleteShopId").value = shop.id;
-    document.getElementById("deleteShopName").textContent = shop.shopName;
+    deleteShopId = shop.shop_id;
+    document.getElementById("deleteShopName").textContent = shop.shop_name;
     new bootstrap.Modal(document.getElementById("deleteShopModal")).show();
   }
 }
 
 // Confirm delete
-function confirmDelete() {
-  const id = parseInt(document.getElementById("deleteShopId").value);
-  shops = shops.filter((s) => s.id !== id);
-  renderTable();
-  bootstrap.Modal.getInstance(
-    document.getElementById("deleteShopModal")
-  ).hide();
+async function confirmDelete() {
+  const formData = new FormData();
+  formData.append('shop_id', deleteShopId);
+  
+  try {
+    const response = await fetch('../../helper/adminDeleteShop.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const text = await response.text();
+    console.log('Delete response:', text);
+    
+    const data = JSON.parse(text);
+    
+    if (data.status === 'success') {
+      showNotification('Shop deleted successfully', 'success');
+      bootstrap.Modal.getInstance(document.getElementById("deleteShopModal")).hide();
+      loadShops();
+    } else {
+      showNotification(data.message || 'Failed to delete shop', 'error');
+    }
+  } catch (error) {
+    console.error('Error deleting shop:', error);
+    showNotification('Error deleting shop: ' + error.message, 'error');
+  }
 }
 
 // Search functionality
@@ -277,12 +521,42 @@ document.getElementById("searchInput").addEventListener("input", function (e) {
   const searchTerm = e.target.value.toLowerCase();
   const filtered = shops.filter(
     (shop) =>
-      shop.shopName.toLowerCase().includes(searchTerm) ||
-      shop.owner.toLowerCase().includes(searchTerm) ||
+      shop.shop_name.toLowerCase().includes(searchTerm) ||
+      (shop.owner_name && shop.owner_name.toLowerCase().includes(searchTerm)) ||
       shop.address.toLowerCase().includes(searchTerm)
   );
-  renderTable(filtered);
+  renderShopsFiltered(filtered);
 });
 
-// Initial render
-renderTable();
+function renderShopsFiltered(filteredShops) {
+  const tbody = document.getElementById('shopsTableBody');
+  tbody.innerHTML = '';
+  
+  filteredShops.forEach(shop => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${shop.shop_name}</td>
+      <td>${shop.owner_name || 'N/A'}</td>
+      <td>${shop.contact || 'N/A'}</td>
+      <td>${shop.address}</td>
+      <td>
+        <span class="badge bg-${shop.total_bookings > 0 ? 'success' : 'secondary'}">
+          ${shop.total_bookings} bookings
+        </span>
+      </td>
+      <td>₱${parseFloat(shop.total_revenue || 0).toLocaleString()}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="viewShop(${shop.shop_id})">
+          <i class="fas fa-eye"></i> View
+        </button>
+        <button class="btn btn-sm btn-warning" onclick="editShop(${shop.shop_id})">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+        <button class="btn btn-sm btn-danger" onclick="deleteShop(${shop.shop_id})">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}

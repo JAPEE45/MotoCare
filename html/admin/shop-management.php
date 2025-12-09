@@ -96,39 +96,7 @@ if ($row['role'] !== 'admin') {
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
       <div class="content-wrapper">
-        <div class="container-main"></a>
-              </li> -->
-          </ul>
-          <div class="profile-dropdown">
-            <button class="btn-user" id="profileBtn">
-              <div class="d-flex flex-column gap-0">
-                <p class="user-name mb-0 fw-bold"><?php echo $row['fullname'] ?></p>
-                <p class="mb-0 text-muted">Customer</p>
-              </div>
-              <i
-                class="fa-solid fa-angle-down"
-                style="font-size: 0.8rem; color: var(--text-gray)"></i>
-            </button>
-            <div class="dropdown-menu-custom" id="profileDropdown">
-              <a href="../account.php" class="dropdown-item-custom">
-                <i class="fas fa-user-circle me-2"></i>Account
-              </a>
-              <a href="./booking-list.php" class="dropdown-item-custom">
-                <i class="fa-solid fa-calendar-check me-2"></i>Booking
-              </a>
-              <a href="../../helper/logout.php" class="dropdown-item-custom">
-                <i class="fas fa-sign-out-alt me-2"></i>Sign Out
-              </a>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-    <!-- Main Content -->
-    <div class="container-main">
+        <div class="container-main">
         <div class="page-header">
             <h2>Shop Management</h2>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addShopModal">+ Add New Shop</button>
@@ -148,11 +116,12 @@ if ($row['role'] !== 'admin') {
                         <th>Owner</th>
                         <th>Contact</th>
                         <th>Address</th>
-                        <th>Status</th>
+                        <th>Bookings</th>
+                        <th>Revenue</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="shopTableBody">
+                <tbody id="shopsTableBody">
                     <!-- Data will be populated here -->
                 </tbody>
             </table>
@@ -182,15 +151,13 @@ if ($row['role'] !== 'admin') {
                             <input type="tel" class="form-control" id="contactNumber" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Address</label>
-                            <textarea class="form-control" id="address" rows="2" required></textarea>
+                            <label class="form-label">Owner Email</label>
+                            <input type="email" class="form-control" id="ownerEmail" required>
+                            <small class="text-muted">A password will be auto-generated and sent to this email.</small>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" id="status" required>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
+                            <label class="form-label">Address</label>
+                            <textarea class="form-control" id="address" rows="2" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Pin Location on Map</label>
@@ -206,6 +173,7 @@ if ($row['role'] !== 'admin') {
             </div>
         </div>
     </div>
+        </div>
 
     <!-- View Shop Modal -->
     <div class="modal fade" id="viewShopModal" tabindex="-1">
@@ -229,12 +197,20 @@ if ($row['role'] !== 'admin') {
                         <p class="form-control-plaintext" id="viewContactNumber"></p>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <p class="form-control-plaintext" id="viewEmail"></p>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Address</label>
                         <p class="form-control-plaintext" id="viewAddress"></p>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Status</label>
-                        <p class="form-control-plaintext" id="viewStatus"></p>
+                        <label class="form-label">Bookings</label>
+                        <p class="form-control-plaintext" id="viewBookings"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Revenue</label>
+                        <p class="form-control-plaintext" id="viewRevenue"></p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Location</label>
@@ -275,13 +251,6 @@ if ($row['role'] !== 'admin') {
                         <div class="mb-3">
                             <label class="form-label">Address</label>
                             <textarea class="form-control" id="editAddress" rows="2" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" id="editStatus" required>
-                                <option value="Active">Active</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Update Location on Map</label>

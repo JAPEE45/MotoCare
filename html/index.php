@@ -125,49 +125,47 @@
         </div>
 
         <div class="row g-4 justify-content-center">
+          <?php
+          include '../helper/db.php';
+          
+          // Fetch all shops from database
+          $shopQuery = "SELECT id, name, address, icon FROM shop ORDER BY id LIMIT 6";
+          $shopResult = $conn->query($shopQuery);
+          
+          $shopImages = [
+            1 => '../assets/images/moljelube.jpg',
+            2 => '../assets/images/ptm.jpg',
+            3 => ''
+          ];
+          
+          if ($shopResult && $shopResult->num_rows > 0):
+            while ($shop = $shopResult->fetch_assoc()):
+              $shopImage = isset($shopImages[$shop['id']]) ? $shopImages[$shop['id']] : '';
+          ?>
           <div class="col-12 col-lg-3">
-            <a href="./shop-infos.html" class="services-cards">
+            <a href="./public/shop-infos.php?id=<?php echo $shop['id']; ?>" class="services-cards">
               <div class="service-card">
                 <div class="service-image position-relative">
                   <img
-                    src="../assets/images/moljelube.jpg"
-                    alt="Engine Repair"
+                    src="<?php echo htmlspecialchars($shopImage); ?>"
+                    alt="<?php echo htmlspecialchars($shop['name']); ?>"
                     class="service-img"
+                    onerror="this.src='https://via.placeholder.com/400x300?text=<?php echo urlencode($shop['name']); ?>'"
                   />
                   <div class="service-overlay"></div>
                 </div>
-                <h3 class="service-title">MOLJE LUBE</h3>
+                <h3 class="service-title"><?php echo strtoupper(htmlspecialchars($shop['name'])); ?></h3>
               </div>
             </a>
           </div>
-
-          <div class="col-12 col-lg-3">
-            <a href="./shop-infos.html" class="services-cards">
-              <div class="service-card">
-                <div class="service-image position-relative">
-                  <img
-                    src="../assets/images/ptm.jpg"
-                    alt="Brake Repair"
-                    class="service-img"
-                  />
-                  <div class="service-overlay"></div>
-                </div>
-                <h3 class="service-title">PRECISION TECH<br />MOTOSHOP</h3>
-              </div>
-            </a>
+          <?php 
+            endwhile;
+          else:
+          ?>
+          <div class="col-12">
+            <p class="text-center text-white">No shops available at the moment.</p>
           </div>
-
-          <div class="col-12 col-lg-3">
-            <a href="./shop-infos.html" class="services-cards">
-              <div class="service-card">
-                <div class="service-image position-relative">
-                  <img src="" alt="CT GEAR" class="service-img" />
-                  <div class="service-overlay"></div>
-                </div>
-                <h3 class="service-title">CT GEAR</h3>
-              </div>
-            </a>
-          </div>
+          <?php endif; ?>
         </div>
       </div>
     </section>
