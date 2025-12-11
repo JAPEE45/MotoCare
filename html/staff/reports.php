@@ -39,10 +39,10 @@ $shop_id = $row['shop_id'];
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <div class="sidebar-logo">
-          <img src="../../assets/images/logo.svg" alt="MotoCare Logo" onerror="this.style.display='none'">
-        </div>
-        <span class="sidebar-title">MotoCare</span>
+        <!-- <div class="sidebar-logo"> -->
+          <!-- <img src="../../assets/images/logo.svg" alt="MotoCare Logo" onerror="this.style.display='none'"> -->
+        <!-- </div> -->
+        <span class="sidebar-title">AutoRepair Shop</span>
       </div>
       
       <nav class="sidebar-nav">
