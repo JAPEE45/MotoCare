@@ -16,6 +16,9 @@ if ($row['role'] !== 'staff' && $row['role'] !== 'admin' && $row['role'] !== 'ow
 }
 
 $shop_id = $row['shop_id'];
+
+// Debug: Output shop_id to console via JavaScript
+echo "<script>console.log('Staff shop_id from database:', " . json_encode($shop_id) . ");</script>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,6 +103,10 @@ $shop_id = $row['shop_id'];
             
             <!-- Filter Section -->
             <div class="filter-card">
+                <div class="alert alert-info mb-3" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Note:</strong> Revenue is calculated from total cost entered by staff when completing bookings. If no cost was entered, the service labor price is used as an estimate.
+                </div>
                 <h5 class="filter-title"><i class="fas fa-filter me-2"></i>Filter Reports</h5>
                 <div class="row g-3">
                     <div class="col-md-3">
@@ -232,17 +239,20 @@ $shop_id = $row['shop_id'];
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="../../assets/scripts/navbar.js"></script>
     <script>
         let trendChart, statusChart;
+        let lastReportData = {}; // Store latest report data for export
         const shopId = document.getElementById('shopId').value;
         
+        console.log('ShopId being used for queries:', shopId);
+        console.log('Type of shopId:', typeof shopId);
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // Set default dates
+            // Set default dates to cover October 2025 where the data is
             const today = new Date();
-            const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            const threeMonthsAgo = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000);
             document.getElementById('endDate').value = today.toISOString().split('T')[0];
-            document.getElementById('startDate').value = lastWeek.toISOString().split('T')[0];
+            document.getElementById('startDate').value = threeMonthsAgo.toISOString().split('T')[0];
             
             generateReport();
         });
@@ -252,15 +262,50 @@ $shop_id = $row['shop_id'];
             const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
             
+            console.log('Generating report with:', { shopId, period, startDate, endDate });
+            
             try {
                 const res = await fetch(`../../helper/getReports.php?shop_id=${shopId}&period=${period}&start=${startDate}&end=${endDate}`);
-                const data = await res.json();
+                const text = await res.text();
+                console.log('Raw response:', text);
+                
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    console.error('Response text:', text);
+                    alert('Error: Server returned invalid data. Check console for details.');
+                    return;
+                }
+                
+                console.log('Report data received:', data);
+                
+                // Store the data for export
+                lastReportData = data;
+                
+                // Show debug info
+                if (data.debug) {
+                    console.log('=== DEBUG INFO ===');
+                    console.log('Shop ID used:', data.debug.shop_id);
+                    console.log('Date range:', data.debug.start_date, 'to', data.debug.end_date);
+                    console.log('Total bookings in DB for this shop:', data.debug.total_bookings_for_shop);
+                    console.log('Stats query result:', data.debug.stats_data);
+                    console.log('==================');
+                }
+                
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
                 
                 // Update stats cards
                 document.getElementById('totalBookings').textContent = data.stats.total_bookings || 0;
                 document.getElementById('totalRevenue').textContent = '₱' + (data.stats.total_revenue || 0).toLocaleString();
                 document.getElementById('completedBookings').textContent = data.stats.completed || 0;
                 document.getElementById('pendingBookings').textContent = data.stats.pending || 0;
+                
+                console.log('Stats updated:', data.stats);
                 
                 // Update charts
                 updateTrendChart(data.trend);
@@ -272,6 +317,7 @@ $shop_id = $row['shop_id'];
                 
             } catch (error) {
                 console.error('Error generating report:', error);
+                alert('Error loading report data: ' + error.message);
             }
         }
         
@@ -407,26 +453,173 @@ $shop_id = $row['shop_id'];
         }
         
         function exportToExcel() {
-            // Collect data for export
-            const reportData = {
-                'Summary': [
-                    ['Report Generated', new Date().toLocaleString()],
-                    ['Total Bookings', document.getElementById('totalBookings').textContent],
-                    ['Total Revenue', document.getElementById('totalRevenue').textContent],
-                    ['Completed', document.getElementById('completedBookings').textContent],
-                    ['On Queue', document.getElementById('pendingBookings').textContent]
-                ]
-            };
+            // Make sure we have report data
+            if (!lastReportData || !lastReportData.stats) {
+                alert('Please generate a report first before exporting.');
+                return;
+            }
             
             // Create workbook
             const wb = XLSX.utils.book_new();
             
-            // Add summary sheet
-            const ws = XLSX.utils.aoa_to_sheet(reportData['Summary']);
-            XLSX.utils.book_append_sheet(wb, ws, 'Summary');
+            // Get date range
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // === SHEET 1: EXECUTIVE SUMMARY ===
+            const summaryData = [
+                ['MOTOCARE BOOKING REPORT'],
+                ['Generated:', new Date().toLocaleString()],
+                ['Period:', startDate + ' to ' + endDate],
+                ['Shop ID:', shopId],
+                [],
+                ['KEY METRICS'],
+                ['Metric', 'Value'],
+                ['Total Bookings', lastReportData.stats.total_bookings || 0],
+                ['Total Revenue', '₱' + parseFloat(lastReportData.stats.total_revenue || 0).toLocaleString()],
+                ['Completed Bookings', lastReportData.stats.completed || 0],
+                ['On Queue', lastReportData.stats.pending || 0],
+                ['In Progress', lastReportData.stats.in_progress || 0],
+                ['Cancelled', lastReportData.stats.cancelled || 0],
+                [],
+                ['STATUS DISTRIBUTION'],
+                ['Status', 'Count', 'Percentage'],
+                ['Completed', lastReportData.status_distribution.completed || 0, 
+                    ((lastReportData.status_distribution.completed || 0) / (lastReportData.stats.total_bookings || 1) * 100).toFixed(1) + '%'],
+                ['On Queue', lastReportData.status_distribution.pending || 0,
+                    ((lastReportData.status_distribution.pending || 0) / (lastReportData.stats.total_bookings || 1) * 100).toFixed(1) + '%'],
+                ['In Progress', lastReportData.status_distribution.progress || 0,
+                    ((lastReportData.status_distribution.progress || 0) / (lastReportData.stats.total_bookings || 1) * 100).toFixed(1) + '%'],
+                ['Cancelled', lastReportData.status_distribution.cancelled || 0,
+                    ((lastReportData.status_distribution.cancelled || 0) / (lastReportData.stats.total_bookings || 1) * 100).toFixed(1) + '%']
+            ];
+            
+            const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+            
+            // Style the summary sheet
+            summarySheet['!cols'] = [{wch: 20}, {wch: 25}, {wch: 15}];
+            summarySheet['!rows'] = [{hpt: 20}];
+            
+            XLSX.utils.book_append_sheet(wb, summarySheet, 'Executive Summary');
+            
+            // === SHEET 2: TREND ANALYSIS ===
+            if (lastReportData.trend && lastReportData.trend.labels.length > 0) {
+                const trendData = [
+                    ['TREND ANALYSIS'],
+                    ['Date', 'Bookings', 'Revenue (₱)'],
+                ];
+                
+                for (let i = 0; i < lastReportData.trend.labels.length; i++) {
+                    trendData.push([
+                        lastReportData.trend.labels[i],
+                        lastReportData.trend.bookings[i] || 0,
+                        lastReportData.trend.revenue[i] || 0
+                    ]);
+                }
+                
+                // Calculate totals and averages
+                const totalBookings = lastReportData.trend.bookings.reduce((a, b) => a + b, 0);
+                const totalRevenue = lastReportData.trend.revenue.reduce((a, b) => a + b, 0);
+                const avgBookings = (totalBookings / lastReportData.trend.labels.length).toFixed(2);
+                const avgRevenue = (totalRevenue / lastReportData.trend.labels.length).toFixed(2);
+                
+                trendData.push(
+                    [],
+                    ['SUMMARY'],
+                    ['Total Bookings:', totalBookings],
+                    ['Total Revenue:', '₱' + totalRevenue.toLocaleString()],
+                    ['Average Bookings/Day:', avgBookings],
+                    ['Average Revenue/Day:', '₱' + avgRevenue]
+                );
+                
+                const trendSheet = XLSX.utils.aoa_to_sheet(trendData);
+                trendSheet['!cols'] = [{wch: 15}, {wch: 15}, {wch: 20}];
+                XLSX.utils.book_append_sheet(wb, trendSheet, 'Trend Analysis');
+            }
+            
+            // === SHEET 3: TOP SERVICES ===
+            if (lastReportData.top_services && lastReportData.top_services.length > 0) {
+                const servicesData = [
+                    ['TOP PERFORMING SERVICES'],
+                    ['Rank', 'Service Name', 'Bookings', 'Total Revenue (₱)', 'Avg Revenue (₱)'],
+                ];
+                
+                lastReportData.top_services.forEach((service, index) => {
+                    const avgRevenue = service.bookings > 0 ? (service.revenue / service.bookings).toFixed(2) : '0.00';
+                    servicesData.push([
+                        index + 1,
+                        service.service_name,
+                        service.bookings,
+                        parseFloat(service.revenue).toFixed(2),
+                        avgRevenue
+                    ]);
+                });
+                
+                const servicesSheet = XLSX.utils.aoa_to_sheet(servicesData);
+                servicesSheet['!cols'] = [{wch: 8}, {wch: 30}, {wch: 12}, {wch: 18}, {wch: 18}];
+                XLSX.utils.book_append_sheet(wb, servicesSheet, 'Top Services');
+            }
+            
+            // === SHEET 4: RECENT BOOKINGS ===
+            if (lastReportData.recent_bookings && lastReportData.recent_bookings.length > 0) {
+                const bookingsData = [
+                    ['RECENT BOOKINGS'],
+                    ['Transaction ID', 'Customer', 'Service', 'Date', 'Time', 'Status', 'Revenue (₱)'],
+                ];
+                
+                lastReportData.recent_bookings.forEach(booking => {
+                    bookingsData.push([
+                        booking.transaction_number || booking.id || 'N/A',
+                        booking.customer_name || 'N/A',
+                        booking.service_name || 'N/A',
+                        booking.date || 'N/A',
+                        booking.time_slot || 'N/A',
+                        (booking.status || 'unknown').toUpperCase(),
+                        parseFloat(booking.revenue || 0).toFixed(2)
+                    ]);
+                });
+                
+                const bookingsSheet = XLSX.utils.aoa_to_sheet(bookingsData);
+                bookingsSheet['!cols'] = [{wch: 18}, {wch: 20}, {wch: 25}, {wch: 12}, {wch: 12}, {wch: 12}, {wch: 15}];
+                XLSX.utils.book_append_sheet(wb, bookingsSheet, 'Recent Bookings');
+            }
+            
+            // === SHEET 5: RAW DATA (ALL BOOKINGS) ===
+            if (lastReportData.recent_bookings && lastReportData.recent_bookings.length > 0) {
+                const rawData = [
+                    ['COMPLETE BOOKING DATA'],
+                    ['Transaction ID', 'Booking ID', 'Customer Name', 'Contact', 'Service', 'Date', 'Time', 'Status', 'Created', 'Notes', 'Revenue (₱)'],
+                ];
+                
+                lastReportData.recent_bookings.forEach(booking => {
+                    rawData.push([
+                        booking.transaction_number || 'N/A',
+                        booking.id || 'N/A',
+                        booking.customer_name || 'N/A',
+                        booking.contact || 'N/A',
+                        booking.service_name || 'N/A',
+                        booking.date || 'N/A',
+                        booking.time_slot || 'N/A',
+                        booking.status || 'N/A',
+                        booking.created_at || 'N/A',
+                        booking.notes || '',
+                        parseFloat(booking.revenue || 0).toFixed(2)
+                    ]);
+                });
+                
+                const rawSheet = XLSX.utils.aoa_to_sheet(rawData);
+                rawSheet['!cols'] = [{wch: 18}, {wch: 10}, {wch: 20}, {wch: 15}, {wch: 25}, {wch: 12}, {wch: 12}, {wch: 12}, {wch: 18}, {wch: 30}, {wch: 15}];
+                XLSX.utils.book_append_sheet(wb, rawSheet, 'All Bookings Data');
+            }
+            
+            // Generate filename with timestamp
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
+            const filename = `MotoCare_Report_${timestamp}.xlsx`;
             
             // Download
-            XLSX.writeFile(wb, `Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+            XLSX.writeFile(wb, filename);
+            
+            console.log('Excel report generated successfully:', filename);
         }
         
         function exportToPDF() {

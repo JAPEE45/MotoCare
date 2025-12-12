@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+// Check if user is logged in
+$isLoggedIn = false;
+$userData = null;
+
+if (isset($_SESSION['user_id']) || isset($_SESSION['user'])) {
+    $isLoggedIn = true;
+    
+    // Get user data if logged in
+    include '../helper/db.php';
+    $user_id = $_SESSION['user_id'] ?? $_SESSION['user'];
+    $stmt = $conn->prepare("SELECT * FROM user WHERE ID = ? OR email_id = ?");
+    $stmt->bind_param("is", $user_id, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $userData = $result->fetch_assoc();
+    }
+    $stmt->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -46,13 +69,39 @@
               <li class="nav-item">
                 <a class="nav-link" href="#aboutus">About Us</a>
               </li>
+              <?php if (!$isLoggedIn): ?>
               <li class="nav-item">
                 <a class="nav-link" href="./signin.php">Sign In</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link signup" href="./signup.php">Sign Up</a>
               </li>
+              <?php endif; ?>
             </ul>
+            <?php if ($isLoggedIn && $userData): ?>
+            <div class="profile-dropdown">
+              <button class="btn-user" id="profileBtn">
+                <div class="d-flex flex-column gap-0">
+                  <p class="user-name mb-0 fw-bold"><?php echo htmlspecialchars($userData['fullname']); ?></p>
+                  <p class="mb-0 text-muted">Customer</p>
+                </div>
+                <i
+                  class="fa-solid fa-angle-down"
+                  style="font-size: 0.8rem; color: var(--text-gray)"></i>
+              </button>
+              <div class="dropdown-menu-custom" id="profileDropdown">
+                <a href="./account.php" class="dropdown-item-custom">
+                  <i class="fas fa-user-circle me-2"></i>Account
+                </a>
+                <a href="./customer/booking-list.php" class="dropdown-item-custom">
+                  <i class="fa-solid fa-calendar-check me-2"></i>Booking
+                </a>
+                <a href="../helper/logout.php" class="dropdown-item-custom">
+                  <i class="fas fa-sign-out-alt me-2"></i>Sign Out
+                </a>
+              </div>
+            </div>
+            <?php endif; ?>
           </div>
         </div>
       </nav>
@@ -100,7 +149,11 @@
             an <span class="text-red-primary">appointment</span>?
           </h2>
           <p class="cta-subtitle">Quality repairs are closer than you think.</p>
+          <?php if (!$isLoggedIn): ?>
           <a href="./signin.php" class="cta-btn">Sign In Now!</a>
+          <?php else: ?>
+          <a href="./customer/homepage.php" class="cta-btn">Book a Service!</a>
+          <?php endif; ?>
         </div>
       </div>
     </section>
@@ -257,5 +310,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/scripts/index.js"></script>
+    <script src="../assets/scripts/navbar.js"></script>
   </body>
 </html>
