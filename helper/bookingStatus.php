@@ -9,9 +9,9 @@ $bookingId = $_GET['buid'] ?? null;
 $error = "";
 $obj = "";
 if ($bookingId) {
-    $sql = "
-    SELECT 
+    $sql = "SELECT 
         b.id AS booking_id,
+        b.transaction_number,
         b.preferred_time,
         b.time,
         u.id AS user_id,
@@ -56,9 +56,9 @@ if ($bookingId) {
     $stmt->close();
 } else {
     // Get most recent booking for user
-    $sql = "
-    SELECT 
+    $sql = "SELECT 
         b.id AS booking_id,
+        b.transaction_number,
         b.preferred_time,
         b.time,
         u.id AS user_id,

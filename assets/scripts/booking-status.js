@@ -41,8 +41,15 @@ async function getBookingUpdate(){
     }
   }
   
+  // Generate transaction number if not present
+  let transactionNumber = json.transaction_number;
+  if (!transactionNumber && json.booking_id) {
+    transactionNumber = 'TRANS-' + String(json.booking_id).padStart(11, '0');
+  }
+  
   bookingData = {
     id: json.booking_id,
+    transaction_number: transactionNumber,
     serviceType: serviceDisplay,
     vehicle: json.vehicle_name || 'N/A',
     appointmentDate: json.preferred_time || 'N/A',
@@ -50,6 +57,14 @@ async function getBookingUpdate(){
     status: json.status, // pending, progress, completed
     estimatedCompletion: "2 hours remaining",
   };
+  
+  // Set transaction number at the top
+  const transactionElement = document.getElementById("transaction_number");
+  if (transactionElement) {
+    transactionElement.textContent = transactionNumber || 'N/A';
+    console.log("Transaction number set:", transactionNumber);
+  }
+  
   document.getElementById("vehicle_model").textContent = json.vehicle_model
   document.getElementById("shop_name").textContent = json.shop_name
   document.getElementById("shop_address").textContent = json.address
@@ -90,9 +105,7 @@ function updateBookingDisplay() {
   if (!bookingData) return;
 
   // Update booking details
-  document.getElementById(
-    "bookingId"
-  ).innerHTML = `<i class="fas fa-ticket-alt me-2"></i>${bookingData.id}`;
+  // Transaction number is already set in getBookingUpdate()
   document.getElementById("serviceType").textContent = bookingData.serviceType;
   document.getElementById("vehicle").textContent = bookingData.vehicle;
   document.getElementById("appointmentDate").textContent =

@@ -114,8 +114,8 @@ if ($booking_id) {
       <div id="bookingContent" class="fade-in" style="display: none">
         <div class="status-card">
           <div class="booking-header">
-            <div class="booking-id" id="bookingId">
-              <i class="fas fa-ticket-alt me-2"></i>BOOKING #12345
+            <div class="booking-id" id="bookingId" style="font-size: 1.3rem; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; background: rgba(220, 38, 38, 0.2); padding: 12px 20px; border-radius: 8px; border: 2px solid var(--primary-red);">
+              <i class="fas fa-ticket-alt me-2" style="color: var(--primary-red);"></i><span id="transaction_number" style="color: #fff; letter-spacing: 1px;">Loading...</span>
             </div>
             <h2 class="text-light">Service Status</h2>
           </div>

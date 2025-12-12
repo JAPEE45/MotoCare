@@ -142,15 +142,19 @@ async function bookService(shopName) {
     return;
   }
 
-  // Check if user already has a pending booking
+  // Check if user has reached the booking limit (10 per day per shop)
   const res = await fetch(`../../helper/checkBookService.php?ddd=${serv[0].shop_id}`)
   const j = await res.json()
   console.log("Check booking response:", j)
 
-  if(j.success){
-    alert("You already have a pending booking at this shop!");
-    window.location.href = `./booking-status.php?buid=${j.success.id}`
+  if(j.limit_reached){
+    alert(j.message || "You have reached the maximum limit of 10 bookings per day for this shop.");
     return;
+  }
+  
+  // Display remaining bookings if allowed
+  if(j.allowed && j.remaining < 10){
+    console.log(`Bookings today: ${j.count}/10 - Remaining: ${j.remaining}`);
   }
   
   // Build checkboxes for multiple service selection

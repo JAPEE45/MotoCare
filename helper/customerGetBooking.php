@@ -46,8 +46,15 @@ try {
             }
         }
         
+        // Generate transaction number if it doesn't exist
+        $transaction_number = $row['transaction_number'];
+        if (empty($transaction_number)) {
+            $transaction_number = 'TRANS-' . str_pad($row['id'], 11, '0', STR_PAD_LEFT);
+        }
+        
         $bookings[] = [
             'id' => $row['id'],
+            'transaction_number' => $transaction_number,
             'shopName' => $row['name'],
             'service' => $services_display,
             'service_id' => $row['service_id'],

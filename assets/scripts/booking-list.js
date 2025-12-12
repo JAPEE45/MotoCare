@@ -50,10 +50,14 @@ async function bookService(shopName) {
   const res = await fetch(`../../helper/checkBookService.php?ddd=${serv[0].id}`);
   const j = await res.json();
 
-  if (j.success) {
-    alert("You already have a pending booking at this shop!");
-    window.location.href = "./booking-status.php";
+  if (j.limit_reached) {
+    alert(j.message || "You have reached the maximum limit of 10 bookings per day for this shop.");
     return;
+  }
+  
+  // Display remaining bookings if allowed
+  if(j.allowed && j.remaining < 10){
+    console.log(`Bookings today: ${j.count}/10 - Remaining: ${j.remaining}`);
   }
 
   // Build checkboxes for multiple service selection
@@ -183,7 +187,7 @@ async function renderBookings(bookings = null) {
     .map(
       (booking) => `
         <tr>
-          <td>${booking.id}</td>
+          <td>${booking.transaction_number || booking.id}</td>
           <td>${booking.shopName}</td>
           <td>${booking.service}</td>
           <td>${booking.vehicle || "N/A"}</td>
