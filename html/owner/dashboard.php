@@ -21,7 +21,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Owner Dashboard - MotoCare</title>
+    <title>Owner Dashboard - AutoRepair Shop</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
@@ -42,10 +42,10 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
-        <div class="sidebar-logo">
+        <!-- <div class="sidebar-logo">
           <img src="../../assets/images/logo.svg" alt="MotoCare Logo" onerror="this.style.display='none'">
-        </div>
-        <span class="sidebar-title">MotoCare</span>
+        </div> -->
+        <span class="sidebar-title">AutoRepair Shop</span>
       </div>
       
       <nav class="sidebar-nav">
@@ -89,7 +89,7 @@
       <button class="mobile-menu-btn" id="mobileMenuBtn">
         <i class="fas fa-bars"></i>
       </button>
-      <span class="mobile-title">MotoCare</span>
+      <span class="mobile-title">AutoRepair Shop</span>
       <div class="mobile-user">
         <?php echo strtoupper(substr($row['fullname'], 0, 1)); ?>
       </div>
